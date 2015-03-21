@@ -1,0 +1,56 @@
+{
+    "name": "brain/monkey",
+    "description": "Mocking utility for PHP functions and WordPress plugin API",
+    "keywords": [
+        "testing",
+        "test",
+        "mockery",
+        "patchwork",
+        "mock",
+        "mock functions",
+        "aop",
+        "aspect",
+        "runkit",
+        "redefinition",
+        "monkey patching",
+        "interception"
+    ],
+    "authors": [
+        {
+            "name": "Giuseppe Mazzapica",
+            "email": "giuseppe.mazzapica@gmail.com",
+            "homepage": "http://gm.zoomlab.it",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/Giuseppe-Mazzapica/BrainMonkey/issues",
+        "source": "https://github.com/Giuseppe-Mazzapica/BrainMonkey"
+    },
+    "license": "MIT",
+    "require": {
+        "mockery/mockery": "*",
+        "antecedent/patchwork": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Brain\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "files": [ "inc/wp-functions.php" ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "optimize-autoloader": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}
