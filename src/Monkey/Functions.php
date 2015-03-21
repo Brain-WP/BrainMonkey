@@ -115,25 +115,26 @@ class Functions
      * Mocks the function making it return one of the received arguments, the first by default.
      * Throw an exception if the function does not receive desired argument.
      *
-     * @param int $n The number (0-based) of the argument to return
+     * @param int $n The position (1-based) of the argument to return
      */
-    public function passthru($n = 0)
+    public function passthru($n = 1)
     {
         $name = $this->name;
-        if (! is_int($n) || $n < 0) {
+        if (! is_int($n) || $n < 1) {
             throw new InvalidArgumentException(
-                "Argument number for {$this->name} must be a positive integer."
+                "Argument number for {$this->name} must be a greater than 1 integer."
             );
         }
         Patchwork\replace($name, function () use ($n, $name) {
             $count = func_num_args();
-            if ($count < $n) {
+            $n0 = $n-1;
+            if ($count < $n0) {
                 throw new RuntimeException(
-                    "{$name} was called with {$count} params, can't return arg ".($n + 1)."."
+                    "{$name} was called with {$count} params, can't return arg ".($n)."."
                 );
             }
 
-            return func_num_args() > $n ? func_get_arg($n) : null;
+            return func_num_args() > $n0 ? func_get_arg($n0) : null;
         });
     }
 

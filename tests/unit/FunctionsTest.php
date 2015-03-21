@@ -46,8 +46,8 @@ class FunctionsTest extends PHPUnit_Framework_TestCase
     public function testPassThrough()
     {
         Functions::when('want_the_first')->passthru();
-        Functions::when('want_the_second')->passthru(1);
-        Functions::when('want_the_third')->passthru(2);
+        Functions::when('want_the_second')->passthru(2);
+        Functions::when('want_the_third')->passthru(3);
         assertSame('foo', want_the_first('foo', 'meh', 'meh'));
         assertSame('foo', want_the_second('meh', 'foo', 'meh'));
         assertSame('foo', want_the_third('meh', 'meh', 'foo'));
