@@ -27,6 +27,14 @@ class FunctionsTest extends PHPUnit_Framework_TestCase
         Functions::tearDown();
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testFunctionsFailIfBadFunctionName()
+    {
+        Functions::when('i;do_not_exists')->justReturn('Cool!');
+    }
+
     public function testJustReturn()
     {
         Functions::when('i_do_not_exists')->justReturn('Cool!');

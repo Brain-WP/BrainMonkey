@@ -93,7 +93,7 @@ class Functions
         };
         if (! $names || array_filter($names, $valid) !== $names) {
             $name = $names ? $functionName : 'The value passed to '.__CLASS__;
-            throw new InvalidArgumentException("{$name} is not a valid function name.");
+            throw new InvalidArgumentException("'{$name}' is not a valid function name.");
         }
 
         return $names;
