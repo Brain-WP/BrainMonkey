@@ -8,8 +8,6 @@
         "patchwork",
         "mock",
         "mock functions",
-        "aop",
-        "aspect",
         "runkit",
         "redefinition",
         "monkey patching",
