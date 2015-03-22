@@ -10,6 +10,7 @@
 
 namespace Brain\Monkey\WP;
 
+use Brain\Monkey\MockeryBridge;
 use Mockery;
 use InvalidArgumentException;
 use LogicException;
@@ -26,7 +27,7 @@ class Actions extends Hooks
      * run a specific callback as response of hook firing.
      *
      * @param  string                             $action Action name, e.g. 'init'
-     * @return \Brain\Monkey\WP\ActionExpectation
+     * @return \Brain\Monkey\WP\MockeryHookBridge
      */
     public static function expectFired($action)
     {
@@ -35,14 +36,14 @@ class Actions extends Hooks
         $expectation = $mock->shouldReceive("do_{$type}_{$action}");
         parent::instance($type)->mocks[$action]['run'] = $mock;
 
-        return new ActionExpectation($expectation, true);
+        return new MockeryHookBridge(new MockeryBridge($expectation, __CLASS__, true));
     }
 
     /**
      * Retrieves an Mockery object that allows to set expectations on specific hook added.
      *
      * @param  string                             $action Action name, e.g. 'init'
-     * @return \Brain\Monkey\WP\ActionExpectation
+     * @return \Brain\Monkey\WP\MockeryHookBridge
      */
     public static function expectAdded($action)
     {
@@ -51,7 +52,7 @@ class Actions extends Hooks
         $expectation = $mock->shouldReceive("add_{$type}_{$action}");
         parent::instance($type)->mocks[$action]['add'] = $mock;
 
-        return new ActionExpectation($expectation, false);
+        return new MockeryHookBridge(new MockeryBridge($expectation, __CLASS__, false));
     }
 
     /**

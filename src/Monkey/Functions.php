@@ -70,12 +70,13 @@ class Functions
     {
         self::when($functionName);
         $mockery = Mockery::mock($functionName.time());
+        /** @var \Mockery\ExpectationInterface $expectation */
         $expectation = $mockery->shouldReceive($functionName);
         Patchwork\replace($functionName, function () use (&$mockery, $functionName) {
             return call_user_func_array([$mockery, $functionName], func_get_args());
         });
 
-        return $expectation;
+        return new MockeryBridge($expectation);
     }
 
     /**
@@ -127,7 +128,7 @@ class Functions
         }
         Patchwork\replace($name, function () use ($n, $name) {
             $count = func_num_args();
-            $n0 = $n-1;
+            $n0 = $n - 1;
             if ($count < $n0) {
                 throw new RuntimeException(
                     "{$name} was called with {$count} params, can't return arg ".($n)."."

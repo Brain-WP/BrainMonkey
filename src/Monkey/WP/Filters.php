@@ -10,6 +10,7 @@
 
 namespace Brain\Monkey\WP;
 
+use Brain\Monkey\MockeryBridge;
 use Mockery;
 use LogicException;
 use InvalidArgumentException;
@@ -28,7 +29,7 @@ class Filters extends Hooks
         $expectation = $mock->shouldReceive("apply_{$type}_{$filter}");
         parent::instance($type)->mocks[$filter]['run'] = $mock;
 
-        return $expectation;
+        return new MockeryHookBridge(new MockeryBridge($expectation, __CLASS__, true));
     }
 
     public static function expectAdded($filter)
@@ -38,7 +39,7 @@ class Filters extends Hooks
         $expectation = $mock->shouldReceive("add_{$type}_{$filter}");
         parent::instance($type)->mocks[$filter]['add'] = $mock;
 
-        return new FilterExpectation($expectation, false);
+        return new MockeryHookBridge(new MockeryBridge($expectation, __CLASS__, false));
     }
 
     public function add()
