@@ -12,14 +12,14 @@
  * @package BrainMonkey
  */
 
-$autoload_path = dirname(__DIR__).'/vendor/autoload.php';
-if (! file_exists($autoload_path)) {
+$autoload_path = dirname(__DIR__).'/vendor/';
+if (! file_exists($autoload_path.'autoload.php')) {
     die('Please install via composer before running tests.');
 }
-require_once $autoload_path;
-require_once dirname(__DIR__).'/vendor/antecedent/patchwork/Patchwork.php';
+require_once $autoload_path.'autoload.php';
+require_once $autoload_path.'antecedent/patchwork/Patchwork.php';
 
-$helpers_path = dirname($autoload_path).'/phpunit/phpunit/src/Framework/Assert/Functions.php';
+$helpers_path = $autoload_path.'phpunit/phpunit/src/Framework/Assert/Functions.php';
 if (! file_exists($helpers_path)) {
     die('Please install via composer with dev option before running tests.');
 }
