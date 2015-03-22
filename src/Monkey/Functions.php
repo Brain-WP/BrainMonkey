@@ -28,6 +28,28 @@ class Functions
     private $name;
 
     /**
+     * Try to load Patchwork if not loaded yet.
+     */
+    public static function setUp()
+    {
+        if (function_exists('Patchwork\replace')) {
+            return;
+        }
+        $vendor = dirname(dirname(dirname(dirname(__DIR__))));
+        $patchwork = '/antecedent/patchwork/Patchwork.php';
+        if (file_exists($vendor.$patchwork)) {
+            require_once $vendor.$patchwork; // normal installation
+        } elseif (file_exists(dirname(dirname(__DIR__)).$patchwork)) {
+            require_once dirname(dirname(__DIR__)).$patchwork; // root installation
+        }
+        if (! function_exists('Patchwork\replace')) {
+            throw new RuntimeException(
+                'Brain Monkey was unable to load Patchwork. Please require Patchwork.php by yourself before running tests.'
+            );
+        }
+    }
+
+    /**
      * Reset Mockery and Patchwork, this method MUST be called at the end of eny test, e.g. using
      * PHPUnit should be added in the tearDown() method of test class.
      */
@@ -118,7 +140,7 @@ class Functions
      *
      * @param int $n The position (1-based) of the argument to return
      */
-    public function passthru($n = 1)
+    public function returnArg($n = 1)
     {
         $name = $this->name;
         if (! is_int($n) || $n < 1) {

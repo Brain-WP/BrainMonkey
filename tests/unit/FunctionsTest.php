@@ -45,9 +45,9 @@ class FunctionsTest extends PHPUnit_Framework_TestCase
 
     public function testPassThrough()
     {
-        Functions::when('want_the_first')->passthru();
-        Functions::when('want_the_second')->passthru(2);
-        Functions::when('want_the_third')->passthru(3);
+        Functions::when('want_the_first')->returnArg();
+        Functions::when('want_the_second')->returnArg(2);
+        Functions::when('want_the_third')->returnArg(3);
         assertSame('foo', want_the_first('foo', 'meh', 'meh'));
         assertSame('foo', want_the_second('meh', 'foo', 'meh'));
         assertSame('foo', want_the_third('meh', 'meh', 'foo'));
@@ -58,7 +58,7 @@ class FunctionsTest extends PHPUnit_Framework_TestCase
      */
     public function testPassThroughFailIfBadArg()
     {
-        Functions::when('i_fail')->passthru('miserably');
+        Functions::when('i_fail')->returnArg('miserably');
     }
 
     /**
@@ -66,7 +66,7 @@ class FunctionsTest extends PHPUnit_Framework_TestCase
      */
     public function testPassThroughFailIfNotReceived()
     {
-        Functions::when('i_fail')->passthru(5);
+        Functions::when('i_fail')->returnArg(5);
         i_fail('miserably');
     }
 
@@ -99,27 +99,19 @@ class FunctionsTest extends PHPUnit_Framework_TestCase
 
     public function testNamespacedFunctions()
     {
-        Functions::when('test\a')->justReturn('A!');
-        Functions::when('test\a\b')->passthru();
-        Functions::when('test\a\b\c')->alias('str_rot13');
-        Functions::expect('test\a\b\c\d')->atMost()->twice()->with(true)->andReturn('D!');
+        Functions::when('test\\a')->justReturn('A!');
+        Functions::when('test\\a\\b')->returnArg();
+        Functions::when('test\\a\\b\\c')->alias('str_rot13');
+        {
+            Monkey::functions()->when('a')->justReturn('A!');
+            Monkey::functions()->when('b')->returnArg();
+            Monkey::functions()->when('c')->alias('str_rot13');
+            Monkey::functions()->expect('d')->atMost()->twice()->with(true)->andReturn('D!');
 
-        assertSame('A!', \test\a());
-        assertSame('B!', \test\a\b('B!'));
-        assertSame('C!', \test\a\b\c('P!'));
-        assertSame('D!', call_user_func('test\a\b\c\d', true));
-    }
-
-    public function testMonkeyFunctionsProxy()
-    {
-        Monkey::functions()->when('a')->justReturn('A!');
-        Monkey::functions()->when('b')->passthru();
-        Monkey::functions()->when('c')->alias('str_rot13');
-        Monkey::functions()->expect('d')->atMost()->twice()->with(true)->andReturn('D!');
-
-        assertSame('A!', a());
-        assertSame('B!', b('B!'));
-        assertSame('C!', c('P!'));
-        assertSame('D!', call_user_func('d', true));
+            assertSame('A!', a());
+            assertSame('B!', b('B!'));
+            assertSame('C!', c('P!'));
+            assertSame('D!', call_user_func('d', true));
+        }
     }
 }

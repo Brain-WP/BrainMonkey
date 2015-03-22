@@ -35,6 +35,7 @@ class Monkey
      */
     public static function setUp()
     {
+        Functions::setUp();
         require_once dirname(__DIR__).'/inc/wp-functions.php';
     }
 
