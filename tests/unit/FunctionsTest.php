@@ -78,6 +78,14 @@ class FunctionsTest extends PHPUnit_Framework_TestCase
         assertSame('My name is Bond, James Bond.', zerozeroseven('James', 'Bond'));
     }
 
+    /**
+     * @expectedException \BadMethodCallException
+     */
+    public function testExpectFailIfShouldReceive()
+    {
+        Functions::expect('foo')->shouldReceive('foo');
+    }
+
     public function testExpectNumberAndReturn()
     {
         Functions::expect('tween')->twice()->andReturn('first', 'second');

@@ -127,6 +127,17 @@ class FilterAddTest extends PHPUnit_Framework_TestCase
         );
         Filters::expectAdded('foo')->never();
         Filters::expectAdded('the_content')->once();
+        Filters::expectAdded('the_excerpt')
+               ->once()
+               ->with(
+                   Mockery::on(function ($callback) {
+                       return
+                           is_array($callback)
+                           && is_a($callback[0], __CLASS__)
+                           && $callback[1] === 'testExpectAdded';
+                   }),
+                   30
+               );
 
         add_filter('the_title', 'strtolower', 30);
         add_filter('the_title', 'strtoupper', 20);
@@ -134,9 +145,7 @@ class FilterAddTest extends PHPUnit_Framework_TestCase
         add_filter('the_content', function () {
             return 'baz';
         });
-
-        assertTrue(Monkey::filters()->has('the_title', 'strtolower', 30));
-        assertTrue(Monkey::filters()->has('the_title', 'strtoupper', 20));
+        add_filter('the_excerpt', [$this, __FUNCTION__], 30);
     }
 
     public function testRemoveAction()
