@@ -10,7 +10,7 @@
 
 namespace Brain\Monkey;
 
-use InvalidArgumentException;
+use BadMethodCallException;
 use Mockery\ExpectationInterface;
 use RuntimeException;
 use LogicException;
@@ -80,10 +80,10 @@ class MockeryBridge
      */
     public function __call($name, array $arguments = [])
     {
-        $notAllowed = ['shouldreceive', 'andset'];
+        $notAllowed = ['shouldreceive', 'andset', 'shouldexpect'];
         if (in_array(strtolower($name), $notAllowed, true)) {
-            throw new InvalidArgumentException(
-                "shouldReceive() and andSet() methods are not allowed for function testing."
+            throw new BadMethodCallException(
+                "shouldReceive(), shouldExpect() and andSet() methods are not allowed in Brain Monkey."
             );
         }
         if (strstr(strtolower($name), 'return') && ! empty($this->parent)) {
