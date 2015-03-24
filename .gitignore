@@ -8,3 +8,6 @@ $RECYCLE.BIN/
 .idea/
 vendor/
 composer.lock
+website/
+couscous-theme/
+couscous.*
