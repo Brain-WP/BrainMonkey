@@ -122,7 +122,7 @@ class Actions extends Hooks
      * Checks if a specific action has been triggered,
      *
      * @param  string $action
-     * @return bool
+     * @return int
      */
     public function did($action)
     {
@@ -130,7 +130,7 @@ class Actions extends Hooks
             throw new InvalidArgumentException("Action name must be in a string.");
         }
 
-        return in_array($action, $this->done, true) || $action === self::current();
+        return in_array($action, $this->done, true) ? array_count_values($this->done)[$action] : 0;
     }
 
     /**

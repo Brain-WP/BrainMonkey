@@ -86,10 +86,10 @@ class Filters extends Hooks
     }
 
     /**
-     * Checks if a specific action has been triggered,
+     * Checks if a specific action has been triggered.
      *
      * @param  string $filter
-     * @return bool
+     * @return int
      */
     public function applied($filter)
     {
@@ -97,7 +97,7 @@ class Filters extends Hooks
             throw new InvalidArgumentException("Action name must be in a string.");
         }
 
-        return in_array($filter, $this->done, true) || $filter === self::current();
+        return in_array($filter, $this->done, true) ? array_count_values($this->done)[$filter] : 0;
     }
 
     public function clean()

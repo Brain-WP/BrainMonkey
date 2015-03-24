@@ -72,14 +72,13 @@ class FilterFireTest extends PHPUnit_Framework_TestCase
     {
         apply_filters('foo');
         apply_filters('bar', 'baz');
-        apply_filters('baz', ['foo', 'bar']);
+        apply_filters('bar', ['foo', 'bar']);
         apply_filters_ref_array('by_ref', ['foo', 'bar', 'baz']);
 
-        assertTrue(Monkey::filters()->applied('foo'));
-        assertTrue(Monkey::filters()->applied('bar'));
-        assertTrue(Monkey::filters()->applied('baz'));
-        assertTrue(Monkey::filters()->applied('by_ref'));
-        assertFalse(Monkey::filters()->applied('not me'));
+        assertSame(1, Monkey::filters()->applied('foo'));
+        assertSame(2, Monkey::filters()->applied('bar'));
+        assertSame(1, Monkey::filters()->applied('by_ref'));
+        assertSame(0, Monkey::filters()->applied('not me'));
     }
 
     public function testApplyWithExpectation()

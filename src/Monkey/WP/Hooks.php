@@ -185,6 +185,7 @@ abstract class Hooks
         // returning value is always null for functions
         $value = $type === self::FILTER && func_num_args() > 2 ? func_get_arg(2) : null;
         self::$current = $hook;
+        $instance->done[] = $hook;
         if (isset($instance->mocks[$hook]) && isset($instance->mocks[$hook]['run'])) {
             /** @var \Mockery\Expectation $mock */
             $mock = $instance->mocks[$hook]['run'];
@@ -193,7 +194,6 @@ abstract class Hooks
             $value = $type === self::FILTER ? $result : null;
         }
         self::$current = false;
-        $instance->done[] = $hook;
 
         return $value;
     }

@@ -80,28 +80,26 @@ class ActionFireTest extends PHPUnit_Framework_TestCase
     {
         do_action('foo');
         do_action('bar', 'baz');
-        do_action('baz', ['foo', 'bar']);
+        do_action('bar', ['foo', 'bar']);
         do_action_ref_array('by_ref', ['foo', 'bar', 'baz']);
 
-        assertTrue(did_action('foo'));
-        assertTrue(did_action('bar'));
-        assertTrue(did_action('baz'));
-        assertTrue(did_action('by_ref'));
-        assertFalse(did_action('not me'));
+        assertSame(1, did_action('foo'));
+        assertSame(2, did_action('bar'));
+        assertSame(1, did_action('by_ref'));
+        assertSame(0, did_action('not me'));
     }
 
     public function testDoDidWithMethods()
     {
         do_action('foo');
         do_action('bar', 'baz');
-        do_action('baz', ['foo', 'bar']);
+        do_action('bar', ['foo', 'bar']);
         do_action_ref_array('by_ref', ['foo', 'bar', 'baz']);
 
-        assertTrue(Monkey::actions()->did('foo'));
-        assertTrue(Monkey::actions()->did('bar'));
-        assertTrue(Monkey::actions()->did('baz'));
-        assertTrue(Monkey::actions()->did('by_ref'));
-        assertFalse(Monkey::actions()->did('not me'));
+        assertSame(1, Monkey::actions()->did('foo'));
+        assertSame(2, Monkey::actions()->did('bar'));
+        assertSame(1, Monkey::actions()->did('by_ref'));
+        assertSame(0, Monkey::actions()->did('not me'));
     }
 
     public function testDoWithExpectation()
