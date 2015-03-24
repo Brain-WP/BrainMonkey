@@ -213,7 +213,7 @@ class MyClassTest extends MyTestCase
 Surely, mocking returned value for filters is more common and actually useful, but in case you need this feature, Brain Monkey has it.
 
 
-# Resolving `current_filter()`
+## Resolving `current_filter()`
 
 When WordPress is not performing an hook, `current_filter()` returns `false`. And so does the Brain Monkey version of that function.
 
