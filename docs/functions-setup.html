@@ -126,7 +126,7 @@ Examples in this page will use PHPUnit, but the concepts are applicable at any t
 <p>only <strong>userland</strong> (custom) functions can be redefined, PHP core functions can't.</p>
 </li>
 <li>
-<p>only functions defined <strong>after</strong> Patchwork as been loaded can be redefined. Brain Monkey loads Patchwork when you call <code>Functions\setUp()</code> (see below).</p>
+<p>only functions defined <strong>after</strong> Patchwork as been loaded can be redefined. Brain Monkey loads Patchwork when you call <code>Monkey::setUp()</code> (see below).</p>
 <p>That happen at the start of any test. If functions you want to test are defined earlier (e.g. via Composer "file" autoload directive) you need to "manually" load Patchwork earlier
 (you'll need to require <code>Patchwork.php</code> file, see Patchwork docs).</p>
 <p>Note that this is something you <strong>don't</strong> have to worry about if functions you want to test are not defined at all during tests.</p>
