@@ -38,7 +38,7 @@ class Monkey
      */
     public static function setUp()
     {
-        $vendor = dirname(dirname(dirname(dirname(__DIR__))));
+        $vendor = dirname(dirname(dirname(__DIR__)));
         $patchwork = '/antecedent/patchwork/Patchwork.php';
         if (file_exists($vendor.$patchwork)) {
             require_once $vendor.$patchwork; // normal installation
