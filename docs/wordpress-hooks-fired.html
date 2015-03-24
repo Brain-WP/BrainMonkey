@@ -260,7 +260,7 @@ class MyClassTest extends MyTestCase
     }
 }</code></pre>
 <p>Surely, mocking returned value for filters is more common and actually useful, but in case you need this feature, Brain Monkey has it.</p>
-<h1>Resolving <code>current_filter()</code></h1>
+<h2>Resolving <code>current_filter()</code></h2>
 <p>When WordPress is not performing an hook, <code>current_filter()</code> returns <code>false</code>. And so does the Brain Monkey version of that function.</p>
 <p>Now I want to surprise you: <code>current_filter()</code> correctly resolves to the correct hook during the execution of any callback added to respond to hooks.</p>
 <p>Let's assume a class like the following:</p>
