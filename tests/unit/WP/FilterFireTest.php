@@ -24,7 +24,7 @@ class FilterFireTest extends PHPUnit_Framework_TestCase
 {
     protected function tearDown()
     {
-        Monkey::tearDown();
+        Monkey::tearDownWP();
         parent::tearDown();
     }
 

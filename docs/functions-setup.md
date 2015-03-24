@@ -33,8 +33,8 @@ After that you need to call a method *before* any test, and another *after* any 
 
 These two methods are:
 
- - `Brain\Monkey\Functions\setUp()` has to be run before any test
- - `Brain\Monkey\Functions\tearDown()` has to be run after any test
+ - `Brain\Monkey\setUp()` has to be run before any test
+ - `Brain\Monkey\tearDown()` has to be run after any test
 
 ### PHPUnit example
 
@@ -42,7 +42,7 @@ Let's take PHPUnit as example, the average test case class that uses Brain Monke
 
 ```php
 use PHPUnit_Framework_TestCase;
-use Brain\Monkey\Functions;
+use Brain\Monkey;
 
 class MyTestCase extends PHPUnit_Framework_TestCase
 {
@@ -50,12 +50,12 @@ class MyTestCase extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        Functions::setUp();
+        Monkey::setUp();
     }
 
     protected function tearDown()
     {
-        Functions::tearDown();
+        Monkey::tearDown();
         parent::tearDown();
     }
 }

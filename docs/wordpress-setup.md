@@ -26,10 +26,10 @@ After that you need to call a method *before* any test, and another *after* any 
 
 These two methods are:
 
- - `Brain\Monkey\setUp()` has to be run before any test
- - `Brain\Monkey\tearDown()` has to be run after any test
+ - `Brain\Monkey\setUpWP()` has to be run before any test
+ - `Brain\Monkey\tearDownWP()` has to be run after any test
 
-PHPUnit users will probably want to add these methods to the same-named methods of a custom test case class:
+PHPUnit users will probably want to add these methods to a custom test case class:
 
 ```php
 use PHPUnit_Framework_TestCase;
@@ -41,12 +41,12 @@ class MyTestCase extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        Monkey::setUp();
+        Monkey::setUpWP();
     }
 
     protected function tearDown()
     {
-        Monkey::tearDown();
+        Monkey::tearDownWP();
         parent::tearDown();
     }
 }

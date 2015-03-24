@@ -12,8 +12,11 @@ namespace Brain;
 
 use Brain\Monkey\WP\Hooks;
 use Brain\Monkey\Functions;
+use Patchwork;
+use Mockery;
 use ReflectionClass as Reflection;
 use ReflectionMethod as M;
+use RuntimeException;
 
 /**
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
@@ -35,7 +38,26 @@ class Monkey
      */
     public static function setUp()
     {
-        Functions::setUp();
+        $vendor = dirname(dirname(dirname(dirname(__DIR__))));
+        $patchwork = '/antecedent/patchwork/Patchwork.php';
+        if (file_exists($vendor.$patchwork)) {
+            require_once $vendor.$patchwork; // normal installation
+        } elseif (file_exists(dirname(dirname(__DIR__)).$patchwork)) {
+            require_once dirname(dirname(__DIR__)).$patchwork; // root installation
+        }
+        if (! function_exists('Patchwork\replace')) {
+            throw new RuntimeException(
+                'Brain Monkey was unable to load Patchwork. Please require Patchwork.php by yourself before running tests.'
+            );
+        }
+    }
+
+    /**
+     * Include WordPress functions file, only needed to mock WordPress hooks.
+     */
+    public static function setUpWP()
+    {
+        self::setUp();
         require_once dirname(__DIR__).'/inc/wp-functions.php';
     }
 
@@ -44,7 +66,16 @@ class Monkey
      */
     public static function tearDown()
     {
-        Functions::tearDown();
+        Patchwork\undoAll();
+        Mockery::close();
+    }
+
+    /**
+     * Clean up Functions and Hooks statics: is always needed when using this class.
+     */
+    public static function tearDownWP()
+    {
+        self::tearDown();
         Hooks::tearDown();
     }
 
