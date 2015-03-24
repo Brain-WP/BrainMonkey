@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="author" content="Giuseppe Mazzapica">
+    <title>WordPress / Testing Fired Hooks. Brain Monkey</title>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
+    <link href="http://giuseppe-mazzapica.github.io/BrainMonkey/css/theme.min.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+      <!-- Sidebar -->
+      <div id="sidebar-wrapper">
+
+          <div class="logo">
+              <a href="http://giuseppe-mazzapica.github.io/BrainMonkey">
+                <img src="http://giuseppe-mazzapica.github.io/BrainMonkey/images/brain-monkey-80.png" alt="Brain Monkey">
+                <span>Brain Monkey</span>
+              </a>
+          </div>
+
+          <ul class="sidebar-nav">
+                                                  <li>
+                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Getting Started</a>
+                      <ul>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/BrainMonkey/docs/installation.html">
+                                      Installation
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/BrainMonkey/docs/what-and-why.html">
+                                      What & Why
+                                  </a>
+                              </li>
+                                                </ul>
+                    </li>
+                                    <li>
+                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> PHP Functions</a>
+                      <ul>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/BrainMonkey/docs/functions-setup.html">
+                                      Setup
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/BrainMonkey/docs/functions-when.html">
+                                      Patching with when()
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/BrainMonkey/docs/functions-expect.html">
+                                      Testing with expect()
+                                  </a>
+                              </li>
+                                                </ul>
+                    </li>
+                                    <li>
+                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> WordPress</a>
+                      <ul>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/BrainMonkey/docs/wordpress-why-bother.html">
+                                      Why Bother
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/BrainMonkey/docs/wordpress-setup.html">
+                                      Setup
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/BrainMonkey/docs/wordpress-tools.html">
+                                      WordPress Testing Tools
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/BrainMonkey/docs/wordpress-hooks-added.html">
+                                      Testing Added Hooks
+                                  </a>
+                              </li>
+                                                        <li class="active">
+                                  <a href="http://giuseppe-mazzapica.github.io/BrainMonkey/docs/wordpress-hooks-fired.html">
+                                      Testing Fired Hooks
+                                  </a>
+                              </li>
+                                                </ul>
+                    </li>
+                                        </ul>
+
+      </div>
+      <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper" class="content-wrapper-">
+            <div class="container-fluid">
+                <div class="row">
+                    <div id="content" class="col-lg-11">
+                                                                                <ol class="breadcrumb">
+                              <li><a href="http://giuseppe-mazzapica.github.io/BrainMonkey">Brain Monkey</a></li>
+                              <li class="active">WordPress</li>
+                            </ol>
+                                                                                                        <!--
+currentMenu: "wphooksfired"
+currentSection: "WordPress"
+title: "Testing Fired Hooks"
+-->
+<h1>Testing Fired Hooks</h1>
+<h2>Testing framework agnostic</h2>
+<p>Brain Monkey can be used with any testing framework.
+Examples in this page will use PHPUnit, but the concepts are applicable to any testing framework.</p>
+<p>Also note that test classes in this page extends the class <code>MyTestCase</code> that is assumed very similar to the one coded in the <em>WordPress / Setup</em> docs section.</p>
+<h2>Simple tests with <code>did_action()</code> and <code>filters()-&gt;applied()</code></h2>
+<p>To check hooks has been fired, the only available WordPress function is <code>did_action()</code> (doesn't exist any <code>did_filter()</code> or <code>applied_filter()</code>).</p>
+<p>To overcome the missing counter part of <code>did_action()</code> for filters, Brain Monkey has a method accessible via <code>Brain\Monkey::filters()-&gt;applied()</code>
+that does what you might expect.</p>
+<p>Assuming a class like the following:</p>
+<pre><code class="language-php">class MyClass
+{
+    function fireHooks()
+    {
+       do_action('my_action', $this);
+
+       return apply_filters('my_filter', 'Filter applied', $this);
+    }
+}</code></pre>
+<p>It can be tested using:</p>
+<pre><code class="language-php">use Brain\Monkey;
+
+class MyClassTest extends MyTestCase
+{
+    function testFireHooksActuallyFiresHooks()
+    {
+        $class = new MyClass();
+        $class-&gt;fireHooks();
+
+        $this-&gt;assertSame( 1, did_action('my_action') );
+        $this-&gt;assertTrue( Monkey::filters()-&gt;applied('my_filter') &gt; 0 );
+    }
+}</code></pre>
+<p>As you can guess from test code above, <code>did_action()</code> and <code>filters()-&gt;applied()</code> return the number of times an action or a filter
+has been triggered, just like <code>did_action()</code> does in WordPress, but there's no way to use them to check which arguments were passed to the fired hook.</p>
+<p>So, <code>did_action()</code> and <code>filters()-&gt;applied()</code> are fine for simple tests, mostly because using them you don't need to recall Brain Monkey methods,
+but they are not very powerful: arguments checking and, above all, the ability to respond to fired hooks are pivotal tasks to proper test WordPress code.</p>
+<p>In Brain Monkey those tasks can be done testing fired hooks with expectations.</p>
+<h2>Test fired hooks with expectations</h2>
+<p>A powerful testing mechanism for fired hooks is provided by Brain Monkey thanks to Mockery expectations.</p>
+<p>The entry points to use it are the <code>Actions::expectFired()</code> and <code>Filters::expectApplied()</code> methods.</p>
+<p>As usual, below there a just a couple of examples, for the full story see <a href="http://docs.mockery.io/en/latest/reference/expectations.html">Mockery docs</a>.</p>
+<p>Assuming the <code>MyClass</code> above in this page, it can be tested with:</p>
+<pre><code class="language-php">use Brain\Monkey\Actions;
+use Brain\Monkey\Filters;
+
+class MyClassTest extends MyTestCase
+{
+    function testFireHooksActuallyFiresHooks()
+    {
+        Actions::expectFired('my_action')
+            -&gt;once()
+            -&gt;with(Mockery::type('MyClass'));
+
+        Filters::expectApplied('my_filter')
+            -&gt;once()
+            -&gt;with('Filter applied', Mockery::type('MyClass'));
+
+        $class = new MyClass();
+        $class-&gt;fireHooks();
+    }
+}</code></pre>
+<h2>Expectations on times are required</h2>
+<p><code>expectFired()</code> and <code>expectApplied()</code> return a Mockery expectation object, and by default it does not throw any error if a created expectation object is not used, unless a specific
+times expectation is set.</p>
+<p>It means that if you use <code>Actions::expectFired('action');</code> and nothing more, the test will pass even if <code>do_action('action')</code> is never run by code under test.</p>
+<p>To be sure hooks were fired you need to set times expectation. Mockery has a powerful and intuitive syntax for the scope, just a few examples:</p>
+<pre><code class="language-php">Actions::expectFired('action')-&gt;once();
+Filters::expectApplied('filter')-&gt;twice();
+Actions::expectFired('action')-&gt;times(3);
+Filters::expectApplied('filter')-&gt;atLeast()-&gt;twice();
+Actions::expectFired('action')-&gt;atMost()-&gt;times(3);
+Filters::expectApplied('filter')-&gt;between(2, 4);
+Actions::expectFired('action')-&gt;never();</code></pre>
+<p>See Mockery documentation and  <em>PHP Functions</em> doc section for more examples and explanation (if ever needed...).</p>
+<h2>Just a couple of things...</h2>
+<ul>
+<li>expectations must be set <em>before</em> the code to be tested runs: they are called "expectations" for a reason</li>
+<li>argument validation done using <code>with()</code>, validates hook arguments, not function arguments, it means what is passed to <code>do_action</code> or <code>apply_filters</code> <strong>excluding</strong> hook name itself</li>
+</ul>
+<h2>Respond to filters</h2>
+<p>Yet again, Brain Monkey, when possible, tries to make WordPress functions it redefines behave in the same way of <em>real</em> WordPress functions.</p>
+<p>Brain Monkey <code>apply_filters</code> by default returns the first argument passed to it, just like WordPress function does when no callback is added to the filter.</p>
+<p>However, sometimes in tests is required that a filter would return something different.</p>
+<p>Luckily, Mockery provide <code>andReturn()</code> and <code>andReturnUsing()</code> expectation methods that can be used to make a filter return whatever.</p>
+<pre><code class="language-php">use Brain\Monkey\Filters;
+
+class MyClassTest extends MyTestCase
+{
+    function testFireHooksReturnValue()
+    {
+        Filters::expectApplied('my_filter')
+            -&gt;once()
+            -&gt;with('Filter applied', Mockery::type('MyClass'))
+            -&gt;andReturn('Brain Monkey rocks!');
+
+        $class = new MyClass();
+
+        $this-&gt;assertSame('Brain Monkey rocks!', $class-&gt;fireHooks());
+    }
+}</code></pre>
+<p>See <a href="http://docs.mockery.io/en/latest/reference/expectations.html">Mockery docs</a> for more information.</p>
+<h2>Respond to actions</h2>
+<p>To return a value from a filter is routine, not so for actions.</p>
+<p>In fact, <code>do_action()</code> always returns <code>null</code> so, if Brain Monkey would allow a <em>mocked</em> returning value for <code>do_action()</code> expectations,
+it would be in contrast with real WordPress code, with disastrous effects on tests.</p>
+<p>So, don't try to use <code>andReturn()</code> and <code>andReturnUsing()</code> with <code>Actions::expectFired()</code> because it will throw an exception.</p>
+<p>However, sometimes one may be in the need do <em>something</em> when code calls <code>do_action()</code>, like WordPress actually does.
+This is the reason Brain Monkey introduces <code>whenHappen()</code> method for action expectations that receives a callback to be ran when an action is fired.</p>
+<p>Let's assume a class like the following:</p>
+<pre><code class="language-php">class MyClass
+{
+    public $post;
+
+    function setPost()
+    {
+        global $post;
+        $this-&gt;post = $post;
+
+        do_action('my_class_set_post', $this);
+
+        return $post;
+    }
+}</code></pre>
+<p>It is possible write a test like this:</p>
+<pre><code class="language-php">use Brain\Monkey\Actions;
+
+class MyClassTest extends MyTestCase
+{
+    function testFireHooksReturnValue()
+    {
+        Action::expectFired('my_class_set_post')
+            -&gt;once()
+            -&gt;with(Mockery::type('MyClass'))
+            -&gt;whenHappen(function($my_class) {
+                $my_class-&gt;post = (object) ['post_title' =&gt; 'Mocked!'];
+            });
+
+        $class = new MyClass();
+        $class-&gt;setPost();
+
+        $this-&gt;assertSame( 'Mocked!', $class-&gt;post-&gt;post_title );
+    }
+}</code></pre>
+<p>Surely, mocking returned value for filters is more common and actually useful, but in case you need this feature, Brain Monkey has it.</p>
+<h1>Resolving <code>current_filter()</code></h1>
+<p>When WordPress is not performing an hook, <code>current_filter()</code> returns <code>false</code>. And so does the Brain Monkey version of that function.</p>
+<p>Now I want to surprise you: <code>current_filter()</code> correctly resolves to the correct hook during the execution of any callback added to respond to hooks.</p>
+<p>Let's assume a class like the following:</p>
+<pre><code class="language-php">class MyClass
+{
+    function getValues()
+    {
+        $title = apply_filters('my_class_title', '');
+        $content = apply_filters('my_class_content', '');
+
+        return [$title, $content];
+    }
+}</code></pre>
+<p>It is possible write a test like this:</p>
+<pre><code class="language-php">use Brain\Monkey\Filters;
+
+class MyClassTest extends MyTestCase
+{
+    function testGetValues()
+    {
+        $callback = function() {
+            return current_filter() === 'my_class_title' ? 'Title' : 'Content';
+        };
+
+        Filters::expectApplied('my_class_title')-&gt;once()-&gt;andReturnUsing($callback);
+        Filters::expectApplied('my_class_content')-&gt;once()-&gt;andReturnUsing($callback);
+
+        $class = new MyClass();
+
+        $this-&gt;assertSame( ['Title', 'Content'], $class-&gt;getValues() );
+    }
+}</code></pre>
+<p>Like a magic, <code>current_filter()</code> returns the right hook just like it does in WordPress. Note this will also work with any callback passed to <code>whenHappen()</code>.</p>
+                                            </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+                    <a href="https://github.com/Giuseppe-Mazzapica/BrainMonkey">
+                <img style="position:fixed; top:0; right:0; border:0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
+            </a>
+                <a href="#" id="menu-toggle" title="Toggle Menu"><i class="fa fa-bars"></i></a>
+
+
+    </div>
+    <!-- /#wrapper -->
+
+    <footer class="footer hidden-xs hidden-sm">
+      Made by hands by
+      <a href="http://gm.zoomlab.it/" title="Giuseppe Mazzapica Home Page" target="_blank">Giuseppe Mazzapica</a>, with
+      <a href="http://couscous.io/" title="Couscous" target="_blank">Couscous</a>,
+      <a href="http://getbootstrap.com/" title="Bootstrap" target="_blank">Bootstrap</a> &amp;
+      <a href="https://highlightjs.org/" title="highlight.js" target="_blank">highlight.js</a>
+
+      <span class="socials">
+        <a href="https://github.com/Giuseppe-Mazzapica" title="GitHub" target="_blank"><i class="fa fa-github-alt"></i></a>
+        <a href="https://twitter.com/gmazzap" title="Twitter" target="_blank"><i class="fa fa-twitter"></i></a>
+        <a href="http://wordpress.stackexchange.com/users/35541/" title="Stack Exchange" target="_blank"><i class="fa fa-stack-exchange"></i></a>
+      </span>
+
+    </footer>
+
+    <a href="#wrapper" class="hidden-xs hidden-sm" id="back-top" title="Back to top"><i class="fa fa-long-arrow-up"></i></a>
+    <script src="http://yandex.st/highlightjs/7.5/highlight.min.js"></script>
+    <script src="http://giuseppe-mazzapica.github.io/BrainMonkey/js/theme.min.js"></script>
+
+
+</body>
+
+</html>

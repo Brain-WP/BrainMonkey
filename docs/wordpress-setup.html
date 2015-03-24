@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="author" content="Giuseppe Mazzapica">
+    <title>WordPress / Setup Brain Monkey for WordPress Tests. Brain Monkey</title>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
+    <link href="http://giuseppe-mazzapica.github.io/BrainMonkey/css/theme.min.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+      <!-- Sidebar -->
+      <div id="sidebar-wrapper">
+
+          <div class="logo">
+              <a href="http://giuseppe-mazzapica.github.io/BrainMonkey">
+                <img src="http://giuseppe-mazzapica.github.io/BrainMonkey/images/brain-monkey-80.png" alt="Brain Monkey">
+                <span>Brain Monkey</span>
+              </a>
+          </div>
+
+          <ul class="sidebar-nav">
+                                                  <li>
+                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Getting Started</a>
+                      <ul>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/BrainMonkey/docs/installation.html">
+                                      Installation
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/BrainMonkey/docs/what-and-why.html">
+                                      What & Why
+                                  </a>
+                              </li>
+                                                </ul>
+                    </li>
+                                    <li>
+                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> PHP Functions</a>
+                      <ul>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/BrainMonkey/docs/functions-setup.html">
+                                      Setup
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/BrainMonkey/docs/functions-when.html">
+                                      Patching with when()
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/BrainMonkey/docs/functions-expect.html">
+                                      Testing with expect()
+                                  </a>
+                              </li>
+                                                </ul>
+                    </li>
+                                    <li>
+                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> WordPress</a>
+                      <ul>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/BrainMonkey/docs/wordpress-why-bother.html">
+                                      Why Bother
+                                  </a>
+                              </li>
+                                                        <li class="active">
+                                  <a href="http://giuseppe-mazzapica.github.io/BrainMonkey/docs/wordpress-setup.html">
+                                      Setup
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/BrainMonkey/docs/wordpress-tools.html">
+                                      WordPress Testing Tools
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/BrainMonkey/docs/wordpress-hooks-added.html">
+                                      Testing Added Hooks
+                                  </a>
+                              </li>
+                                                        <li class="">
+                                  <a href="http://giuseppe-mazzapica.github.io/BrainMonkey/docs/wordpress-hooks-fired.html">
+                                      Testing Fired Hooks
+                                  </a>
+                              </li>
+                                                </ul>
+                    </li>
+                                        </ul>
+
+      </div>
+      <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper" class="content-wrapper-">
+            <div class="container-fluid">
+                <div class="row">
+                    <div id="content" class="col-lg-11">
+                                                                                <ol class="breadcrumb">
+                              <li><a href="http://giuseppe-mazzapica.github.io/BrainMonkey">Brain Monkey</a></li>
+                              <li class="active">WordPress</li>
+                            </ol>
+                                                                                                        <!--
+currentMenu: "wpsetup"
+currentSection: "WordPress"
+title: "Setup Brain Monkey for WordPress Tests"
+-->
+<h1>Setup Brain Monkey for WordPress Tests</h1>
+<h2>Testing framework agnostic</h2>
+<p>Brain Monkey can be used with any testing framework.
+Examples in this page will use PHPUnit, but the concepts are applicable to any testing framework.</p>
+<h2>Warning</h2>
+<p>The procedure below <strong>includes</strong> the setup needed for testing PHP functions, so there is <strong>no</strong> need to
+apply what said here and additionally what said in the section <em>PHP Functions / Setup</em>: steps below are enough to use
+all Brain Monkey features, including functions utilities.</p>
+<h2>Setup tests</h2>
+<p>After Brain Monkey is part of the project (see <em>Getting Started / Installation</em>), to be able to use its features
+you need to <strong>require vendor autoload file</strong> before running tests (e.g. PHPUnit users will probably require it in their bootstrap file).</p>
+<p>After that you need to call a method <em>before</em> any test, and another <em>after</em> any test.</p>
+<p>These two methods are:</p>
+<ul>
+<li><code>Brain\Monkey\setUp()</code> has to be run before any test</li>
+<li><code>Brain\Monkey\tearDown()</code> has to be run after any test</li>
+</ul>
+<p>PHPUnit users will probably want to add these methods to the same-named methods of a custom test case class:</p>
+<pre><code class="language-php">use PHPUnit_Framework_TestCase;
+use Brain\Monkey;
+
+class MyTestCase extends PHPUnit_Framework_TestCase
+{
+
+    protected function setUp()
+    {
+        parent::setUp();
+        Monkey::setUp();
+    }
+
+    protected function tearDown()
+    {
+        Monkey::tearDown();
+        parent::tearDown();
+    }
+}</code></pre>
+<p>and then extend various test classes from it instead of directly extend <code>PHPUnit_Framework_TestCase</code>.</p>
+<p>That's all. You are ready to use all Brain Monkey features.</p>
+                                            </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+                    <a href="https://github.com/Giuseppe-Mazzapica/BrainMonkey">
+                <img style="position:fixed; top:0; right:0; border:0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
+            </a>
+                <a href="#" id="menu-toggle" title="Toggle Menu"><i class="fa fa-bars"></i></a>
+
+
+    </div>
+    <!-- /#wrapper -->
+
+    <footer class="footer hidden-xs hidden-sm">
+      Made by hands by
+      <a href="http://gm.zoomlab.it/" title="Giuseppe Mazzapica Home Page" target="_blank">Giuseppe Mazzapica</a>, with
+      <a href="http://couscous.io/" title="Couscous" target="_blank">Couscous</a>,
+      <a href="http://getbootstrap.com/" title="Bootstrap" target="_blank">Bootstrap</a> &amp;
+      <a href="https://highlightjs.org/" title="highlight.js" target="_blank">highlight.js</a>
+
+      <span class="socials">
+        <a href="https://github.com/Giuseppe-Mazzapica" title="GitHub" target="_blank"><i class="fa fa-github-alt"></i></a>
+        <a href="https://twitter.com/gmazzap" title="Twitter" target="_blank"><i class="fa fa-twitter"></i></a>
+        <a href="http://wordpress.stackexchange.com/users/35541/" title="Stack Exchange" target="_blank"><i class="fa fa-stack-exchange"></i></a>
+      </span>
+
+    </footer>
+
+    <a href="#wrapper" class="hidden-xs hidden-sm" id="back-top" title="Back to top"><i class="fa fa-long-arrow-up"></i></a>
+    <script src="http://yandex.st/highlightjs/7.5/highlight.min.js"></script>
+    <script src="http://giuseppe-mazzapica.github.io/BrainMonkey/js/theme.min.js"></script>
+
+
+</body>
+
+</html>
