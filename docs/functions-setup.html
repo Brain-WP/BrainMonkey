@@ -138,13 +138,13 @@ you need to <strong>require vendor autoload file</strong> before running tests (
 <p>After that you need to call a method <em>before</em> any test, and another <em>after</em> any test.</p>
 <p>These two methods are:</p>
 <ul>
-<li><code>Brain\Monkey\Functions\setUp()</code> has to be run before any test</li>
-<li><code>Brain\Monkey\Functions\tearDown()</code> has to be run after any test</li>
+<li><code>Brain\Monkey\setUp()</code> has to be run before any test</li>
+<li><code>Brain\Monkey\tearDown()</code> has to be run after any test</li>
 </ul>
 <h3>PHPUnit example</h3>
 <p>Let's take PHPUnit as example, the average test case class that uses Brain Monkey would be something like:</p>
 <pre><code class="language-php">use PHPUnit_Framework_TestCase;
-use Brain\Monkey\Functions;
+use Brain\Monkey;
 
 class MyTestCase extends PHPUnit_Framework_TestCase
 {
@@ -152,12 +152,12 @@ class MyTestCase extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        Functions::setUp();
+        Monkey::setUp();
     }
 
     protected function tearDown()
     {
-        Functions::tearDown();
+        Monkey::tearDown();
         parent::tearDown();
     }
 }</code></pre>
