@@ -16,7 +16,7 @@ Brain Monkey uses [Patchwork](http://antecedent.github.io/patchwork/) to redefin
 
  - only **userland** (custom) functions can be redefined, PHP core functions can't.
 
- - only functions defined **after** Patchwork as been loaded can be redefined. Brain Monkey loads Patchwork when you call `Functions\setUp()` (see below).
+ - only functions defined **after** Patchwork as been loaded can be redefined. Brain Monkey loads Patchwork when you call `Monkey::setUp()` (see below).
 
    That happen at the start of any test. If functions you want to test are defined earlier (e.g. via Composer "file" autoload directive) you need to "manually" load Patchwork earlier
    (you'll need to require `Patchwork.php` file, see Patchwork docs).
