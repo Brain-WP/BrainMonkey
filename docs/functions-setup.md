@@ -33,8 +33,8 @@ After that you need to call a method *before* any test, and another *after* any 
 
 These two methods are:
 
- - `Brain\Monkey\setUp()` has to be run before any test
- - `Brain\Monkey\tearDown()` has to be run after any test
+ - `Brain\Monkey::setUp()` has to be run before any test
+ - `Brain\Monkey::tearDown()` has to be run after any test
 
 ### PHPUnit example
 
