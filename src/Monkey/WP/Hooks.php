@@ -130,7 +130,8 @@ abstract class Hooks
         $instance = self::$instances[$type];
         $parsed = $this->args(array_slice(func_get_args(), 1), $type);
         $data = reset($parsed);
-        $hook = $data['hook']; // hook name, e.g. 'init'
+        // hook name, e.g. 'init'
+        $hook = $this->sanitizeHookName($data['hook']);
         if (! isset($instance->hooks[$hook])) {
             $instance->hooks[$hook] = [];
         }
@@ -307,5 +308,19 @@ abstract class Hooks
         }
 
         return [$id, $hash];
+    }
+
+    /**
+     * @param  string $name
+     * @return string
+     */
+    protected static function sanitizeHookName($name)
+    {
+        $clean = preg_replace('/[^\w]/i', '___', $name);
+        if (is_numeric($clean[0])) {
+            $clean = '___'.$clean;
+        }
+
+        return $clean;
     }
 }

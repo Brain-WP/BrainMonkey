@@ -25,9 +25,10 @@ class Filters extends Hooks
     public static function expectApplied($filter)
     {
         $type = self::FILTER;
-        $mock = Mockery::mock("apply_{$filter}");
-        $expectation = $mock->shouldReceive("apply_{$type}_{$filter}");
-        parent::instance($type)->mocks[$filter]['run'] = $mock;
+        $sanitized = self::sanitizeHookName($filter);
+        $mock = Mockery::mock("apply_{$sanitized}");
+        $expectation = $mock->shouldReceive("apply_{$type}_{$sanitized}");
+        parent::instance($type)->mocks[$sanitized]['run'] = $mock;
 
         return new MockeryHookBridge(new MockeryBridge($expectation, __CLASS__, true));
     }
@@ -35,9 +36,10 @@ class Filters extends Hooks
     public static function expectAdded($filter)
     {
         $type = self::FILTER;
-        $mock = Mockery::mock("add_{$filter}");
-        $expectation = $mock->shouldReceive("add_{$type}_{$filter}");
-        parent::instance($type)->mocks[$filter]['add'] = $mock;
+        $sanitized = self::sanitizeHookName($filter);
+        $mock = Mockery::mock("add_{$sanitized}");
+        $expectation = $mock->shouldReceive("add_{$type}_{$sanitized}");
+        parent::instance($type)->mocks[$sanitized]['add'] = $mock;
 
         return new MockeryHookBridge(new MockeryBridge($expectation, __CLASS__, false));
     }
