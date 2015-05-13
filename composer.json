@@ -31,8 +31,7 @@
         "antecedent/patchwork": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "~4.4",
-        "mockery/mockery": "0.9.3"
+        "phpunit/phpunit": "~4.4"
     },
     "autoload": {
         "psr-4": {
