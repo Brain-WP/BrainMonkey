@@ -28,7 +28,7 @@ abstract class Hooks
     /**
      * @var array
      */
-    private static $instances;
+    private static $instances = [];
 
     /**
      * @var array
@@ -36,6 +36,40 @@ abstract class Hooks
     private static $classes = [
         self::ACTION => 'Brain\Monkey\WP\Actions',
         self::FILTER => 'Brain\Monkey\WP\Filters',
+    ];
+
+    private static $sanitize_map = [
+        '-'  => '_',
+        ' '  => '_sp_',
+        '/'  => '_sl_',
+        '\\' => '_bs_',
+        '.'  => '_po_',
+        '!'  => '_es_',
+        '"'  => '_q_',
+        '\'' => '_sq_',
+        '£'  => '_pou_',
+        '$'  => '_do_',
+        '%'  => '_pe_',
+        '('  => '_op_',
+        ')'  => '_cp_',
+        '='  => '_eq_',
+        '?'  => '_qm_',
+        '^'  => '_ca_',
+        '*'  => '_as_',
+        '@'  => '_at_',
+        '°'  => '_deg_',
+        '#'  => '_sh_',
+        '['  => '_ob_',
+        ']'  => '_cb_',
+        '+'  => '_and_',
+        '|'  => '_pi_',
+        '<'  => '_lt_',
+        '>'  => '_gt_',
+        ','  => '_co_',
+        ';'  => '_sc_',
+        '{'  => '_ocb_',
+        '}'  => '_ccb_',
+        '~'  => '_ti_',
     ];
 
     /**
@@ -77,7 +111,7 @@ abstract class Hooks
      */
     public static function instance($type)
     {
-        if (is_null(self::$instances[$type])) {
+        if (! isset(self::$instances[$type])) {
             $class = self::$classes[$type];
             self::$instances[$type] = new $class();
         }
@@ -99,7 +133,7 @@ abstract class Hooks
             $filters->clean();
             self::$instances[self::FILTER] = null;
         }
-        self::$instances = null;
+        self::$instances = [];
         self::$current = null;
     }
 
@@ -127,7 +161,7 @@ abstract class Hooks
     protected function addHook($type)
     {
         /** @var \Brain\Monkey\WP\Actions|\Brain\Monkey\WP\Filters $instance */
-        $instance = self::$instances[$type];
+        $instance = self::instance($type);
         $parsed = $this->args(array_slice(func_get_args(), 1), $type);
         $data = reset($parsed);
         // hook name, e.g. 'init'
@@ -152,10 +186,11 @@ abstract class Hooks
     protected function removeHook($type)
     {
         /** @var \Brain\Monkey\WP\Actions|\Brain\Monkey\WP\Filters $instance */
-        $instance = self::$instances[$type];
+        $instance = self::instance($type);
         $parsed = $this->args(array_slice(func_get_args(), 1), $type, true);
         $data = reset($parsed);
-        $hook = $data['hook']; // hook name, e.g. 'init'
+        // hook name, e.g. 'init'
+        $hook = $this->sanitizeHookName($data['hook']);
         if (isset($instance->hooks[$hook]) && is_array($instance->hooks[$hook])) {
             $hooks = $instance->hooks[$hook];
             foreach ($hooks as $key => $hookData) {
@@ -177,12 +212,13 @@ abstract class Hooks
     protected function runHook($type)
     {
         /** @var \Brain\Monkey\WP\Actions|\Brain\Monkey\WP\Filters $instance */
-        $instance = self::$instances[$type];
+        $instance = self::instance($type);
         $args = array_slice(func_get_args(), 1);
         if (empty($args) || ! is_string(reset($args))) {
             throw new LogicException("To fire a {$type} its name is required and has to be a string.");
         }
-        $hook = array_shift($args);
+        // hook name, e.g. 'init'
+        $hook = $this->sanitizeHookName(array_shift($args));
         // returning value is always null for functions
         $value = $type === self::FILTER && func_num_args() > 2 ? func_get_arg(2) : null;
         self::$current = $hook;
@@ -206,10 +242,11 @@ abstract class Hooks
     protected function hasHook($type)
     {
         /** @var \Brain\Monkey\WP\Actions|\Brain\Monkey\WP\Filters $instance */
-        $instance = self::$instances[$type];
+        $instance = self::instance($type);
         $parsed = $this->args(array_slice(func_get_args(), 1), $type, true);
         $data = reset($parsed);
-        $hook = $data['hook']; // hook name, e.g. 'init'
+        // hook name, e.g. 'init'
+        $hook = $this->sanitizeHookName($data['hook']);
         if (isset($instance->hooks[$hook]) && is_array($instance->hooks[$hook])) {
             foreach ($instance->hooks[$hook] as $key => $hookData) {
                 if ($hookData === $data) {
@@ -316,9 +353,14 @@ abstract class Hooks
      */
     protected static function sanitizeHookName($name)
     {
-        $clean = preg_replace('/[^\w]/i', '___', $name);
+        $replaced = str_replace(
+            array_keys(self::$sanitize_map),
+            array_values(self::$sanitize_map),
+            $name
+        );
+        $clean = preg_replace('/[^\w]/i', '__', $replaced);
         if (is_numeric($clean[0])) {
-            $clean = '___'.$clean;
+            $clean = '_'.$clean;
         }
 
         return $clean;
