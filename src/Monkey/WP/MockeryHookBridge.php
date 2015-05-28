@@ -11,6 +11,7 @@
 namespace Brain\Monkey\WP;
 
 use Brain\Monkey\MockeryBridge;
+use Mockery;
 
 /**
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
@@ -33,6 +34,7 @@ use Brain\Monkey\MockeryBridge;
  * @method MockeryBridge andReturnValues()
  * @method MockeryBridge andReturnUsing()
  * @method MockeryBridge andThrow()
+ * @method Mockery\Expectation whenHappen()
  */
 class MockeryHookBridge
 {
