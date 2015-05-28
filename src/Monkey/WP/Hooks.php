@@ -33,6 +33,11 @@ abstract class Hooks
     /**
      * @var array
      */
+    private static $names = [];
+
+    /**
+     * @var array
+     */
     private static $classes = [
         self::ACTION => 'Brain\Monkey\WP\Actions',
         self::FILTER => 'Brain\Monkey\WP\Filters',
@@ -80,17 +85,17 @@ abstract class Hooks
     /**
      * @var array
      */
-    protected $hooks;
+    protected $hooks = [];
 
     /**
      * @var array
      */
-    protected $done;
+    protected $done = [];
 
     /**
      * @var array
      */
-    protected $mocks;
+    protected $mocks = [];
 
     /**
      * @param  string $name
@@ -137,9 +142,17 @@ abstract class Hooks
         self::$current = null;
     }
 
+    /**
+     * @return string|bool
+     */
     public static function current()
     {
-        return self::$current;
+        $current = $name = self::$current;
+        if (is_string($current) && isset(self::$names[$current])) {
+            $name = self::$names[$current];
+        }
+
+        return $name;
     }
 
     abstract public function add();
@@ -168,6 +181,7 @@ abstract class Hooks
         $hook = $this->sanitizeHookName($data['hook']);
         if (! isset($instance->hooks[$hook])) {
             $instance->hooks[$hook] = [];
+            self::$names[$hook] = $data['hook'];
         }
         $instance->hooks[$hook][key($parsed)] = $data;
         if (isset($instance->mocks[$hook]) && isset($instance->mocks[$hook]['add'])) {
@@ -217,8 +231,12 @@ abstract class Hooks
         if (empty($args) || ! is_string(reset($args))) {
             throw new LogicException("To fire a {$type} its name is required and has to be a string.");
         }
+        $rawHook = array_shift($args);
         // hook name, e.g. 'init'
-        $hook = $this->sanitizeHookName(array_shift($args));
+        $hook = $this->sanitizeHookName($rawHook);
+        if ($rawHook !== $hook && ! isset(self::$names[$hook])) {
+            self::$names[$hook] = $rawHook;
+        }
         // returning value is always null for functions
         $value = $type === self::FILTER && func_num_args() > 2 ? func_get_arg(2) : null;
         self::$current = $hook;
