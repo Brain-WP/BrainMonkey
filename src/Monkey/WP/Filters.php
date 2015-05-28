@@ -30,7 +30,7 @@ class Filters extends Hooks
         $expectation = $mock->shouldReceive("apply_{$type}_{$sanitized}");
         parent::instance($type)->mocks[$sanitized]['run'] = $mock;
 
-        return new MockeryHookBridge(new MockeryBridge($expectation, __CLASS__, true));
+        return new MockeryHookBridge(new MockeryBridge($expectation, __CLASS__));
     }
 
     public static function expectAdded($filter)
@@ -41,7 +41,7 @@ class Filters extends Hooks
         $expectation = $mock->shouldReceive("add_{$type}_{$sanitized}");
         parent::instance($type)->mocks[$sanitized]['add'] = $mock;
 
-        return new MockeryHookBridge(new MockeryBridge($expectation, __CLASS__, false));
+        return new MockeryHookBridge(new MockeryBridge($expectation, __CLASS__));
     }
 
     public function add()

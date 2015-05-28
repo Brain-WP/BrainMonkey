@@ -37,7 +37,7 @@ class Actions extends Hooks
         $expectation = $mock->shouldReceive("do_{$type}_{$sanitized}");
         parent::instance($type)->mocks[$sanitized]['run'] = $mock;
 
-        return new MockeryHookBridge(new MockeryBridge($expectation, __CLASS__, true));
+        return new MockeryHookBridge(new MockeryBridge($expectation, __CLASS__));
     }
 
     /**
@@ -54,7 +54,7 @@ class Actions extends Hooks
         $expectation = $mock->shouldReceive("add_{$type}_{$sanitized}");
         parent::instance($type)->mocks[$sanitized]['add'] = $mock;
 
-        return new MockeryHookBridge(new MockeryBridge($expectation, __CLASS__, false));
+        return new MockeryHookBridge(new MockeryBridge($expectation, __CLASS__));
     }
 
     /**

@@ -45,30 +45,31 @@ class MockeryBridge
     private $expectation;
 
     /**
-     * @var string
+     * @var bool
      */
-    private $parent;
+    private $isHook = false;
 
     /**
      * @var bool
      */
-    private $parentCanReturn;
+    private $isAction = false;
 
     /**
      * Constructor.
      *
      * @param \Mockery\ExpectationInterface $expectation
      * @param string|null                   $parent
-     * @param bool                          $parentCanReturn
      */
-    public function __construct(
-        ExpectationInterface $expectation,
-        $parent = null,
-        $parentCanReturn = true
-    ) {
+    public function __construct(ExpectationInterface $expectation, $parent = null)
+    {
         $this->expectation = $expectation;
-        (is_string($parent) && class_exists($parent)) and $this->parent = $parent;
-        $this->parentCanReturn = ! empty($parentCanReturn);
+        if (is_string($parent) && class_exists($parent)) {
+            $reflection = new \ReflectionClass($parent);
+            $this->isHook = $reflection->isSubclassOf('Brain\Monkey\WP\Hooks');
+            $this->isAction =
+                $parent === 'Brain\Monkey\WP\Actions'
+                || is_subclass_of($parent, 'Brain\Monkey\WP\Actions');
+        }
     }
 
     /**
@@ -86,8 +87,8 @@ class MockeryBridge
                 "shouldReceive(), shouldExpect() and andSet() methods are not allowed in Brain Monkey."
             );
         }
-        if (strstr(strtolower($name), 'return') && ! empty($this->parent)) {
-            $this->checkReturn();
+        if (stristr($name, 'return') && $this->isHook) {
+            $this->checkReturn($name);
         }
         $this->expectation = call_user_func_array([$this->expectation, $name], $arguments);
 
@@ -95,19 +96,18 @@ class MockeryBridge
     }
 
     /**
-     * WordPress testing function, ignored for generic PHP function testing.
-     * Used to avoid return expectations on action hooks.
+     * WordPress testing function used to avoid return expectations on action hooks.
+     * Throws exception for WordPress filters and generic PHP function testing.
      *
      * @param  callable             $callback
      * @return \Mockery\Expectation
      */
     public function whenHappen(callable $callback)
     {
-        if ($this->parent !== 'Brain\Monkey\WP\Actions') {
-            throw new RuntimeException('whenHappen() can only be used for WordPress action expectations.');
-        }
-        if (! $this->parentCanReturn) {
-            throw new RuntimeException("Don't use whenHappen() expectations on added actions.");
+        if (! $this->isAction) {
+            throw new RuntimeException(
+                'whenHappen() can only be used for WordPress action hook expectations.'
+            );
         }
 
         return $this->expectation->andReturnUsing($callback);
@@ -116,14 +116,20 @@ class MockeryBridge
     /**
      * WordPress testing function, ignored for generic PHP function testing.
      * Used to avoid return expectations on added hooks.
+     *
+     * @param string $name
      */
-    private function checkReturn()
+    private function checkReturn($name)
     {
-        if (! $this->parentCanReturn) {
-            throw new LogicException("Don't use return expectations on added hooks.");
+        if ($this->isAction) {
+            throw new LogicException(
+                "Don't use return expectations on actions, use whenHappen() instead."
+            );
         }
-        if ($this->parent === 'Brain\Monkey\WP\Actions') {
-            throw new LogicException("Don't use return expectations on actions, use whenHappen() instead.");
+        if (strpos($name, 'add_') === 0) {
+            throw new LogicException(
+                "Don't use return expectations on added hooks."
+            );
         }
     }
 }
