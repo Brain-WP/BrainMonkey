@@ -110,16 +110,15 @@ class FunctionsTest extends PHPUnit_Framework_TestCase
         Functions::when('test\\a')->justReturn('A!');
         Functions::when('test\\a\\b')->returnArg();
         Functions::when('test\\a\\b\\c')->alias('str_rot13');
-        {
-            Monkey::functions()->when('a')->justReturn('A!');
-            Monkey::functions()->when('b')->returnArg();
-            Monkey::functions()->when('c')->alias('str_rot13');
-            Monkey::functions()->expect('d')->atMost()->twice()->with(true)->andReturn('D!');
 
-            assertSame('A!', a());
-            assertSame('B!', b('B!'));
-            assertSame('C!', c('P!'));
-            assertSame('D!', call_user_func('d', true));
-        }
+        Monkey::functions()->when('a')->justReturn('A!');
+        Monkey::functions()->when('b')->returnArg();
+        Monkey::functions()->when('c')->alias('str_rot13');
+        Monkey::functions()->expect('buk')->atMost()->twice()->with(true)->andReturn('D!');
+
+        assertSame('A!', a());
+        assertSame('B!', b('B!'));
+        assertSame('C!', c('P!'));
+        assertSame('D!', buk(true));
     }
 }
