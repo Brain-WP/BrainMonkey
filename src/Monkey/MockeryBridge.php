@@ -63,6 +63,7 @@ class MockeryBridge
     public function __construct(ExpectationInterface $expectation, $parent = null)
     {
         $this->expectation = $expectation;
+        $name = $this->expectation->__toString();
         if (is_string($parent) && class_exists($parent)) {
             $reflection = new \ReflectionClass($parent);
             $this->isHook = $reflection->isSubclassOf('Brain\Monkey\WP\Hooks');
@@ -70,6 +71,7 @@ class MockeryBridge
                 $parent === 'Brain\Monkey\WP\Actions'
                 || is_subclass_of($parent, 'Brain\Monkey\WP\Actions');
         }
+        $this->isAddedHook = $this->isHook && strpos($name, '[add_') === 0;
     }
 
     /**
@@ -104,9 +106,9 @@ class MockeryBridge
      */
     public function whenHappen(callable $callback)
     {
-        if (! $this->isAction) {
+        if (! $this->isAddedHook && ! $this->isAction) {
             throw new RuntimeException(
-                'whenHappen() can only be used for WordPress action hook expectations.'
+                'whenHappen() can only be used for WordPress actions or added filters expectations.'
             );
         }
 
