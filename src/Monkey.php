@@ -68,6 +68,7 @@ class Monkey
     {
         Patchwork\undoAll();
         Mockery::close();
+        Functions::__flush();
     }
 
     /**

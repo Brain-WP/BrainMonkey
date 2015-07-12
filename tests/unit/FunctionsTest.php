@@ -22,6 +22,7 @@ use Mockery;
  */
 class FunctionsTest extends PHPUnit_Framework_TestCase
 {
+
     protected function tearDown()
     {
         Monkey::tearDown();
@@ -120,5 +121,21 @@ class FunctionsTest extends PHPUnit_Framework_TestCase
         assertSame('B!', b('B!'));
         assertSame('C!', c('P!'));
         assertSame('D!', buk(true));
+    }
+
+    public function testSameFunctionDifferentArguments()
+    {
+        Functions::expect('issue5')
+                 ->with(true)
+                 ->once()
+                 ->andReturn('First!');
+
+        Functions::expect('issue5')
+                 ->with(false)
+                 ->once()
+                 ->andReturn('Second!');
+
+        assertSame('First!', issue5(true));
+        assertSame('Second!', issue5(false));
     }
 }

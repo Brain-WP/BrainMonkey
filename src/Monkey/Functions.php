@@ -23,9 +23,22 @@ use RuntimeException;
 class Functions
 {
     /**
+     * @var array
+     */
+    private static $functions = [];
+
+    /**
      * @var string Name of the function to mock
      */
     private $name;
+
+    /**
+     * Clean up mocked functions array.
+     */
+    public static function __flush()
+    {
+        self::$functions = [];
+    }
 
     /**
      * Factory method: receives the name of the function to mock and return an instance of
@@ -58,13 +71,18 @@ class Functions
      */
     public static function expect($functionName)
     {
-        self::when($functionName);
-        $mockery = Mockery::mock($functionName.time());
+        if (! isset(self::$functions[$functionName])) {
+            self::when($functionName);
+            $mockery = Mockery::mock($functionName);
+            Patchwork\replace($functionName, function () use (&$mockery, $functionName) {
+                return call_user_func_array([$mockery, $functionName], func_get_args());
+            });
+            self::$functions[$functionName] = $mockery;
+        }
+        /** @var \Mockery\MockInterface $mockery */
+        $mockery = self::$functions[$functionName];
         /** @var \Mockery\ExpectationInterface $expectation */
         $expectation = $mockery->shouldReceive($functionName);
-        Patchwork\replace($functionName, function () use (&$mockery, $functionName) {
-            return call_user_func_array([$mockery, $functionName], func_get_args());
-        });
 
         return new MockeryBridge($expectation);
     }
