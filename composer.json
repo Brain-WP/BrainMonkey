@@ -28,7 +28,7 @@
     "license": "MIT",
     "require": {
         "mockery/mockery": "*",
-        "antecedent/patchwork": "*"
+        "antecedent/patchwork": "1.3.*"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.4"
