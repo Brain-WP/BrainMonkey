@@ -71,9 +71,9 @@ class Monkey
      */
     public static function tearDown()
     {
+        Functions::__flush();
         Patchwork\undoAll();
         Mockery::close();
-        Functions::__flush();
     }
 
     /**
@@ -81,8 +81,8 @@ class Monkey
      */
     public static function tearDownWP()
     {
-        self::tearDown();
         Hooks::tearDown();
+        self::tearDown();
     }
 
     /**
