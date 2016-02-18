@@ -121,6 +121,16 @@ class Functions
     }
 
     /**
+     * Mocks the function and makes it echo an arbitrary value.
+     *
+     * @param mixed $value
+     */
+    public function justEcho($value = null)
+    {
+        echo $this->justReturn($value);
+    }
+
+    /**
      * Mocks the function making it return one of the received arguments, the first by default.
      * Throw an exception if the function does not receive desired argument.
      *
@@ -145,6 +155,16 @@ class Functions
 
             return func_num_args() > $n0 ? func_get_arg($n0) : null;
         });
+    }
+
+    /**
+     * Mocks the function making it echo one of the received arguments, the first by default.
+     *
+     * @param int $n The position (1-based) of the argument to echo
+     */
+    public function echoArg($n = 1)
+    {
+        echo $this->returnArg($n);
     }
 
     /**
