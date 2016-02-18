@@ -38,12 +38,17 @@ class Monkey
      */
     public static function setUp()
     {
+        if (function_exists('Patchwork\replace')) {
+            return;
+        }
         $vendor = dirname(dirname(dirname(__DIR__)));
-        $patchwork = '/antecedent/patchwork/Patchwork.php';
+        $patchwork = '/antecedent/patchwork/src/Patchwork.php';
         if (file_exists($vendor.$patchwork)) {
-            require_once $vendor.$patchwork; // normal installation
+            /** @noinspection PhpIncludeInspection */
+            @require_once $vendor.$patchwork; // normal installation
         } elseif (file_exists(dirname(dirname(__DIR__)).$patchwork)) {
-            require_once dirname(dirname(__DIR__)).$patchwork; // root installation
+            /** @noinspection PhpIncludeInspection */
+            @require_once dirname(dirname(__DIR__)).$patchwork; // root installation
         }
         if (! function_exists('Patchwork\replace')) {
             throw new RuntimeException(
@@ -66,9 +71,9 @@ class Monkey
      */
     public static function tearDown()
     {
+        Functions::__flush();
         Patchwork\undoAll();
         Mockery::close();
-        Functions::__flush();
     }
 
     /**
@@ -76,8 +81,8 @@ class Monkey
      */
     public static function tearDownWP()
     {
-        self::tearDown();
         Hooks::tearDown();
+        self::tearDown();
     }
 
     /**

@@ -139,6 +139,7 @@ abstract class Hooks
             self::$instances[self::FILTER] = null;
         }
         self::$instances = [];
+        self::$names = [];
         self::$current = null;
     }
 
