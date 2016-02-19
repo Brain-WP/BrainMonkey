@@ -127,7 +127,19 @@ class Functions
      */
     public function justEcho($value = null)
     {
-        echo $this->justReturn($value);
+        is_null($value) and $value = '';
+        if (! is_scalar($value) && ! (is_object($value) && method_exists($value, '__toString'))) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    "Please, use a string with %s, can't echo a var of type %s.",
+                    __METHOD__,
+                    gettype($value)
+                )
+            );
+        }
+        $this->justReturn($value);
+        $cb = $this->name;
+        echo (string) $cb();
     }
 
     /**
@@ -139,11 +151,7 @@ class Functions
     public function returnArg($n = 1)
     {
         $name = $this->name;
-        if (! is_int($n) || $n < 1) {
-            throw new InvalidArgumentException(
-                "Argument number for {$this->name} must be a greater than 1 integer."
-            );
-        }
+        $n = $this->ensureArg($n);
         Patchwork\replace($name, function () use ($n, $name) {
             $count = func_num_args();
             $n0 = $n - 1;
@@ -164,7 +172,32 @@ class Functions
      */
     public function echoArg($n = 1)
     {
-        echo $this->returnArg($n);
+        $name = $this->name;
+        $n = $this->ensureArg($n);
+        Patchwork\replace($name, function () use ($n, $name) {
+            $count = func_num_args();
+            $n0 = $n - 1;
+            if ($count < $n0) {
+                throw new RuntimeException(
+                    "{$name} was called with {$count} params, can't return arg ".($n)."."
+                );
+            }
+
+            $value = func_num_args() > $n0 ? func_get_arg($n0) : '';
+
+            if (! is_scalar($value) && ! (is_object($value) && method_exists($value, '__toString'))) {
+                throw new RuntimeException(
+                    sprintf(
+                        "%s received as argument %d a %s, can't echo it.",
+                        $name,
+                        $n,
+                        gettype($value)
+                    )
+                );
+            }
+
+            echo (string) $value;
+        });
     }
 
     /**
@@ -175,5 +208,20 @@ class Functions
     public function alias(callable $callback)
     {
         Patchwork\replace($this->name, $callback);
+    }
+
+    /**
+     * @param int $n
+     * @return int
+     */
+    private function ensureArg($n)
+    {
+        if (! is_int($n) || $n < 1) {
+            throw new InvalidArgumentException(
+                "Argument number for {$this->name} must be a greater than 1 integer."
+            );
+        }
+
+        return $n;
     }
 }

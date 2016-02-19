@@ -138,4 +138,100 @@ class FunctionsTest extends PHPUnit_Framework_TestCase
         assertSame('First!', issue5(true));
         assertSame('Second!', issue5(false));
     }
+
+    public function testJustEcho()
+    {
+        Functions::when('i_do_not_exists')->justEcho('Cool!');
+        $this->expectOutputString('Cool!');
+        i_do_not_exists();
+    }
+
+    public function testJustEchoEmptyString()
+    {
+        Functions::when('i_do_not_exists')->justEcho();
+        $this->expectOutputString('');
+        i_do_not_exists();
+    }
+
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessageRegExp /can't echo a var of type array/
+     */
+    public function testJustEchoNotScalar()
+    {
+        Functions::when('i_do_not_exists')->justEcho(['foo']);
+    }
+
+    public function testJustEchoToStringObject()
+    {
+        $toString = Mockery::mock();
+        $toString->shouldReceive('__toString')->andReturn('Cool!');
+
+        Functions::when('i_do_not_exists')->justEcho($toString);
+        $this->expectOutputString('Cool!');
+        i_do_not_exists($toString);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessageRegExp /can't echo a var of type object/
+     */
+    public function testJustEchoObject()
+    {
+        Functions::when('i_do_not_exists')->justEcho(new \stdClass());
+        i_do_not_exists();
+    }
+
+
+    public function testEchoArg()
+    {
+        Functions::when('i_do_not_exists')->echoArg(2);
+        $this->expectOutputString('Cool!');
+        i_do_not_exists(1, 'Cool!');
+    }
+
+    public function testEchoArgFirst()
+    {
+        Functions::when('i_do_not_exists')->echoArg();
+        $this->expectOutputString('Cool!');
+        i_do_not_exists('Cool!');
+    }
+
+    public function testEchoArgScalar()
+    {
+        Functions::when('i_do_not_exists')->echoArg();
+        $this->expectOutputString('1');
+        i_do_not_exists(1);
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessageRegExp /can't echo it/
+     */
+    public function testEchoArgNotScalar()
+    {
+        Functions::when('i_do_not_exists')->echoArg(1);
+        i_do_not_exists(['foo']);
+    }
+
+    public function testEchoArgToStringObject()
+    {
+        $toString = Mockery::mock();
+        $toString->shouldReceive('__toString')->andReturn('Cool!');
+
+        Functions::when('i_do_not_exists')->echoArg(1);
+        $this->expectOutputString('Cool!');
+        i_do_not_exists($toString);
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessageRegExp /can't echo it/
+     */
+    public function testEchoArgObject()
+    {
+        Functions::when('i_do_not_exists')->echoArg(1);
+        i_do_not_exists(new \stdClass());
+    }
 }
