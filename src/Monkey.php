@@ -38,9 +38,6 @@ class Monkey
      */
     public static function setUp()
     {
-        if (function_exists('Patchwork\replace')) {
-            return;
-        }
         $vendor = dirname(dirname(dirname(__DIR__)));
         $patchwork = '/antecedent/patchwork/src/Patchwork.php';
         if (file_exists($vendor.$patchwork)) {
