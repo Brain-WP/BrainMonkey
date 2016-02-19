@@ -8,10 +8,12 @@ title: "Patching functions with when()"
 The first method Brain Monkey offers to monkey patch a function is `when()`.
 This method have to be used to **set a behavior** for functions.
 
-`when()` and 3 related methods are used to define functions (if not defined yet) and:
+`when()` and 5 related methods are used to define functions (if not defined yet) and:
 
  - make them return a specific value
  - make them return one of the received arguments
+ - make them echo a specific value
+ - make them echo one of the received arguments
  - make them behave just like another callback
 
 
@@ -59,6 +61,28 @@ Note that if the target function does not receive the desired argument, `returnA
 Functions::when('needs_the_third')->returnArg(3);
 
 echo needs_the_third('A', 'B'); // throws an exception because required 3rd argument, but received 2
+```
+
+## `justEcho()`
+
+Similar to `justReturn()`, it makes the mocked function echo some value instead of returning it.
+
+```php
+Functions::when('a_undefined_function')->justEcho('Cool!');
+
+a_undefined_function(); // echoes "Cool!"
+```
+
+## `echoArg()`
+
+Similar to `returnArg()`, it makes the mocked function echo some received argument instead of returning it.
+
+```php
+Functions::when('echo_the_first')->echoArg(); // is the same of ->echoArg(1)
+Functions::when('echo_the_second')->echoArg(2);
+
+echo_the_first('A', 'B', 'C'); // echoes "A"
+echo_the_second('A', 'B', 'C'); // echoes "B"
 ```
 
 ## `alias()`
