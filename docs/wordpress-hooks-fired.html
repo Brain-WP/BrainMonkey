@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="author" content="Giuseppe Mazzapica">
-    <title>WordPress / Testing Fired Hooks. Brain Monkey</title>
+    <meta name="description" content="Brain Monkey is mocking utility for PHP functions and WordPress plugin API.">    <meta name="author" content="Giuseppe Mazzapica">
+    <title>Brain Monkey: Mocking utility for PHP functions and WordPress</title>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
     <link href="https://giuseppe-mazzapica.github.io/BrainMonkey/css/theme.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -89,7 +89,7 @@
                                       Testing Added Hooks
                                   </a>
                               </li>
-                                                        <li class="active">
+                                                        <li class="">
                                   <a href="https://giuseppe-mazzapica.github.io/BrainMonkey/docs/wordpress-hooks-fired.html">
                                       Testing Fired Hooks
                                   </a>
@@ -106,21 +106,17 @@
             <div class="container-fluid">
                 <div class="row">
                     <div id="content" class="col-lg-11">
-                                                                                <ol class="breadcrumb">
-                              <li><a href="https://giuseppe-mazzapica.github.io/BrainMonkey">Brain Monkey</a></li>
-                              <li class="active">WordPress</li>
-                            </ol>
-                                                                                                        <!--
+                                                                                                                                <!--
 currentMenu: "wphooksfired"
 currentSection: "WordPress"
 title: "Testing Fired Hooks"
 -->
-<h1>Testing Fired Hooks</h1>
-<h2>Testing framework agnostic</h2>
+<h1 id="testing-fired-hooks">Testing Fired Hooks</h1>
+<h2 id="testing-framework-agnostic">Testing framework agnostic</h2>
 <p>Brain Monkey can be used with any testing framework.
 Examples in this page will use PHPUnit, but the concepts are applicable to any testing framework.</p>
 <p>Also note that test classes in this page extends the class <code>MyTestCase</code> that is assumed very similar to the one coded in the <em>WordPress / Setup</em> docs section.</p>
-<h2>Simple tests with <code>did_action()</code> and <code>filters()-&gt;applied()</code></h2>
+<h2 id="simple-tests-with">Simple tests with <code>did_action()</code> and <code>filters()-&gt;applied()</code></h2>
 <p>To check hooks has been fired, the only available WordPress function is <code>did_action()</code> (doesn't exist any <code>did_filter()</code> or <code>applied_filter()</code>).</p>
 <p>To overcome the missing counter part of <code>did_action()</code> for filters, Brain Monkey has a method accessible via <code>Brain\Monkey::filters()-&gt;applied()</code>
 that does what you might expect.</p>
@@ -153,7 +149,7 @@ has been triggered, just like <code>did_action()</code> does in WordPress, but t
 <p>So, <code>did_action()</code> and <code>filters()-&gt;applied()</code> are fine for simple tests, mostly because using them you don't need to recall Brain Monkey methods,
 but they are not very powerful: arguments checking and, above all, the ability to respond to fired hooks are pivotal tasks to proper test WordPress code.</p>
 <p>In Brain Monkey those tasks can be done testing fired hooks with expectations.</p>
-<h2>Test fired hooks with expectations</h2>
+<h2 id="test-fired-hooks-with-expectations">Test fired hooks with expectations</h2>
 <p>A powerful testing mechanism for fired hooks is provided by Brain Monkey thanks to Mockery expectations.</p>
 <p>The entry points to use it are the <code>Actions::expectFired()</code> and <code>Filters::expectApplied()</code> methods.</p>
 <p>As usual, below there a just a couple of examples, for the full story see <a href="http://docs.mockery.io/en/latest/reference/expectations.html">Mockery docs</a>.</p>
@@ -177,7 +173,7 @@ class MyClassTest extends MyTestCase
         $class-&gt;fireHooks();
     }
 }</code></pre>
-<h2>Expectations on times are required</h2>
+<h2 id="expectations-on-times-are-required">Expectations on times are required</h2>
 <p><code>expectFired()</code> and <code>expectApplied()</code> return a Mockery expectation object, and by default it does not throw any error if a created expectation object is not used, unless a specific
 times expectation is set.</p>
 <p>It means that if you use <code>Actions::expectFired('action');</code> and nothing more, the test will pass even if <code>do_action('action')</code> is never run by code under test.</p>
@@ -190,12 +186,12 @@ Actions::expectFired('action')-&gt;atMost()-&gt;times(3);
 Filters::expectApplied('filter')-&gt;between(2, 4);
 Actions::expectFired('action')-&gt;never();</code></pre>
 <p>See Mockery documentation and  <em>PHP Functions</em> doc section for more examples and explanation (if ever needed...).</p>
-<h2>Just a couple of things...</h2>
+<h2 id="just-a-couple-of-things">Just a couple of things...</h2>
 <ul>
-<li>expectations must be set <em>before</em> the code to be tested runs: they are called "expectations" for a reason</li>
+<li>expectations must be set <em>before</em> the code to be tested runs: they are called &quot;expectations&quot; for a reason</li>
 <li>argument validation done using <code>with()</code>, validates hook arguments, not function arguments, it means what is passed to <code>do_action</code> or <code>apply_filters</code> <strong>excluding</strong> hook name itself</li>
 </ul>
-<h2>Respond to filters</h2>
+<h2 id="respond-to-filters">Respond to filters</h2>
 <p>Yet again, Brain Monkey, when possible, tries to make WordPress functions it redefines behave in the same way of <em>real</em> WordPress functions.</p>
 <p>Brain Monkey <code>apply_filters</code> by default returns the first argument passed to it, just like WordPress function does when no callback is added to the filter.</p>
 <p>However, sometimes in tests is required that a filter would return something different.</p>
@@ -217,7 +213,7 @@ class MyClassTest extends MyTestCase
     }
 }</code></pre>
 <p>See <a href="http://docs.mockery.io/en/latest/reference/expectations.html">Mockery docs</a> for more information.</p>
-<h2>Respond to actions</h2>
+<h2 id="respond-to-actions">Respond to actions</h2>
 <p>To return a value from a filter is routine, not so for actions.</p>
 <p>In fact, <code>do_action()</code> always returns <code>null</code> so, if Brain Monkey would allow a <em>mocked</em> returning value for <code>do_action()</code> expectations,
 it would be in contrast with real WordPress code, with disastrous effects on tests.</p>
@@ -260,7 +256,7 @@ class MyClassTest extends MyTestCase
     }
 }</code></pre>
 <p>Surely, mocking returned value for filters is more common and actually useful, but in case you need this feature, Brain Monkey has it.</p>
-<h2>Resolving <code>current_filter()</code></h2>
+<h2 id="resolving">Resolving <code>current_filter()</code></h2>
 <p>When WordPress is not performing an hook, <code>current_filter()</code> returns <code>false</code>. And so does the Brain Monkey version of that function.</p>
 <p>Now I want to surprise you: <code>current_filter()</code> correctly resolves to the correct hook during the execution of any callback added to respond to hooks.</p>
 <p>Let's assume a class like the following:</p>

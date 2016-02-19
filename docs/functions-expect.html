@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="author" content="Giuseppe Mazzapica">
-    <title>PHP Functions / Testing functions with expect(). Brain Monkey</title>
+    <meta name="description" content="Brain Monkey is mocking utility for PHP functions and WordPress plugin API.">    <meta name="author" content="Giuseppe Mazzapica">
+    <title>Brain Monkey: Mocking utility for PHP functions and WordPress</title>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
     <link href="https://giuseppe-mazzapica.github.io/BrainMonkey/css/theme.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -59,7 +59,7 @@
                                       Patching with when()
                                   </a>
                               </li>
-                                                        <li class="active">
+                                                        <li class="">
                                   <a href="https://giuseppe-mazzapica.github.io/BrainMonkey/docs/functions-expect.html">
                                       Testing with expect()
                                   </a>
@@ -106,16 +106,12 @@
             <div class="container-fluid">
                 <div class="row">
                     <div id="content" class="col-lg-11">
-                                                                                <ol class="breadcrumb">
-                              <li><a href="https://giuseppe-mazzapica.github.io/BrainMonkey">Brain Monkey</a></li>
-                              <li class="active">PHP Functions</li>
-                            </ol>
-                                                                                                        <!--
+                                                                                                                                <!--
 currentMenu: "functionsexpect"
 currentSection: "PHP Functions"
 title: "Testing functions with expect()"
 -->
-<h1>Testing functions with expect()</h1>
+<h1 id="testing-functions-with-expect">Testing functions with expect()</h1>
 <p>Often, in tests, what we need is not only to enforce a function returned value (what <code>when()</code> allows to do), but
 to test function behavior based on <strong>expectations</strong>.</p>
 <p>Mockery has a very powerful, and human readable Domain Specific Language (DSL) that allows to set expectations
@@ -124,7 +120,7 @@ on how object methods should behave, e.g. validate arguments they should receive
 <p>It receives a function name and returns a Mockery expectation object with all its power.</p>
 <p>Below there are just several examples, for the full story about Mockery expectations see its <a href="http://docs.mockery.io/en/latest/reference/index.html">documentation</a>.</p>
 <p>Only note that in functions testing the <code>shouldReceive</code> Mockery method makes <strong>no sense</strong>, don't use it (an exception will be thrown if you do that).</p>
-<h2>Expectations on times a function is called</h2>
+<h2 id="expectations-on-times-a-function-is-called">Expectations on times a function is called</h2>
 <pre><code class="language-php">Functions::expect('paganini')-&gt;once();
 
 Functions::expect('tween')-&gt;twice();
@@ -142,7 +138,7 @@ Functions::expect('pretty_precise')-&gt;times(3);
 Functions::expect('i_have_max_and_min')-&gt;between(2, 4);</code></pre>
 <p>There is no need to explain how it works: Mockery DSL reads like plain English.</p>
 <p>Of course, expectation on the times a function should run can be combined with arguments expectation.</p>
-<h2>Expectations on received arguments</h2>
+<h2 id="expectations-on-received-arguments">Expectations on received arguments</h2>
 <p>Below a few examples, for the full story see <a href="http://docs.mockery.io/en/latest/reference/argument_validation.html">Mockery docs</a>.</p>
 <pre><code class="language-php">// allow anything
 Functions::expect('function_name')
@@ -188,7 +184,7 @@ Functions::expect('function_name')
 Functions::expect('function_name')
     -&gt;once()
     -&gt;with(Mockery::hasKey('foo'), Mockery::contains('bar', 'baz'));</code></pre>
-<h2>Forcing behavior</h2>
+<h2 id="forcing-behavior">Forcing behavior</h2>
 <p>Excluding <code>shouldReceive</code>, all the Mockery expectation methods can be used with Brain Monkey, including
 <code>andReturn</code> or <code>andReturnUsing</code> used to enforce a function to return specific values during tests.</p>
 <p>In fact, <code>Functions::when()</code> do same thing for simple cases when no expectations are required.</p>

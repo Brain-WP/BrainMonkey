@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="author" content="Giuseppe Mazzapica">
-    <title>WordPress / Setup Brain Monkey for WordPress Tests. Brain Monkey</title>
+    <meta name="description" content="Brain Monkey is mocking utility for PHP functions and WordPress plugin API.">    <meta name="author" content="Giuseppe Mazzapica">
+    <title>Brain Monkey: Mocking utility for PHP functions and WordPress</title>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
     <link href="https://giuseppe-mazzapica.github.io/BrainMonkey/css/theme.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -74,7 +74,7 @@
                                       Why Bother
                                   </a>
                               </li>
-                                                        <li class="active">
+                                                        <li class="">
                                   <a href="https://giuseppe-mazzapica.github.io/BrainMonkey/docs/wordpress-setup.html">
                                       Setup
                                   </a>
@@ -106,24 +106,20 @@
             <div class="container-fluid">
                 <div class="row">
                     <div id="content" class="col-lg-11">
-                                                                                <ol class="breadcrumb">
-                              <li><a href="https://giuseppe-mazzapica.github.io/BrainMonkey">Brain Monkey</a></li>
-                              <li class="active">WordPress</li>
-                            </ol>
-                                                                                                        <!--
+                                                                                                                                <!--
 currentMenu: "wpsetup"
 currentSection: "WordPress"
 title: "Setup Brain Monkey for WordPress Tests"
 -->
-<h1>Setup Brain Monkey for WordPress Tests</h1>
-<h2>Testing framework agnostic</h2>
+<h1 id="setup-brain-monkey-for-wordpress-tests">Setup Brain Monkey for WordPress Tests</h1>
+<h2 id="testing-framework-agnostic">Testing framework agnostic</h2>
 <p>Brain Monkey can be used with any testing framework.
 Examples in this page will use PHPUnit, but the concepts are applicable to any testing framework.</p>
-<h2>Warning</h2>
+<h2 id="warning">Warning</h2>
 <p>The procedure below <strong>includes</strong> the setup needed for testing PHP functions, so there is <strong>no</strong> need to
 apply what said here and additionally what said in the section <em>PHP Functions / Setup</em>: steps below are enough to use
 all Brain Monkey features, including functions utilities.</p>
-<h2>Setup tests</h2>
+<h2 id="setup-tests">Setup tests</h2>
 <p>After Brain Monkey is part of the project (see <em>Getting Started / Installation</em>), to be able to use its features
 you need to <strong>require vendor autoload file</strong> before running tests (e.g. PHPUnit users will probably require it in their bootstrap file).</p>
 <p>After that you need to call a method <em>before</em> any test, and another <em>after</em> any test.</p>

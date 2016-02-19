@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="author" content="Giuseppe Mazzapica">
-    <title>WordPress / Testing Added Hooks. Brain Monkey</title>
+    <meta name="description" content="Brain Monkey is mocking utility for PHP functions and WordPress plugin API.">    <meta name="author" content="Giuseppe Mazzapica">
+    <title>Brain Monkey: Mocking utility for PHP functions and WordPress</title>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
     <link href="https://giuseppe-mazzapica.github.io/BrainMonkey/css/theme.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -84,7 +84,7 @@
                                       WordPress Testing Tools
                                   </a>
                               </li>
-                                                        <li class="active">
+                                                        <li class="">
                                   <a href="https://giuseppe-mazzapica.github.io/BrainMonkey/docs/wordpress-hooks-added.html">
                                       Testing Added Hooks
                                   </a>
@@ -106,23 +106,19 @@
             <div class="container-fluid">
                 <div class="row">
                     <div id="content" class="col-lg-11">
-                                                                                <ol class="breadcrumb">
-                              <li><a href="https://giuseppe-mazzapica.github.io/BrainMonkey">Brain Monkey</a></li>
-                              <li class="active">WordPress</li>
-                            </ol>
-                                                                                                        <!--
+                                                                                                                                <!--
 currentMenu: "wphooksadded"
 currentSection: "WordPress"
 title: "Testing Added Hooks"
 -->
-<h1>Testing Added Hooks</h1>
+<h1 id="testing-added-hooks">Testing Added Hooks</h1>
 <p>With Brain Monkey there are two ways to test some hook have been added, and with which arguments.</p>
 <p>First method (easier) makes use of WordPress functions, the second (more powerful) makes use of Brain Monkey (Mockery) expectation DSL.</p>
-<h2>Testing framework agnostic</h2>
+<h2 id="testing-framework-agnostic">Testing framework agnostic</h2>
 <p>Brain Monkey can be used with any testing framework.
 Examples in this page will use PHPUnit, but the concepts are applicable to any testing framework.</p>
 <p>Also note that test classes in this page extends the class <code>MyTestCase</code> that is assumed very similar to the one coded in the <em>WordPress / Setup</em> docs section.</p>
-<h2>Testing with WordPress functions: <code>has_action()</code> and <code>has_filter()</code></h2>
+<h2 id="testing-with-wordpress-functions">Testing with WordPress functions: <code>has_action()</code> and <code>has_filter()</code></h2>
 <p>When Brain Monkey is loaded for tests it registers all the functions of WordPress plugin API (see <em>WordPress / WordPress Testing Tools</em>).
 Among them there are <code>has_action()</code> and <code>has_filter()</code> that, just like <em>real</em> WordPress functions can be used to test if some hook (action or filter)
 has been added, and also verify the arguments.</p>
@@ -183,7 +179,7 @@ But Brain Monkey is not WordPress, and it makes these sort of things very easy. 
 <li>a static method can be identified by the class name followed by <code>::</code> and the method name followed by parenthesis, e.g. <code>'MyClass::init()'</code></li>
 <li>an invokable object (a class with a <code>__invoke()</code> method) can be identified by the class name followed by parenthesis, e.g. <code>'MyClass()'</code></li>
 </ul>
-<h2>Testing with expectations</h2>
+<h2 id="testing-with-expectations">Testing with expectations</h2>
 <p>Even if the doing tests using WordPress native functions is pretty easy, there are cases in which is not enough powerful,
 or the expectation methods are just more convenient.</p>
 <p>Moreover, Brain Monkey functions always try to mimic WordPress real functions behavior and so a call to <code>remove_action</code> or <code>remove_filter</code> can make
@@ -211,7 +207,7 @@ class MyClassTest extends MyTestCase
 <p>This is just an example, but Mockery expectations are a very powerful testing mechanism.</p>
 <p>To know more, read <a href="http://docs.mockery.io/en/latest/">Mockery documentation</a>, and have a look to <em>PHP Functions</em> doc section
 to see how it is used seamlessly in Brain Monkey.</p>
-<h2>Expectations on times are required</h2>
+<h2 id="expectations-on-times-are-required">Expectations on times are required</h2>
 <p><code>expectAdded()</code> returns a Mockery expectation object, and by default it doesn't throw any error if a created expectation object is not used, unless a specific
 times expectation is set.</p>
 <p>It means that if you use <code>Actions::expectAdded('init');</code> and nothing more, the test will pass even if <code>add_action('init')</code> is never run by code under test.</p>
@@ -224,12 +220,12 @@ Actions::expectAdded('init')-&gt;atMost()-&gt;times(3);
 Actions::expectAdded('init')-&gt;between(2, 4);
 Actions::expectAdded('init')-&gt;never();</code></pre>
 <p>See Mockery documentation and  <em>PHP Functions</em> doc section for more examples and explanation (if ever needed...).</p>
-<h2>Just a couple of things...</h2>
+<h2 id="just-a-couple-of-things">Just a couple of things...</h2>
 <ul>
-<li>expectations must be set <em>before</em> the code to be tested runs: they are called "expectations" for a reason</li>
+<li>expectations must be set <em>before</em> the code to be tested runs: they are called &quot;expectations&quot; for a reason</li>
 <li>argument validation done using <code>with()</code>, validates hook arguments, not function arguments, it means what is passed to <code>add_action()</code> or <code>add_filter()</code> <strong>excluding</strong> hook name itself</li>
 </ul>
-<h2>Don't set expectations on return values for added hooks</h2>
+<h2 id="dont-set-expectations-on-return-values-for-added-hooks">Don't set expectations on return values for added hooks</h2>
 <p>Maybe you already know that <code>add_action()</code> and <code>add_filter()</code> always return <code>true</code>.</p>
 <p>As already said, Brain Monkey always tries to make WordPress functions behave how they do in real WordPress code, for this reason Brain Monkey
 version of those functions returns <code>true</code> as well.</p>

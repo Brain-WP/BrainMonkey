@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="author" content="Giuseppe Mazzapica">
-    <title>WordPress / WordPress: Why Bother. Brain Monkey</title>
+    <meta name="description" content="Brain Monkey is mocking utility for PHP functions and WordPress plugin API.">    <meta name="author" content="Giuseppe Mazzapica">
+    <title>Brain Monkey: Mocking utility for PHP functions and WordPress</title>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
     <link href="https://giuseppe-mazzapica.github.io/BrainMonkey/css/theme.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -69,7 +69,7 @@
                                     <li>
                       <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> WordPress</a>
                       <ul>
-                                                        <li class="active">
+                                                        <li class="">
                                   <a href="https://giuseppe-mazzapica.github.io/BrainMonkey/docs/wordpress-why-bother.html">
                                       Why Bother
                                   </a>
@@ -106,16 +106,12 @@
             <div class="container-fluid">
                 <div class="row">
                     <div id="content" class="col-lg-11">
-                                                                                <ol class="breadcrumb">
-                              <li><a href="https://giuseppe-mazzapica.github.io/BrainMonkey">Brain Monkey</a></li>
-                              <li class="active">WordPress</li>
-                            </ol>
-                                                                                                        <!--
+                                                                                                                                <!--
 currentMenu: "wpwhy"
 currentSection: "WordPress"
 title: "WordPress: Why Bother"
 -->
-<h1>Brain Monkey for WordPress: Why Bother</h1>
+<h1 id="brain-monkey-for-wordpress-why-bother">Brain Monkey for WordPress: Why Bother</h1>
 <p>Just to be clear, Brain Monkey is useful for testing code wrote <em>for</em> WordPress (plugin, themes)
 not WordPress core.</p>
 <p>More specifically, it is useful to run <strong>unit tests</strong>.</p>
@@ -128,7 +124,7 @@ piece of code should work <em>per se</em>, in this way if a test fails there is 
 <p>By assuming all the external code is working perfectly, it is possible to test the behavior of the SUT (System Under Test), without any <em>interference</em>.</p>
 <p>To deepen these concepts, read <a href="http://wordpress.stackexchange.com/a/164138/35541">this answer</a> I wrote for
 WordPress Development (StackExchange) site, that also contains some tips to write better <em>testable</em> WordPress code.</p>
-<h2>If WordPress is not loaded...</h2>
+<h2 id="if-wordpress-is-not-loaded">If WordPress is not loaded...</h2>
 <p>WordPress functions are not available, and trying to run tests in that situation, tests fail with fatal errors.</p>
 <p>Unless you use Brain Monkey.</p>
 <p>It allows to mock WordPress function (just like any PHP function), and to check how they are called inside your code.</p>

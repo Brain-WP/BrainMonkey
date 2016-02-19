@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="author" content="Giuseppe Mazzapica">
-    <title>WordPress / WordPress Testing Tools. Brain Monkey</title>
+    <meta name="description" content="Brain Monkey is mocking utility for PHP functions and WordPress plugin API.">    <meta name="author" content="Giuseppe Mazzapica">
+    <title>Brain Monkey: Mocking utility for PHP functions and WordPress</title>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
     <link href="https://giuseppe-mazzapica.github.io/BrainMonkey/css/theme.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -79,7 +79,7 @@
                                       Setup
                                   </a>
                               </li>
-                                                        <li class="active">
+                                                        <li class="">
                                   <a href="https://giuseppe-mazzapica.github.io/BrainMonkey/docs/wordpress-tools.html">
                                       WordPress Testing Tools
                                   </a>
@@ -106,21 +106,17 @@
             <div class="container-fluid">
                 <div class="row">
                     <div id="content" class="col-lg-11">
-                                                                                <ol class="breadcrumb">
-                              <li><a href="https://giuseppe-mazzapica.github.io/BrainMonkey">Brain Monkey</a></li>
-                              <li class="active">WordPress</li>
-                            </ol>
-                                                                                                        <!--
+                                                                                                                                <!--
 currentMenu: "wptools"
 currentSection: "WordPress"
 title: "WordPress Testing Tools"
 -->
-<h1>WordPress Testing Tools</h1>
+<h1 id="wordpress-testing-tools">WordPress Testing Tools</h1>
 <p>The sole ability to mocking function is a great help on testing WordPress code.</p>
 <p>All WordPress functions can be mocked and tested using the techniques described in the <em>PHP Functions</em> section, they are PHP functions, after all.</p>
 <p>However, to test WordPress code in isolation, without a bunch of bootstrap code for every test, a more fine grained control of plugin API functions is required.</p>
 <p>This is exactly what Brain Monkey offers.</p>
-<h2>Defined functions</h2>
+<h2 id="defined-functions">Defined functions</h2>
 <p>Following functions are defined by Brain Monkey when it is loaded for tests:</p>
 <ul>
 <li><code>add_action()</code></li>
@@ -158,7 +154,7 @@ $title = apply_filters('the_title', $post['post_title']);</code></pre>
 <li>perform some callback when an filter is applied, being able to access passed arguments and to return specific values</li>
 </ul>
 <p>guess what, Brain Monkey allows to do all of this and even more. And it does that using its straightforward and human readable syntax.</p>
-<h2>Note on Brain Monkey classes</h2>
+<h2 id="note-on-brain-monkey-classes">Note on Brain Monkey classes</h2>
 <p>After Brain Monkey is properly setup to be used in tests (see <em>Wordpress / Setup</em>) it is possible to access to its features in 2 ways:</p>
 <ul>
 <li>by using the <code>Brain\Monkey</code> class that gives access to all the features</li>

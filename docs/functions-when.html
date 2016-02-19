@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="author" content="Giuseppe Mazzapica">
-    <title>PHP Functions / Patching functions with when(). Brain Monkey</title>
+    <meta name="description" content="Brain Monkey is mocking utility for PHP functions and WordPress plugin API.">    <meta name="author" content="Giuseppe Mazzapica">
+    <title>Brain Monkey: Mocking utility for PHP functions and WordPress</title>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
     <link href="https://giuseppe-mazzapica.github.io/BrainMonkey/css/theme.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -54,7 +54,7 @@
                                       Setup
                                   </a>
                               </li>
-                                                        <li class="active">
+                                                        <li class="">
                                   <a href="https://giuseppe-mazzapica.github.io/BrainMonkey/docs/functions-when.html">
                                       Patching with when()
                                   </a>
@@ -106,22 +106,20 @@
             <div class="container-fluid">
                 <div class="row">
                     <div id="content" class="col-lg-11">
-                                                                                <ol class="breadcrumb">
-                              <li><a href="https://giuseppe-mazzapica.github.io/BrainMonkey">Brain Monkey</a></li>
-                              <li class="active">PHP Functions</li>
-                            </ol>
-                                                                                                        <!--
+                                                                                                                                <!--
 currentMenu: "functionswhen"
 currentSection: "PHP Functions"
 title: "Patching functions with when()"
 -->
-<h1>Patching functions with when()</h1>
+<h1 id="patching-functions-with-when">Patching functions with when()</h1>
 <p>The first method Brain Monkey offers to monkey patch a function is <code>when()</code>.
 This method have to be used to <strong>set a behavior</strong> for functions.</p>
-<p><code>when()</code> and 3 related methods are used to define functions (if not defined yet) and:</p>
+<p><code>when()</code> and 5 related methods are used to define functions (if not defined yet) and:</p>
 <ul>
 <li>make them return a specific value</li>
 <li>make them return one of the received arguments</li>
+<li>make them echo a specific value</li>
+<li>make them echo one of the received arguments</li>
 <li>make them behave just like another callback</li>
 </ul>
 <p>For the sake of readability, in all the code samples below I'll assume that an <code>use</code> statement is in place:</p>
@@ -147,6 +145,18 @@ echo and_the_third_for_me('A', 'B', 'C'); // echoes "C"</code></pre>
 <pre><code class="language-php">Functions::when('needs_the_third')-&gt;returnArg(3);
 
 echo needs_the_third('A', 'B'); // throws an exception because required 3rd argument, but received 2</code></pre>
+<h2><code>justEcho()</code></h2>
+<p>Similar to <code>justReturn()</code>, it makes the mocked function echo some value instead of returning it.</p>
+<pre><code class="language-php">Functions::when('a_undefined_function')-&gt;justEcho('Cool!');
+
+a_undefined_function(); // echoes "Cool!"</code></pre>
+<h2><code>echoArg()</code></h2>
+<p>Similar to <code>returnArg()</code>, it makes the mocked function echo some received argument instead of returning it.</p>
+<pre><code class="language-php">Functions::when('echo_the_first')-&gt;echoArg(); // is the same of -&gt;echoArg(1)
+Functions::when('echo_the_second')-&gt;echoArg(2);
+
+echo_the_first('A', 'B', 'C'); // echoes "A"
+echo_the_second('A', 'B', 'C'); // echoes "B"</code></pre>
 <h2><code>alias()</code></h2>
 <p>The last of the when-related methods allows to make a function behave just like another callback.
 The replacing function can be anything that can be run: a core function or a custom one, a class method, a closure...</p>
