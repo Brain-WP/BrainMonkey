@@ -4,7 +4,7 @@ layout: home
 
 # Brain Monkey
 
-[![Travis CI status](https://travis-ci.org/Giuseppe-Mazzapica/BrainMonkey.svg)](https://travis-ci.org/Giuseppe-Mazzapica/BrainMonkey)
+[![Travis CI status](https://travis-ci.org/Brain-WP/BrainMonkey.svg?branch=master)](https://travis-ci.org/Brain-WP/BrainMonkey)
 
 Brain Monkey is a tests utility for PHP.
 
