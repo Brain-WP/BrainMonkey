@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Brain Monkey is mocking utility for PHP functions and WordPress plugin API.">    <meta name="author" content="Giuseppe Mazzapica">
-    <title>Brain Monkey: Mocking utility for PHP functions and WordPress</title>
+        <meta name="author" content="Giuseppe Mazzapica">
+    <title>WordPress / Testing Added Hooks. Brain Monkey</title>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
     <link href="https://brain-wp.github.io/BrainMonkey/css/theme.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -84,7 +84,7 @@
                                       WordPress Testing Tools
                                   </a>
                               </li>
-                                                        <li class="">
+                                                        <li class="active">
                                   <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-hooks-added.html">
                                       Testing Added Hooks
                                   </a>
@@ -106,12 +106,11 @@
             <div class="container-fluid">
                 <div class="row">
                     <div id="content" class="col-lg-11">
-                                                                                                                                <!--
-currentMenu: "wphooksadded"
-currentSection: "WordPress"
-title: "Testing Added Hooks"
--->
-<h1 id="testing-added-hooks">Testing Added Hooks</h1>
+                                                                                <ol class="breadcrumb">
+                              <li><a href="https://brain-wp.github.io/BrainMonkey">Brain Monkey</a></li>
+                              <li class="active">WordPress</li>
+                            </ol>
+                                                                                                        <h1 id="testing-added-hooks">Testing Added Hooks</h1>
 <p>With Brain Monkey there are two ways to test some hook have been added, and with which arguments.</p>
 <p>First method (easier) makes use of WordPress functions, the second (more powerful) makes use of Brain Monkey (Mockery) expectation DSL.</p>
 <h2 id="testing-framework-agnostic">Testing framework agnostic</h2>
@@ -185,8 +184,8 @@ or the expectation methods are just more convenient.</p>
 <p>Moreover, Brain Monkey functions always try to mimic WordPress real functions behavior and so a call to <code>remove_action</code> or <code>remove_filter</code> can make
 impossible to test some code using <code>has_action</code> and <code>has_filter</code>, because hooks are actually removed.</p>
 <p>The solution is to use expectations, provided in Brain Monkey by Mockery. Assuming the code to test is last version above of <code>MyClass</code>, we can test it like so:</p>
-<pre><code class="language-php">use Brain\Monkey\Actions;
-use Brain\Monkey\Filters;
+<pre><code class="language-php">use Brain\Monkey\WP\Actions;
+use Brain\Monkey\WP\Filters;
 
 class MyClassTest extends MyTestCase
 {
