@@ -109,8 +109,8 @@ impossible to test some code using `has_action` and `has_filter`, because hooks 
 The solution is to use expectations, provided in Brain Monkey by Mockery. Assuming the code to test is last version above of `MyClass`, we can test it like so:
 
 ```php
-use Brain\Monkey\Actions;
-use Brain\Monkey\Filters;
+use Brain\Monkey\WP\Actions;
+use Brain\Monkey\WP\Filters;
 
 class MyClassTest extends MyTestCase
 {
