@@ -10,8 +10,6 @@
 
 namespace Brain\Monkey\WP;
 
-use Brain\Monkey\MockeryBridge;
-use Mockery;
 use LogicException;
 use InvalidArgumentException;
 
@@ -22,28 +20,27 @@ use InvalidArgumentException;
  */
 class Filters extends Hooks
 {
+    /**
+     * @param  string                             $filter
+     * @return \Brain\Monkey\WP\MockeryHookBridge
+     */
     public static function expectApplied($filter)
     {
-        $type = self::FILTER;
-        $sanitized = self::sanitizeHookName($filter);
-        $mock = Mockery::mock("apply_{$sanitized}");
-        $expectation = $mock->shouldReceive("apply_{$type}_{$sanitized}");
-        parent::instance($type)->mocks[$sanitized]['run'] = $mock;
-
-        return new MockeryHookBridge(new MockeryBridge($expectation, __CLASS__));
+        return self::createBridgeFor(self::FILTER, $filter, 'run');
     }
 
+    /**
+     * @param  string                             $filter
+     * @return \Brain\Monkey\WP\MockeryHookBridge
+     */
     public static function expectAdded($filter)
     {
-        $type = self::FILTER;
-        $sanitized = self::sanitizeHookName($filter);
-        $mock = Mockery::mock("add_{$sanitized}");
-        $expectation = $mock->shouldReceive("add_{$type}_{$sanitized}");
-        parent::instance($type)->mocks[$sanitized]['add'] = $mock;
-
-        return new MockeryHookBridge(new MockeryBridge($expectation, __CLASS__));
+        return self::createBridgeFor(self::FILTER, $filter, 'add');
     }
 
+    /**
+     * @inheritdoc
+     */
     public function add()
     {
         $args = func_get_args();
@@ -52,6 +49,9 @@ class Filters extends Hooks
         return call_user_func_array([$this, 'addHook'], $args);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function remove()
     {
         $args = func_get_args();
@@ -60,6 +60,9 @@ class Filters extends Hooks
         return call_user_func_array([$this, 'removeHook'], $args);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function run()
     {
         $args = func_get_args();
@@ -68,6 +71,9 @@ class Filters extends Hooks
         return call_user_func_array([$this, 'runHook'], $args);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function runRef()
     {
         if (func_num_args() < 2 || ! is_array(func_get_arg(1))) {
@@ -79,6 +85,9 @@ class Filters extends Hooks
         return call_user_func_array([$this, 'run'], $args);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function has()
     {
         $args = func_get_args();
@@ -102,6 +111,9 @@ class Filters extends Hooks
         return in_array($filter, $this->done, true) ? array_count_values($this->done)[$filter] : 0;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function clean()
     {
         $this->cleanInstance($this);

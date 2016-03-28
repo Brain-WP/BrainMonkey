@@ -10,6 +10,7 @@
 
 namespace Brain\Monkey\WP;
 
+use Brain\Monkey\MockeryBridge;
 use Mockery;
 use Closure;
 use InvalidArgumentException;
@@ -238,7 +239,7 @@ abstract class Hooks
         if ($rawHook !== $hook && ! isset(self::$names[$hook])) {
             self::$names[$hook] = $rawHook;
         }
-        // returning value is always null for functions
+        // returning value is always null for actions
         $value = $type === self::FILTER && func_num_args() > 2 ? func_get_arg(2) : null;
         self::$current = $hook;
         $instance->done[] = $hook;
@@ -367,6 +368,36 @@ abstract class Hooks
     }
 
     /**
+     * @param  string                             $type
+     * @param  string                             $hook
+     * @param  string                             $action
+     * @return \Brain\Monkey\WP\MockeryHookBridge
+     */
+    protected static function createBridgeFor($type, $hook, $action = 'add')
+    {
+        $hook = self::sanitizeHookName($hook);
+        /** @var static $instance */
+        $instance = self::instance($type);
+        $prefix = $action;
+        ($action === 'run') and $prefix = $type === self::FILTER ? 'apply' : 'do';
+        $method = "{$prefix}_{$type}_{$hook}";
+
+        $mock = null;
+        is_array($instance->mocks) or $instance->mocks = [];
+        if (! isset($instance->mocks[$hook]) || ! isset($instance->mocks[$hook][$action])) {
+            isset($instance->mocks[$hook]) or $instance->mocks[$hook] = [];
+            $mock = Mockery::mock("{$prefix}_{$hook}");
+            $instance->mocks[$hook][$action] = $mock;
+        }
+
+        $mock = $instance->mocks[$hook][$action];
+        $expectation = $mock->shouldReceive($method);
+        $parent = $type === self::FILTER ? '\Brain\Monkey\WP\Filters' : '\Brain\Monkey\WP\Actions';
+
+        return new MockeryHookBridge(new MockeryBridge($expectation, $parent));
+    }
+
+    /**
      * @param  string $name
      * @return string
      */
@@ -377,7 +408,7 @@ abstract class Hooks
             array_values(self::$sanitize_map),
             $name
         );
-        $clean = preg_replace('/[^\w]/i', '__', $replaced);
+        $clean = preg_replace('/[^a-z0-9_]/i', '__', $replaced);
         if (is_numeric($clean[0])) {
             $clean = '_'.$clean;
         }

@@ -122,6 +122,7 @@ class ActionFireTest extends PHPUnit_Framework_TestCase
               ->whenHappen(function ($yes) use (&$works) {
                   $works = $yes;
               });
+
         $sum = 0;
         Monkey::actions()->expectFired('sum')
               ->times(3)
@@ -161,5 +162,23 @@ class ActionFireTest extends PHPUnit_Framework_TestCase
     {
         // well... that unicorns exist is a valid logic exception
         Monkey::actions()->expectFired('foo')->zeroOrMoreTimes()->andReturn('Unicorns exist!');
+    }
+
+    public function testFiredSameActionDifferentArguments()
+    {
+        Monkey::actions()
+              ->expectFired('double_action')
+              ->once()
+              ->ordered()
+              ->with('arg_1');
+
+        Monkey::actions()
+              ->expectFired('double_action')
+              ->once()
+              ->ordered()
+              ->with('arg_2');
+
+        do_action('double_action', 'arg_1');
+        do_action('double_action', 'arg_2');
     }
 }

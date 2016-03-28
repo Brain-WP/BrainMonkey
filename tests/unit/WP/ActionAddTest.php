@@ -142,6 +142,32 @@ class ActionAddTest extends PHPUnit_Framework_TestCase
         assertTrue(Monkey::actions()->has('init', 'strtoupper', 20));
     }
 
+    public function testAddedSameActionDifferentArguments()
+    {
+        $f1 = function () {
+
+        };
+
+        $f2 = function () {
+
+        };
+
+        Monkey::actions()
+              ->expectAdded('double_action')
+              ->once()
+              ->ordered()
+              ->with($f1);
+
+        Monkey::actions()
+              ->expectAdded('double_action')
+              ->once()
+              ->ordered()
+              ->with($f2);
+
+        add_action('double_action', $f1);
+        add_action('double_action', $f2);
+    }
+
     public function testRemoveAction()
     {
         Actions::expectAdded('init')->once();
