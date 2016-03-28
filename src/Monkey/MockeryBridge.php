@@ -65,6 +65,7 @@ class MockeryBridge
         $this->expectation = $expectation;
         $name = $this->expectation->__toString();
         if (is_string($parent) && class_exists($parent)) {
+            $parent = trim($parent, '\\');
             $reflection = new \ReflectionClass($parent);
             $this->isHook = $reflection->isSubclassOf('Brain\Monkey\WP\Hooks');
             $this->isAction =

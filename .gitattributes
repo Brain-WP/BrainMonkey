@@ -1,5 +1,5 @@
 # Auto detect text files and perform LF normalization
-* text=auto
+text eol=lf
 
 tests/ export-ignore
 .travis.yml export-ignore

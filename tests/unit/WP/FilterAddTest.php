@@ -148,6 +148,32 @@ class FilterAddTest extends PHPUnit_Framework_TestCase
         add_filter('the_excerpt', [$this, __FUNCTION__], 30);
     }
 
+    public function testAddedSameFilterDifferentArguments()
+    {
+        $f1 = function () {
+
+        };
+
+        $f2 = function () {
+
+        };
+
+        Monkey::filters()
+              ->expectAdded('double_filter')
+              ->once()
+              ->ordered()
+              ->with($f1, 10);
+
+        Monkey::filters()
+              ->expectAdded('double_filter')
+              ->once()
+              ->ordered()
+              ->with($f2, 20);
+
+        add_filter('double_filter', $f1, 10);
+        add_filter('double_filter', $f2, 20);
+    }
+
     public function testRemoveAction()
     {
         Filters::expectAdded('the_title')->once();

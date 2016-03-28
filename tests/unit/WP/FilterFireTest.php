@@ -145,4 +145,31 @@ class FilterFireTest extends PHPUnit_Framework_TestCase
         assertSame('Great!', apply_filters('can_I_ask', 'How is Monkey?'));
         assertSame('Meh', apply_filters('can_I_ask', 'How is Milk?'));
     }
+
+    public function testApplySameFilterDifferentArguments()
+    {
+        $obj = new \stdClass();
+
+        Monkey::filters()
+              ->expectApplied('double_filter')
+              ->once()
+              ->ordered()
+              ->with('x', $obj, 'x');
+
+        Monkey::filters()
+              ->expectApplied('double_filter')
+              ->once()
+              ->ordered()
+              ->with('x', $obj, 'y');
+
+        Monkey::filters()
+              ->expectApplied('double_filter')
+              ->once()
+              ->ordered()
+              ->with('x', $obj, 'x');
+
+        apply_filters('double_filter', 'x', $obj, 'x');
+        apply_filters('double_filter', 'x', $obj, 'y');
+        apply_filters('double_filter', 'x', $obj, 'x');
+    }
 }

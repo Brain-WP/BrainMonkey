@@ -185,7 +185,10 @@ class Functions
 
             $value = func_num_args() > $n0 ? func_get_arg($n0) : '';
 
-            if (! is_scalar($value) && ! (is_object($value) && method_exists($value, '__toString'))) {
+            if (
+                ! is_scalar($value)
+                && ! (is_object($value) && method_exists($value, '__toString'))
+            ) {
                 throw new RuntimeException(
                     sprintf(
                         "%s received as argument %d a %s, can't echo it.",
@@ -211,7 +214,7 @@ class Functions
     }
 
     /**
-     * @param int $n
+     * @param  int $n
      * @return int
      */
     private function ensureArg($n)

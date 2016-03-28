@@ -10,7 +10,6 @@
 
 namespace Brain\Monkey\WP;
 
-use Brain\Monkey\MockeryBridge;
 use Mockery;
 use InvalidArgumentException;
 use LogicException;
@@ -31,13 +30,7 @@ class Actions extends Hooks
      */
     public static function expectFired($action)
     {
-        $type = self::ACTION;
-        $sanitized = self::sanitizeHookName($action);
-        $mock = Mockery::mock("do_{$sanitized}");
-        $expectation = $mock->shouldReceive("do_{$type}_{$sanitized}");
-        parent::instance($type)->mocks[$sanitized]['run'] = $mock;
-
-        return new MockeryHookBridge(new MockeryBridge($expectation, __CLASS__));
+        return self::createBridgeFor(self::ACTION, $action, 'run');
     }
 
     /**
@@ -48,13 +41,7 @@ class Actions extends Hooks
      */
     public static function expectAdded($action)
     {
-        $type = self::ACTION;
-        $sanitized = self::sanitizeHookName($action);
-        $mock = Mockery::mock("add_{$sanitized}");
-        $expectation = $mock->shouldReceive("add_{$type}_{$sanitized}");
-        parent::instance($type)->mocks[$sanitized]['add'] = $mock;
-
-        return new MockeryHookBridge(new MockeryBridge($expectation, __CLASS__));
+        return self::createBridgeFor(self::ACTION, $action, 'add');
     }
 
     /**
