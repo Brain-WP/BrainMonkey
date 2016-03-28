@@ -22,7 +22,6 @@ use Mockery;
  */
 class FunctionsTest extends PHPUnit_Framework_TestCase
 {
-
     protected function tearDown()
     {
         Monkey::tearDown();
@@ -128,11 +127,13 @@ class FunctionsTest extends PHPUnit_Framework_TestCase
         Functions::expect('issue5')
                  ->with(true)
                  ->once()
+                 ->ordered()
                  ->andReturn('First!');
 
         Functions::expect('issue5')
                  ->with(false)
                  ->once()
+                 ->ordered()
                  ->andReturn('Second!');
 
         assertSame('First!', issue5(true));
@@ -152,7 +153,6 @@ class FunctionsTest extends PHPUnit_Framework_TestCase
         $this->expectOutputString('');
         i_do_not_exists();
     }
-
 
     /**
      * @expectedException \InvalidArgumentException
@@ -182,7 +182,6 @@ class FunctionsTest extends PHPUnit_Framework_TestCase
         Functions::when('i_do_not_exists')->justEcho(new \stdClass());
         i_do_not_exists();
     }
-
 
     public function testEchoArg()
     {
