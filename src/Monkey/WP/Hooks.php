@@ -180,7 +180,7 @@ abstract class Hooks
         $parsed = $this->args(array_slice(func_get_args(), 1), $type);
         $data = reset($parsed);
         // hook name, e.g. 'init'
-        $hook = $this->sanitizeHookName($data['hook']);
+        $hook = self::sanitizeHookName($data['hook']);
         if (! isset($instance->hooks[$hook])) {
             $instance->hooks[$hook] = [];
             self::$names[$hook] = $data['hook'];
@@ -206,7 +206,7 @@ abstract class Hooks
         $parsed = $this->args(array_slice(func_get_args(), 1), $type, true);
         $data = reset($parsed);
         // hook name, e.g. 'init'
-        $hook = $this->sanitizeHookName($data['hook']);
+        $hook = self::sanitizeHookName($data['hook']);
         if (isset($instance->hooks[$hook]) && is_array($instance->hooks[$hook])) {
             $hooks = $instance->hooks[$hook];
             foreach ($hooks as $key => $hookData) {
@@ -235,7 +235,7 @@ abstract class Hooks
         }
         $rawHook = array_shift($args);
         // hook name, e.g. 'init'
-        $hook = $this->sanitizeHookName($rawHook);
+        $hook = self::sanitizeHookName($rawHook);
         if ($rawHook !== $hook && ! isset(self::$names[$hook])) {
             self::$names[$hook] = $rawHook;
         }
@@ -266,7 +266,7 @@ abstract class Hooks
         $parsed = $this->args(array_slice(func_get_args(), 1), $type, true);
         $data = reset($parsed);
         // hook name, e.g. 'init'
-        $hook = $this->sanitizeHookName($data['hook']);
+        $hook = self::sanitizeHookName($data['hook']);
         if (isset($instance->hooks[$hook]) && is_array($instance->hooks[$hook])) {
             foreach ($instance->hooks[$hook] as $key => $hookData) {
                 if ($hookData === $data) {
@@ -401,13 +401,9 @@ abstract class Hooks
      * @param  string $name
      * @return string
      */
-    protected static function sanitizeHookName($name)
+    private static function sanitizeHookName($name)
     {
-        $replaced = str_replace(
-            array_keys(self::$sanitize_map),
-            array_values(self::$sanitize_map),
-            $name
-        );
+        $replaced = strtr($name, self::$sanitize_map);
         $clean = preg_replace('/[^a-z0-9_]/i', '__', $replaced);
         if (is_numeric($clean[0])) {
             $clean = '_'.$clean;
