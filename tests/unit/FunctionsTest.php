@@ -233,4 +233,51 @@ class FunctionsTest extends PHPUnit_Framework_TestCase
         Functions::when('i_do_not_exists')->echoArg(1);
         i_do_not_exists(new \stdClass());
     }
+
+    /**
+     * @expectedException \PHPUnit_Framework_Error
+     * @expectedExceptionMessageRegExp /since_i_am_not_defined_i_will_trigger_error.+not defined/
+     */
+    public function testUndefinedFunctionTriggerErrorRightAfterDefinition()
+    {
+        Functions::when('since_i_am_not_defined_i_will_trigger_error');
+        since_i_am_not_defined_i_will_trigger_error();
+    }
+
+    /**
+     * @depends testUndefinedFunctionTriggerErrorRightAfterDefinition
+     */
+    public function testUndefinedFunctionSurviveTests()
+    {
+        assertTrue(function_exists('since_i_am_not_defined_i_will_trigger_error'));
+    }
+
+    /**
+     * @depends testUndefinedFunctionSurviveTests
+     * @expectedException \PHPUnit_Framework_Error
+     * @expectedExceptionMessageRegExp /since_i_am_not_defined_i_will_trigger_error.+not defined/
+     */
+    public function testSurvivedFunctionStillTriggerError()
+    {
+        since_i_am_not_defined_i_will_trigger_error();
+    }
+
+    /**
+     * @depends testSurvivedFunctionStillTriggerError
+     */
+    public function testNothingJustMockASurvivedFunction()
+    {
+        Functions::when('since_i_am_not_defined_i_will_trigger_error')->justReturn(1234567890);
+        assertSame(1234567890, since_i_am_not_defined_i_will_trigger_error());
+    }
+
+    /**
+     * @depends testNothingJustMockASurvivedFunction
+     * @expectedException \PHPUnit_Framework_Error
+     * @expectedExceptionMessageRegExp /since_i_am_not_defined_i_will_trigger_error.+not defined/
+     */
+    public function testSurvivedFunctionStillTriggerErrorAfterBeingMocked()
+    {
+        since_i_am_not_defined_i_will_trigger_error();
+    }
 }
