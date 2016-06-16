@@ -55,7 +55,11 @@ class Functions
         $instance = new static();
         $instance->name = $namespace ? $namespace.'\\'.$name : $name;
         if (! function_exists($instance->name)) {
-            eval(($namespace ? "namespace {$namespace};\n" : '')."function {$name}() {};");
+            $fn = $namespace ? "namespace {$namespace};\n" : '';
+            $fn .= "function {$name}() {";
+            $fn .= " trigger_error('{$name} is not defined nor mocked in this test.', E_USER_ERROR);";
+            $fn .= "}";
+            eval($fn);
         }
 
         return $instance;
