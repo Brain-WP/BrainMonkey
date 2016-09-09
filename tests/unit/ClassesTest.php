@@ -176,7 +176,7 @@ class ClassesTest extends PHPUnit_Framework_TestCase
         assertSame('namespaced', $myNameSpacedClass->returnSomething());
     }
 
-    public function testSameFunctionDifferentArguments()
+    public function testSameMethodDifferentArguments()
     {
         Classes::expect('MyClass::returnSomething')
             ->with(true)
