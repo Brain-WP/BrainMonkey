@@ -70,12 +70,12 @@ class FilterFireTest extends PHPUnit_Framework_TestCase
 
     public function testApplyApplied()
     {
-        apply_filters('foo');
+        apply_filters('foo.bar');
         apply_filters('bar', 'baz');
         apply_filters('bar', ['foo', 'bar']);
         apply_filters_ref_array('by_ref', ['foo', 'bar', 'baz']);
 
-        assertSame(1, Monkey::filters()->applied('foo'));
+        assertSame(1, Monkey::filters()->applied('foo.bar'));
         assertSame(2, Monkey::filters()->applied('bar'));
         assertSame(1, Monkey::filters()->applied('by_ref'));
         assertSame(0, Monkey::filters()->applied('not me'));

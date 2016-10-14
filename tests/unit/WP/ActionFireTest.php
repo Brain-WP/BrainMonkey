@@ -78,12 +78,12 @@ class ActionFireTest extends PHPUnit_Framework_TestCase
 
     public function testDoDid()
     {
-        do_action('foo');
+        do_action('foo.bar');
         do_action('bar', 'baz');
         do_action('bar', ['foo', 'bar']);
         do_action_ref_array('by_ref', ['foo', 'bar', 'baz']);
 
-        assertSame(1, did_action('foo'));
+        assertSame(1, did_action('foo.bar'));
         assertSame(2, did_action('bar'));
         assertSame(1, did_action('by_ref'));
         assertSame(0, did_action('not me'));
@@ -91,12 +91,12 @@ class ActionFireTest extends PHPUnit_Framework_TestCase
 
     public function testDoDidWithMethods()
     {
-        do_action('foo');
+        do_action('foo.bar');
         do_action('bar', 'baz');
         do_action('bar', ['foo', 'bar']);
         do_action_ref_array('by_ref', ['foo', 'bar', 'baz']);
 
-        assertSame(1, Monkey::actions()->did('foo'));
+        assertSame(1, Monkey::actions()->did('foo.bar'));
         assertSame(2, Monkey::actions()->did('bar'));
         assertSame(1, Monkey::actions()->did('by_ref'));
         assertSame(0, Monkey::actions()->did('not me'));

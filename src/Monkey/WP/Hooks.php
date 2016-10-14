@@ -233,8 +233,10 @@ abstract class Hooks
         if (empty($args) || ! is_string(reset($args))) {
             throw new LogicException("To fire a {$type} its name is required and has to be a string.");
         }
-        $rawHook = array_shift($args);
         // hook name, e.g. 'init'
+        $rawHook = array_shift($args);
+        // sanitized hook name, where anything that does not match [a-zA-Z0-9_] is removed.
+        // this is done because hooks becomes class methods, and special chars are not allowed there
         $hook = self::sanitizeHookName($rawHook);
         if ($rawHook !== $hook && ! isset(self::$names[$hook])) {
             self::$names[$hook] = $rawHook;
@@ -242,7 +244,8 @@ abstract class Hooks
         // returning value is always null for actions
         $value = $type === self::FILTER && func_num_args() > 2 ? func_get_arg(2) : null;
         self::$current = $hook;
-        $instance->done[] = $hook;
+        // This will be used to mock `did_action` so we have to store the raw hook
+        $instance->done[] = $rawHook;
         if (isset($instance->mocks[$hook]) && isset($instance->mocks[$hook]['run'])) {
             /** @var \Mockery\Expectation $mock */
             $mock = $instance->mocks[$hook]['run'];
