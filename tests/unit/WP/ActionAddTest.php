@@ -122,6 +122,13 @@ class ActionAddTest extends PHPUnit_Framework_TestCase
         assertFalse(Monkey::actions()->has('bar', get_class($this).'->'.__FUNCTION__.'()', 20));
     }
 
+    public function testAddWithoutCallback()
+    {
+        assertFalse(Monkey::actions()->has('init'));
+        add_action('init', [$this, __FUNCTION__], 20);
+        assertTrue(Monkey::actions()->has('init'));
+    }
+
     public function testExpectAdded()
     {
         Actions::expectAdded('init')->times(3)->with(

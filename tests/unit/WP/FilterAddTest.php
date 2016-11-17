@@ -119,6 +119,13 @@ class FilterAddTest extends PHPUnit_Framework_TestCase
         assertFalse(Monkey::filters()->has('bar', $name, 20));
     }
 
+    public function testAddWithoutCallback()
+    {
+        assertFalse(Monkey::filters()->has('the_title'));
+        add_filter('the_title', 'strtolower', 30, 1);
+        assertTrue(Monkey::filters()->has('the_title'));
+    }
+
     public function testExpectAdded()
     {
         Filters::expectAdded('the_title')->times(3)->with(

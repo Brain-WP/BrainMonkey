@@ -266,7 +266,13 @@ abstract class Hooks
     {
         /** @var \Brain\Monkey\WP\Actions|\Brain\Monkey\WP\Filters $instance */
         $instance = self::instance($type);
-        $parsed = $this->args(array_slice(func_get_args(), 1), $type, true);
+        $hookArgs = array_slice(func_get_args(), 1);
+        $hookArgsCount = count($hookArgs);
+        // We are checking just if the hook has *any* callback attached
+        if ($hookArgsCount === 1 && is_string($hookArgs[0])) {
+            return ! empty($instance->hooks[self::sanitizeHookName($hookArgs[0])]);
+        }
+        $parsed = $this->args($hookArgs, $type, true);
         $data = reset($parsed);
         // hook name, e.g. 'init'
         $hook = self::sanitizeHookName($data['hook']);
