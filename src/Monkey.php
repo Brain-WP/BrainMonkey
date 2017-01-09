@@ -69,7 +69,7 @@ class Monkey
     public static function tearDown()
     {
         Functions::__flush();
-        Patchwork\undoAll();
+        Patchwork\restoreAll();
         Mockery::close();
     }
 
