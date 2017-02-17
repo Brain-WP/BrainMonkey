@@ -100,7 +100,7 @@ class Functions
      */
     private static function check($functionName)
     {
-        $names = is_string($functionName) ? explode('\\', $functionName) : false;
+        $names = is_string($functionName) ? explode('\\', ltrim('\\', $functionName)) : false;
         $valid = function ($n) {
             return is_string($n) && preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $n);
         };
