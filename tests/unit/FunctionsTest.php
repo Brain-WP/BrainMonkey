@@ -280,4 +280,8 @@ class FunctionsTest extends PHPUnit_Framework_TestCase
     {
         since_i_am_not_defined_i_will_trigger_error();
     }
+
+	public function testTranslationFunction() {
+		assertSame( 'monkeybrain', __( 'monkeybrain', 'default' ) );
+	}
 }
