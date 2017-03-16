@@ -58,6 +58,6 @@ All the rest is joy.
 
 ## PHP versions compatibility
 
-Currently, Brain Monkey supports PHP from 5.4.x to 5.6.x.
+Currently, Brain Monkey supports PHP 5.4+
 
 At the moment, HHVM is **not** supported for function testing, but WordPress plugin API test utilities works seamlessly even there.
