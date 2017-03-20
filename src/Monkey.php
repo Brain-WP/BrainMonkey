@@ -12,6 +12,7 @@ namespace Brain;
 
 use Brain\Monkey\WP\Hooks;
 use Brain\Monkey\Functions;
+use Brain\Monkey\Classes;
 use Patchwork;
 use Mockery;
 use ReflectionClass as Reflection;
@@ -69,6 +70,7 @@ class Monkey
     public static function tearDown()
     {
         Functions::__flush();
+        Classes::__flush();
         Patchwork\undoAll();
         Mockery::close();
     }
@@ -112,6 +114,18 @@ class Monkey
     public static function functions()
     {
         return new self('Brain\Monkey\Functions');
+    }
+
+    /**
+     * Returns an instance of the Brain\Monkey\Classes class
+     *
+     * We cannot use return new self() here as it leads to a "Cannot bind an instance to a static closure" error.
+     *
+     * @return \Brain\Monkey
+     */
+    public static function classes()
+    {
+        return new \Brain\Monkey\Classes();
     }
 
     /**

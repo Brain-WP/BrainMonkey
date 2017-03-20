@@ -21,3 +21,6 @@ require_once $autoload_path.'antecedent/patchwork/Patchwork.php';
 require_once $autoload_path.'phpunit/phpunit/src/Framework/Assert/Functions.php';
 require_once $autoload_path.'autoload.php';
 unset($autoload_path);
+
+//In order to mock hard-coded class dependencies we need to define those classes we wish to mock
+require_once __DIR__ . '/unit/classes.php';
