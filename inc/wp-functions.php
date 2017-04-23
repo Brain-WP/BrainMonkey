@@ -133,3 +133,9 @@ if (! function_exists('current_filter')) {
         );
     }
 }
+
+if (! function_exists('__')) {
+	function __( $text, $domain = 'default' ) {
+		return $text;
+	}
+}
