@@ -8,9 +8,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Brain\Monkey\Hooks\Exception;
+namespace Brain\Monkey\Hook\Exception;
 
-use Brain\Monkey\Hooks\HookStorage;
+use Brain\Monkey\Hook\HookStorage;
 
 /**
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>

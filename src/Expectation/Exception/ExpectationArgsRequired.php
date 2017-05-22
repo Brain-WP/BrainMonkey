@@ -26,7 +26,7 @@ class ExpectationArgsRequired extends Exception
      */
     public static function forExpectationType(ExpectationTarget $target)
     {
-        $type = '';
+        $type = 'given';
 
         switch ($target->type()) {
             case ExpectationTarget::TYPE_ACTION_ADDED:

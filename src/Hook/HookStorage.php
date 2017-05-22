@@ -8,11 +8,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Brain\Monkey\Hooks;
+namespace Brain\Monkey\Hook;
 
-use Brain\Monkey\Names\CallbackStringForm;
+use Brain\Monkey\Name\CallbackStringForm;
 
 /**
+ * A simple stack data structure built around two arrays that maps hook names to the arguments
+ * used to add or execute them.
+ *
+ * It is used to allow testing for hook being added/removed/executed also checking for the arguments
+ * used.
+ *
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @package BrainMonkey
  * @license http://opensource.org/licenses/MIT MIT
@@ -86,6 +92,9 @@ final class HookStorage
         }
 
         $removed and $this->storage[self::ADDED][$type][$hook] = array_values($all);
+        if ( ! $this->storage[self::ADDED][$type][$hook]) {
+            unset($this->storage[self::ADDED][$type][$hook]);
+        }
 
         return $removed > 0;
     }
@@ -128,11 +137,11 @@ final class HookStorage
      * @param string $hook
      * @param array  $args
      * @return static
-     * @throws \Brain\Monkey\Hooks\Exception\InvalidHookArgument
+     * @throws \Brain\Monkey\Hook\Exception\InvalidHookArgument
      */
     private function pushToStorage($key, $type, $hook, array $args)
     {
-        if ( ! is_string($type)) {
+        if ($type !== self::ACTIONS && $type !== self::FILTERS) {
             throw Exception\InvalidHookArgument::forInvalidType($type);
         }
 
@@ -141,7 +150,7 @@ final class HookStorage
         }
 
         // do_action() is the only of target functions that can be called without additional arguments
-        if ( ! $args && $key !== self::DONE && $type !== self::ACTIONS) {
+        if ( ! $args && ($key !== self::DONE || $type !== self::ACTIONS)) {
             throw Exception\InvalidHookArgument::forEmptyArguments($key, $type);
         }
 
@@ -165,7 +174,7 @@ final class HookStorage
      * @param string        $hook
      * @param callable|null $function
      * @return int|bool
-     * @throws \Brain\Monkey\Hooks\Exception\InvalidHookArgument
+     * @throws \Brain\Monkey\Hook\Exception\InvalidHookArgument
      */
     private function isInStorage($key, $type, $hook, $function = null)
     {
@@ -197,7 +206,7 @@ final class HookStorage
      * @param string $key
      * @param string $type
      * @return array
-     * @throws \Brain\Monkey\Hooks\Exception\InvalidHookArgument
+     * @throws \Brain\Monkey\Hook\Exception\InvalidHookArgument
      */
     private function parseArgsToAdd(array $args, $key, $type)
     {

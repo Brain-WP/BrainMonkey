@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Brain\Monkey\Names;
+namespace Brain\Monkey\Name;
 
 
 /**
@@ -20,13 +20,13 @@ final class ClassName
 {
 
     /**
-     * @var \Brain\Monkey\Names\FunctionName
+     * @var \Brain\Monkey\Name\FunctionName
      */
     private $function_name;
 
     /**
      * @param string $class_name
-     * @throws \Brain\Monkey\Names\Exception\InvalidName
+     * @throws \Brain\Monkey\Name\Exception\InvalidName
      */
     public function __construct($class_name)
     {
@@ -62,7 +62,7 @@ final class ClassName
     }
 
     /**
-     * @param \Brain\Monkey\Names\ClassName $name
+     * @param \Brain\Monkey\Name\ClassName $name
      * @return bool
      */
     public function equals(ClassName $name)

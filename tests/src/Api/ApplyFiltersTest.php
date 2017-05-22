@@ -27,28 +27,28 @@ class ApplyFiltersTest extends TestCase
         apply_filters('the_title', 'foo', 'bar', 'baz');
         apply_filters_ref_array('the_title', ['foo', 'bar', 'baz']);
         // just want to see that when called properly nothing bad happen
-        self::assertTrue(true);
+        static::assertTrue(true);
     }
 
     public function testApplyReturnsFirstArg()
     {
         $foo = apply_filters('the_title', 'foo', 'bar', 'baz');
         $fooRef = apply_filters_ref_array('the_title', ['foo', 'bar', 'baz']);
-        self::assertSame('foo', $foo);
-        self::assertSame('foo', $fooRef);
+        static::assertSame('foo', $foo);
+        static::assertSame('foo', $fooRef);
     }
 
     public function testApplyApplied()
     {
-        apply_filters('foo.bar');
+        apply_filters('foo.bar', 'foo');
         apply_filters('bar', 'baz');
         apply_filters('bar', ['foo', 'bar']);
         apply_filters_ref_array('by_ref', ['foo', 'bar', 'baz']);
 
-        self::assertSame(1, Filters\applied('foo.bar'));
-        self::assertSame(2, Filters\applied('bar'));
-        self::assertSame(1, Filters\applied('by_ref'));
-        self::assertSame(0, Filters\applied('not me'));
+        static::assertSame(1, Filters\applied('foo.bar'));
+        static::assertSame(2, Filters\applied('bar'));
+        static::assertSame(1, Filters\applied('by_ref'));
+        static::assertSame(0, Filters\applied('not me'));
     }
 
     public function testApplyWithExpectation()
@@ -83,10 +83,10 @@ class ApplyFiltersTest extends TestCase
         $contentTwo = apply_filters('the_content', 'two');
         $excerpt = apply_filters('the_excerpt', 'Zbaxrl vf terng!');
 
-        self::assertSame('Changed!', $title);
-        self::assertSame('Foo!', $contentOne);
-        self::assertSame('Bar!', $contentTwo);
-        self::assertSame('Monkey is great!', $excerpt);
+        static::assertSame('Changed!', $title);
+        static::assertSame('Foo!', $contentOne);
+        static::assertSame('Bar!', $contentTwo);
+        static::assertSame('Monkey is great!', $excerpt);
     }
 
     public function testApplyWithExpectationAndReturnCurrentFilter()
@@ -107,8 +107,8 @@ class ApplyFiltersTest extends TestCase
 
         Filters\expectApplied('can_I_ask')->twice()->andReturnUsing($answer);
 
-        self::assertSame('Great!', apply_filters('can_I_ask', 'How is Monkey?'));
-        self::assertSame('Meh', apply_filters('can_I_ask', 'How is Milk?'));
+        static::assertSame('Great!', apply_filters('can_I_ask', 'How is Monkey?'));
+        static::assertSame('Meh', apply_filters('can_I_ask', 'How is Milk?'));
     }
 
     public function testApplySameFilterDifferentArguments()
@@ -145,9 +145,9 @@ class ApplyFiltersTest extends TestCase
         $yes = apply_filters('foo', 'Yes?');
         $maybe = apply_filters('foo', 'Maybe?');
 
-        self::assertEquals( 'No!', $no );
-        self::assertEquals( 'Yes!', $yes );
-        self::assertEquals( 'Maybe?', $maybe );
+        static::assertEquals( 'No!', $no );
+        static::assertEquals( 'Yes!', $yes );
+        static::assertEquals( 'Maybe?', $maybe );
     }
 
     public function testExpectByDefaultReturnFirstArg()
@@ -156,7 +156,7 @@ class ApplyFiltersTest extends TestCase
 
         $title = apply_filters('the_title', 'I am the title');
 
-        self::assertSame('I am the title', $title);
+        static::assertSame('I am the title', $title);
     }
 
     public function testAndAlsoExpectIt()
@@ -186,27 +186,27 @@ class ApplyFiltersTest extends TestCase
 
         Filters\expectApplied('first_level')->once()->andReturnUsing(function ($arg) {
 
-            self::assertTrue(current_filter() === 'first_level');
-            self::assertTrue(doing_filter('first_level'));
-            self::assertFalse(doing_filter('second_level'));
+            static::assertTrue(current_filter() === 'first_level');
+            static::assertTrue(doing_filter('first_level'));
+            static::assertFalse(doing_filter('second_level'));
 
             return apply_filters('second_level', $arg);
         });
 
         Filters\expectApplied('second_level')->once()->andReturnUsing(function ($arg) {
 
-            self::assertSame('How is Monkey?', $arg);
-            self::assertTrue(current_filter() === 'second_level');
-            self::assertTrue(doing_filter('first_level'));
-            self::assertTrue(doing_filter('second_level'));
+            static::assertSame('How is Monkey?', $arg);
+            static::assertTrue(current_filter() === 'second_level');
+            static::assertTrue(doing_filter('first_level'));
+            static::assertTrue(doing_filter('second_level'));
 
             return 'Monkey is great!';
         });
 
 
-        self::assertSame('Monkey is great!', apply_filters('first_level', 'How is Monkey?'));
-        self::assertFalse(doing_filter('first_level'));
-        self::assertFalse(doing_filter('second_level'));
+        static::assertSame('Monkey is great!', apply_filters('first_level', 'How is Monkey?'));
+        static::assertFalse(doing_filter('first_level'));
+        static::assertFalse(doing_filter('second_level'));
     }
 
     public function testExpectWithNoArgsFailsIfNotApplied()

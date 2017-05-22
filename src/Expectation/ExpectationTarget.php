@@ -10,7 +10,7 @@
 
 namespace Brain\Monkey\Expectation;
 
-use Brain\Monkey\Names\FunctionName;
+use Brain\Monkey\Name\FunctionName;
 
 /**
  * Value object for Brain Monkey expectations targets.
@@ -48,14 +48,14 @@ final class ExpectationTarget
         '/'  => '_slash_',
         '\\' => '_backslash_',
         '.'  => '_dot_',
-        '!'  => '_exclamation_mark_',
+        '!'  => '_exclamation_',
         '"'  => '_double_quote_',
-        '\'' => '_single_quote_',
+        '\'' => '_quote_',
         '£'  => '_pound_',
         '$'  => '_dollar_',
         '%'  => '_percent_',
         '='  => '_equal_',
-        '?'  => '_question_mark_',
+        '?'  => '_question_',
         '*'  => '_asterisk_',
         '@'  => '_slug_',
         '#'  => '_sharp_',
@@ -64,7 +64,8 @@ final class ExpectationTarget
         '<'  => '_lt_',
         '>'  => '_gt_',
         ','  => '_comma_',
-        ';'  => '_colon_',
+        ';'  => '_semicolon_',
+        ':'  => '_colon_',
         '~'  => '_tilde_',
         '('  => '_bracket_open_',
         ')'  => '_bracket_close_',
@@ -109,9 +110,11 @@ final class ExpectationTarget
 
         if ($type === self::TYPE_FUNCTION) {
             $nameObject = new FunctionName($name);
-            $namespace = str_replace('\\', '_', $nameObject->getNamespace());
-            $this->name = "{$namespace}_".$nameObject->shortName();
+            $namespace = str_replace('\\', '_', ltrim($nameObject->getNamespace(), '\\'));
             $this->original_name = $nameObject->fullyQualifiedName();
+            $this->name = $namespace
+                ? "{$namespace}_".$nameObject->shortName()
+                : $nameObject->shortName();
 
             return;
         }

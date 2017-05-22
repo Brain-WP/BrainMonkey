@@ -92,6 +92,8 @@ class Expectation
 
     /**
      * Ensure full cloning.
+     *
+     * @codeCoverageIgnore
      */
     public function __clone()
     {
@@ -194,12 +196,12 @@ class Expectation
      *
      * @param  callable $callback
      * @return static
-     * @throws \Brain\Monkey\Expectation\Exception\NotAllowedWhenHappen
+     * @throws \Brain\Monkey\Expectation\Exception\NotAllowedMethod
      */
     public function whenHappen(callable $callback)
     {
         if (in_array($this->target->type(), self::RETURNING_EXPECTATION_TYPES, true)) {
-            throw Exception\NotAllowedWhenHappen::forExpectationType($this->target);
+            throw Exception\NotAllowedMethod::forWhenHappen($this->target);
         }
 
         $this->expectation->andReturnUsing($callback);

@@ -49,27 +49,27 @@ final class Container
     }
 
     /**
-     * @return \Brain\Monkey\Hooks\HookRunningStack
+     * @return \Brain\Monkey\Hook\HookRunningStack
      */
     public function hookRunningStack()
     {
-        return $this->service(__FUNCTION__, new Hooks\HookRunningStack());
+        return $this->service(__FUNCTION__, new Hook\HookRunningStack());
     }
 
     /**
-     * @return \Brain\Monkey\Hooks\HookStorage
+     * @return \Brain\Monkey\Hook\HookStorage
      */
     public function hookStorage()
     {
-        return $this->service(__FUNCTION__, new Hooks\HookStorage());
+        return $this->service(__FUNCTION__, new Hook\HookStorage());
     }
 
     /**
-     * @return \Brain\Monkey\Hooks\HookExpectationExecutor
+     * @return \Brain\Monkey\Hook\HookExpectationExecutor
      */
     public function hookExpectationExecutor()
     {
-        return $this->service(__FUNCTION__, new Hooks\HookExpectationExecutor(
+        return $this->service(__FUNCTION__, new Hook\HookExpectationExecutor(
             $this->hookRunningStack(),
             $this->expectationFactory()
         ));

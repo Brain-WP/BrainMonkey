@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Brain\Monkey\Names;
+namespace Brain\Monkey\Name;
 
 /**
  * Provides a string representation for a callback.
@@ -40,7 +40,7 @@ final class CallbackStringForm
     }
 
     /**
-     * @param \Brain\Monkey\Names\CallbackStringForm $callback
+     * @param \Brain\Monkey\Name\CallbackStringForm $callback
      * @return bool
      */
     public function equals(CallbackStringForm $callback)
@@ -50,7 +50,7 @@ final class CallbackStringForm
 
     /**
      * @return string
-     * @throws \Brain\Monkey\Names\Exception\NotInvokableObjectAsCallback
+     * @throws \Brain\Monkey\Name\Exception\NotInvokableObjectAsCallback
      */
     public function __toString()
     {
@@ -60,8 +60,8 @@ final class CallbackStringForm
     /**
      * @param $callback
      * @return string
-     * @throws \Brain\Monkey\Names\Exception\InvalidCallable
-     * @throws \Brain\Monkey\Names\Exception\NotInvokableObjectAsCallback
+     * @throws \Brain\Monkey\Name\Exception\InvalidCallable
+     * @throws \Brain\Monkey\Name\Exception\NotInvokableObjectAsCallback
      */
     private function parseCallback($callback)
     {
@@ -81,7 +81,7 @@ final class CallbackStringForm
 
         if ($is_object) {
             return $callback instanceof \Closure
-                ? (new ClosureStringForm($callback))->name()
+                ? (string)new ClosureStringForm($callback)
                 : get_class($callback).'()';
         }
 
@@ -103,28 +103,28 @@ final class CallbackStringForm
 
         $class_name = (new ClassName(get_class($object)))->fullyQualifiedName();
 
-        return "{$class_name}->{$method_name}()";
+        return ltrim("{$class_name}->{$method_name}()", '\\');
     }
 
     /**
      * @param string $callback
      * @return bool|string
-     * @throws \Brain\Monkey\Names\Exception\InvalidCallable
-     * @throws \Brain\Monkey\Names\Exception\NotInvokableObjectAsCallback
+     * @throws \Brain\Monkey\Name\Exception\InvalidCallable
+     * @throws \Brain\Monkey\Name\Exception\NotInvokableObjectAsCallback
      */
     private function parseString($callback)
     {
         $callback = trim($callback);
 
-        // First check if this is a closure is string form, and just return it if so
-        $closure = strpos($callback, 'function') === 0 && substr($callback, -1) === ')'
-            ? $callback
-            : '';
-        $closure_normalized = $closure ? ClosureStringForm::normalizeString($callback) : '';
-        if ($closure && ! $closure_normalized) {
-            throw Exception\InvalidCallable::forCallable($callback);
-        } elseif ($closure_normalized) {
-            return $closure_normalized;
+        if (
+            (strpos($callback, 'function') === 0 || strpos($callback, 'static') === 0)
+            && substr($callback, -1) === ')'
+        ) {
+            try {
+                return ClosureStringForm::normalizeString($callback);
+            } catch (Exception\Exception $exception) {
+                throw Exception\InvalidCallable::forCallable($callback);
+            }
         }
 
         // If this is not a string in normalized form, we just check is a valid function name
@@ -147,7 +147,7 @@ final class CallbackStringForm
             $method_name = (new MethodName($method))->name();
             $this->assertMethodCallable($class_name, $method, "{$callback}()");
 
-            return "{$class_name}{$separator}{$method_name}()";
+            return ltrim("{$class_name}{$separator}{$method_name}()", '\\');
         }
 
         // Last chance is that the string is fully qualified name of an invokable object.
@@ -157,7 +157,7 @@ final class CallbackStringForm
             throw new Exception\NotInvokableObjectAsCallback();
         }
 
-        return "{$class_name}()";
+        return ltrim("{$class_name}()", '\\');
     }
 
     /**
@@ -166,8 +166,8 @@ final class CallbackStringForm
      * @param string       $class_name
      * @param string       $method
      * @param string|array $callable
-     * @throws \Brain\Monkey\Names\Exception\InvalidCallable
-     * @throws \Brain\Monkey\Names\Exception\NotInvokableObjectAsCallback
+     * @throws \Brain\Monkey\Name\Exception\InvalidCallable
+     * @throws \Brain\Monkey\Name\Exception\NotInvokableObjectAsCallback
      */
     private function assertMethodCallable($class_name, $method, $callable)
     {

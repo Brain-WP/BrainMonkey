@@ -25,12 +25,12 @@ class AddActionTest extends Monkey\Tests\TestCase
     {
         add_action('init', 'strtolower', 20, 2);
         // just want to see that when called properly nothing bad happen
-        self::assertTrue(true);
+        static::assertTrue(true);
     }
 
     public function testAddReturnsTrue()
     {
-        self::assertTrue(add_action('init', 'strtolower', 20, 2));
+        static::assertTrue(add_action('init', 'strtolower', 20, 2));
     }
 
     public function testAddAndHas()
@@ -39,20 +39,20 @@ class AddActionTest extends Monkey\Tests\TestCase
         add_action('init', function ( $x, ...$y ) { return true; });
         add_action('init', [new \ArrayObject(), 'getArrayCopy'], 5);
 
-        self::assertTrue(has_action('init', 'strtolower'));
-        self::assertTrue(has_action('init', 'function( $x, ...$y )'));
-        self::assertTrue(has_action('init', 'ArrayObject->getArrayCopy()'));
+        static::assertTrue(has_action('init', 'strtolower'));
+        static::assertTrue(has_action('init', 'function( $x, ...$y )'));
+        static::assertTrue(has_action('init', 'ArrayObject->getArrayCopy()'));
 
-        self::assertFalse(has_action('pre_get_posts', 'strtolower'));
-        self::assertFalse(has_action('foo', 'function()'));
-        self::assertFalse(has_action('baz', 'ArrayObject->getArrayCopy()'));
+        static::assertFalse(has_action('pre_get_posts', 'strtolower'));
+        static::assertFalse(has_action('foo', 'function()'));
+        static::assertFalse(has_action('baz', 'ArrayObject->getArrayCopy()'));
     }
 
     public function testAddAndHasWithoutCallback()
     {
-        self::assertFalse(has_action('init'));
+        static::assertFalse(has_action('init'));
         add_action('init', [$this, __FUNCTION__], 20);
-        self::assertTrue(has_action('init'));
+        static::assertTrue(has_action('init'));
     }
 
     public function testExpectAdded()
@@ -71,8 +71,8 @@ class AddActionTest extends Monkey\Tests\TestCase
             return 'baz';
         });
 
-        self::assertTrue(has_action('init', 'strtolower'));
-        self::assertTrue(has_action('init', 'strtoupper'));
+        static::assertTrue(has_action('init', 'strtolower'));
+        static::assertTrue(has_action('init', 'strtoupper'));
     }
 
     public function testAddedSameActionDifferentArguments()
@@ -97,19 +97,19 @@ class AddActionTest extends Monkey\Tests\TestCase
 
         add_action('init', [$this, __FUNCTION__], 20);
 
-        self::assertTrue(has_action('init', [$this, __FUNCTION__]));
+        static::assertTrue(has_action('init', [$this, __FUNCTION__]));
 
         remove_action('init', [$this, __FUNCTION__], 20);
 
-        self::assertFalse(has_action('init', [$this, __FUNCTION__]));
+        static::assertFalse(has_action('init', [$this, __FUNCTION__]));
     }
 
     public function testAddActionWhenHappen()
     {
         Actions\expectAdded('foo')->once()->whenHappen(function($callable, $priority, $args) {
             $callable();
-            self::assertSame(20, $priority);
-            self::assertSame(2, $args);
+            static::assertSame(20, $priority);
+            static::assertSame(2, $args);
         });
 
         $this->expectOutputString('Foo!');

@@ -33,8 +33,10 @@ class TestCase extends \PHPUnit_Framework_TestCase
         try {
             Monkey\tearDown();
             throw new \PHPUnit_Framework_ExpectationFailedException(
-                sprintf('Failed asserting that Mockery exception %s is thrown.'),
-                $this->expect_mockery_exception
+                sprintf(
+                    'Failed asserting that Mockery exception %s is thrown.',
+                    $this->expect_mockery_exception
+                )
             );
         } catch (\Throwable $e) {
             if (get_class($e) !== $this->expect_mockery_exception) {

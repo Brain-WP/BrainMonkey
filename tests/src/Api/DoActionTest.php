@@ -28,7 +28,7 @@ class DoActionTest extends Monkey\Tests\TestCase
         do_action_ref_array('init', ['foo', 'bar', 'baz']);
 
         // just want to see that when called properly nothing bad happen
-        self::assertTrue(true);
+        static::assertTrue(true);
     }
 
     public function testDoReturnsNull()
@@ -36,8 +36,8 @@ class DoActionTest extends Monkey\Tests\TestCase
         $nullDo = do_action('init', 'foo', 'bar', 'baz');
         $nullDoRef = do_action_ref_array('init', ['foo', 'bar', 'baz']);
 
-        self::assertNull($nullDo);
-        self::assertNull($nullDoRef);
+        static::assertNull($nullDo);
+        static::assertNull($nullDoRef);
     }
 
     public function testDoDid()
@@ -47,10 +47,10 @@ class DoActionTest extends Monkey\Tests\TestCase
         do_action('bar', ['foo', 'bar']);
         do_action_ref_array('by_ref', ['foo', 'bar', 'baz']);
 
-        self::assertSame(1, did_action('foo.bar'));
-        self::assertSame(2, did_action('bar'));
-        self::assertSame(1, did_action('by_ref'));
-        self::assertSame(0, did_action('not me'));
+        static::assertSame(1, did_action('foo.bar'));
+        static::assertSame(2, did_action('bar'));
+        static::assertSame(1, did_action('by_ref'));
+        static::assertSame(0, did_action('not me'));
     }
 
     public function testDoWithExpectation()
@@ -87,8 +87,8 @@ class DoActionTest extends Monkey\Tests\TestCase
         do_action('sum', 3);
         do_action('sum', 6);
 
-        self::assertSame('Yes!', $works);
-        self::assertSame(10, $sum);
+        static::assertSame('Yes!', $works);
+        static::assertSame(10, $sum);
     }
 
     public function testDoWithExpectationWhenHappenCurrentFilter()
@@ -119,10 +119,10 @@ class DoActionTest extends Monkey\Tests\TestCase
 
         Actions\expectDone('second_level')->twice()->whenHappen(function ($arg) {
 
-            self::assertSame('Catch me!', $arg);
-            self::assertTrue(current_filter() === 'second_level');
-            self::assertTrue(doing_action('first_level'));
-            self::assertTrue(doing_action('second_level'));
+            static::assertSame('Catch me!', $arg);
+            static::assertTrue(current_filter() === 'second_level');
+            static::assertTrue(doing_action('first_level'));
+            static::assertTrue(doing_action('second_level'));
             // Checking for output will ensure above assertions have ran.
             echo 'Monkey is great!';
         });
@@ -131,8 +131,8 @@ class DoActionTest extends Monkey\Tests\TestCase
 
         do_action('first_level');
 
-        self::assertFalse(doing_action('first_level'));
-        self::assertFalse(doing_action('second_level'));
+        static::assertFalse(doing_action('first_level'));
+        static::assertFalse(doing_action('second_level'));
     }
 
     public function testDoSameActionDifferentArguments()

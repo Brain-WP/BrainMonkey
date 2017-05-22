@@ -27,9 +27,9 @@ class FunctionsTest extends TestCase
         Functions\when('i_do_not_exists')->justReturn('Cool!');
         Functions\when('i_return_null')->justReturn();
         /** @noinspection PhpUndefinedFunctionInspection */
-        self::assertSame('Cool!', i_do_not_exists());
+        static::assertSame('Cool!', i_do_not_exists());
         /** @noinspection PhpUndefinedFunctionInspection */
-        self::assertNull(i_return_null());
+        static::assertNull(i_return_null());
     }
 
     public function testReturnArg()
@@ -38,11 +38,11 @@ class FunctionsTest extends TestCase
         Functions\when('want_the_second')->returnArg(2);
         Functions\when('want_the_third')->returnArg(3);
         /** @noinspection PhpUndefinedFunctionInspection */
-        self::assertSame('foo', want_the_first('foo', 'meh', 'meh'));
+        static::assertSame('foo', want_the_first('foo', 'meh', 'meh'));
         /** @noinspection PhpUndefinedFunctionInspection */
-        self::assertSame('foo', want_the_second('meh', 'foo', 'meh'));
+        static::assertSame('foo', want_the_second('meh', 'foo', 'meh'));
         /** @noinspection PhpUndefinedFunctionInspection */
-        self::assertSame('foo', want_the_third('meh', 'meh', 'foo'));
+        static::assertSame('foo', want_the_third('meh', 'meh', 'foo'));
     }
 
     public function testAlias()
@@ -52,16 +52,16 @@ class FunctionsTest extends TestCase
         });
 
         /** @noinspection PhpUndefinedFunctionInspection */
-        self::assertSame('My name is Bond, James Bond.', zero_zero_seven('James', 'Bond'));
+        static::assertSame('My name is Bond, James Bond.', zero_zero_seven('James', 'Bond'));
     }
 
     public function testExpectTimesAndReturn()
     {
         Functions\expect('tween')->twice()->andReturn('first', 'second');
         /** @noinspection PhpUndefinedFunctionInspection */
-        self::assertSame('first', tween());
+        static::assertSame('first', tween());
         /** @noinspection PhpUndefinedFunctionInspection */
-        self::assertSame('second', tween());
+        static::assertSame('second', tween());
     }
 
     public function testExpectComplete()
@@ -74,7 +74,7 @@ class FunctionsTest extends TestCase
             });
 
         /** @noinspection PhpUndefinedFunctionInspection */
-        self::assertSame("1000 times cool!", wow(200, 300, ' times cool!'));
+        static::assertSame("1000 times cool!", wow(200, 300, ' times cool!'));
     }
 
     public function testNamespacedFunctions()
@@ -84,11 +84,14 @@ class FunctionsTest extends TestCase
         Functions\when('test\\a\\b\\c')->alias('strtoupper');
 
         /** @noinspection PhpUndefinedFunctionInspection */
-        self::assertSame('A!', \test\a());
+        /** @noinspection PhpUndefinedNamespaceInspection */
+        static::assertSame('A!', \test\a());
         /** @noinspection PhpUndefinedFunctionInspection */
-        self::assertSame('B!', \test\a\b('B!'));
+        /** @noinspection PhpUndefinedNamespaceInspection */
+        static::assertSame('B!', \test\a\b('B!'));
         /** @noinspection PhpUndefinedFunctionInspection */
-        self::assertSame('C!', \test\a\b\c('c!'));
+        /** @noinspection PhpUndefinedNamespaceInspection */
+        static::assertSame('C!', \test\a\b\c('c!'));
     }
 
     public function testSameFunctionDifferentArguments()
@@ -106,9 +109,9 @@ class FunctionsTest extends TestCase
             ->andReturn('Second!');
 
         /** @noinspection PhpUndefinedFunctionInspection */
-        self::assertSame('First!', issue5(true));
+        static::assertSame('First!', issue5(true));
         /** @noinspection PhpUndefinedFunctionInspection */
-        self::assertSame('Second!', issue5(false));
+        static::assertSame('Second!', issue5(false));
     }
 
     public function testJustEcho()
@@ -157,7 +160,7 @@ class FunctionsTest extends TestCase
      */
     public function testUndefinedFunctionSurviveTests()
     {
-        self::assertTrue(function_exists('since_i_am_not_defined_i_will_trigger_error'));
+        static::assertTrue(function_exists('since_i_am_not_defined_i_will_trigger_error'));
     }
 
     /**
@@ -178,7 +181,7 @@ class FunctionsTest extends TestCase
     {
         Functions\when('since_i_am_not_defined_i_will_trigger_error')->justReturn(1234567890);
         /** @noinspection PhpUndefinedFunctionInspection */
-        self::assertSame(1234567890, since_i_am_not_defined_i_will_trigger_error());
+        static::assertSame(1234567890, since_i_am_not_defined_i_will_trigger_error());
     }
 
     /**
@@ -206,9 +209,9 @@ class FunctionsTest extends TestCase
             ->andReturn('Second!');
 
         /** @noinspection PhpUndefinedFunctionInspection */
-        self::assertSame('First!', also(1));
+        static::assertSame('First!', also(1));
         /** @noinspection PhpUndefinedFunctionInspection */
-        self::assertSame('Second!', also(2));
+        static::assertSame('Second!', also(2));
     }
 
     public function testExpectWithNoArgsFailsIfNotCalled()

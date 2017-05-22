@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Brain\Monkey\Names\Exception;
+namespace Brain\Monkey\Name\Exception;
 
 
 /**
@@ -25,7 +25,7 @@ class InvalidName extends Exception
 
     /**
      * @param string $function
-     * @return \Brain\Monkey\Names\Exception\InvalidName
+     * @return \Brain\Monkey\Name\Exception\InvalidName
      */
     public static function forFunction($function)
     {
@@ -34,7 +34,7 @@ class InvalidName extends Exception
 
     /**
      * @param $class
-     * @return \Brain\Monkey\Names\Exception\InvalidName
+     * @return \Brain\Monkey\Name\Exception\InvalidName
      */
     public static function forClass($class)
     {
@@ -43,7 +43,7 @@ class InvalidName extends Exception
 
     /**
      * @param $function
-     * @return \Brain\Monkey\Names\Exception\InvalidName
+     * @return \Brain\Monkey\Name\Exception\InvalidName
      */
     public static function forMethod($function)
     {

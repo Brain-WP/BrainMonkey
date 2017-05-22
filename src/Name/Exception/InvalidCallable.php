@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Brain\Monkey\Names\Exception;
+namespace Brain\Monkey\Name\Exception;
 
 /**
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
@@ -20,7 +20,7 @@ class InvalidCallable extends Exception
 
     /**
      * @param $callback
-     * @return \Brain\Monkey\Names\Exception\InvalidCallable|\Brain\Monkey\Names\Exception\NotInvokableObjectAsCallback
+     * @return \Brain\Monkey\Name\Exception\InvalidCallable|\Brain\Monkey\Name\Exception\NotInvokableObjectAsCallback
      */
     public static function forCallable($callback)
     {

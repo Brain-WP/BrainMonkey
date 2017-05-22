@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Brain\Monkey\Hooks;
+namespace Brain\Monkey\Hook;
 
 /**
  * A simple stack data structure built around an array for hook names.

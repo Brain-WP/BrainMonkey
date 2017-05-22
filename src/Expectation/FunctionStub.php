@@ -10,7 +10,7 @@
 
 namespace Brain\Monkey\Expectation;
 
-use Brain\Monkey\Names\FunctionName;
+use Brain\Monkey\Name\FunctionName;
 
 
 /**
@@ -22,7 +22,7 @@ class FunctionStub
 {
 
     /**
-     * @var \Brain\Monkey\Names\FunctionName
+     * @var \Brain\Monkey\Name\FunctionName
      */
     private $function_name;
 
@@ -79,7 +79,7 @@ PHP;
      * @param \Brain\Monkey\Expectation\Expectation $expectation
      * @return void
      */
-    public function replaceUsingExpectation(Expectation $expectation)
+    public function redefineUsingExpectation(Expectation $expectation)
     {
         $fqn = $this->function_name->fullyQualifiedName();
 
@@ -144,7 +144,7 @@ PHP;
         \Patchwork\redefine($fqn, function (...$args) use ($fqn, $arg_num) {
             if ( ! array_key_exists($arg_num - 1, $args)) {
                 $count = count($args);
-                throw new \RuntimeException(
+                throw new Exception\InvalidArgumentForStub(
                     "{$fqn} was called with {$count} params, can't return argument \"{$arg_num}\"."
                 );
             }

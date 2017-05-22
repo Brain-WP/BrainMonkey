@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Brain\Monkey\Hooks;
+namespace Brain\Monkey\Hook;
 
 use Brain\Monkey\Expectation\ExpectationTarget;
 use Brain\Monkey\Expectation\ExpectationFactory;
@@ -26,7 +26,7 @@ class HookExpectationExecutor
 {
 
     /**
-     * @var \Brain\Monkey\Hooks\HookRunningStack
+     * @var \Brain\Monkey\Hook\HookRunningStack
      */
     private $stack;
 
@@ -36,7 +36,7 @@ class HookExpectationExecutor
     private $factory;
 
     /**
-     * @param \Brain\Monkey\Hooks\HookRunningStack         $stack
+     * @param \Brain\Monkey\Hook\HookRunningStack          $stack
      * @param \Brain\Monkey\Expectation\ExpectationFactory $factory
      */
     public function __construct(HookRunningStack $stack, ExpectationFactory $factory)

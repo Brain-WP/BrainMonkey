@@ -26,7 +26,7 @@ class AddFiltersTest extends TestCase
     {
         add_filter('the_title', 'strtolower', 20, 1);
         // just want to see that when called properly nothing bad happen
-        self::assertTrue(true);
+        static::assertTrue(true);
     }
 
     public function testAddAndHas()
@@ -37,20 +37,20 @@ class AddFiltersTest extends TestCase
         });
         add_filter('the_title', [$this, __FUNCTION__], 20);
 
-        self::assertTrue(has_filter('the_title', 'strtolower'));
-        self::assertTrue(has_filter('the_title', 'function($title)'));
-        self::assertTrue(has_filter('the_title', __CLASS__.'->'.__FUNCTION__.'()', 20));
+        static::assertTrue(has_filter('the_title', 'strtolower'));
+        static::assertTrue(has_filter('the_title', 'function($title)'));
+        static::assertTrue(has_filter('the_title', __CLASS__.'->'.__FUNCTION__.'()', 20));
 
-        self::assertFalse(has_filter('the_content', 'strtolower', 30, 1));
-        self::assertFalse(has_filter('foo', 'function()'));
-        self::assertFalse(has_filter('bar', __CLASS__.'->'.__FUNCTION__.'()', 20));
+        static::assertFalse(has_filter('the_content', 'strtolower', 30, 1));
+        static::assertFalse(has_filter('foo', 'function()'));
+        static::assertFalse(has_filter('bar', __CLASS__.'->'.__FUNCTION__.'()', 20));
     }
 
     public function testHasWithoutCallback()
     {
-        self::assertFalse(has_filter('the_title'));
+        static::assertFalse(has_filter('the_title'));
         add_filter('the_title', 'strtolower', 30, 1);
-        self::assertTrue(has_filter('the_title'));
+        static::assertTrue(has_filter('the_title'));
     }
 
     public function testExpectAdded()
@@ -104,19 +104,19 @@ class AddFiltersTest extends TestCase
 
         add_filter('the_title', '__return_empty_string', 20);
 
-        self::assertTrue(has_filter('the_title', '__return_empty_string'));
+        static::assertTrue(has_filter('the_title', '__return_empty_string'));
 
         remove_filter('the_title', '__return_empty_string', 20);
 
-        self::assertFalse(has_filter('the_title', '__return_empty_string'));
+        static::assertFalse(has_filter('the_title', '__return_empty_string'));
     }
 
     public function testAddActionWhenHappen()
     {
         Filters\expectAdded('foo')->once()->whenHappen(function ($callable, $priority, $args) {
             $callable();
-            self::assertSame(20, $priority);
-            self::assertSame(2, $args);
+            static::assertSame(20, $priority);
+            static::assertSame(2, $args);
         });
 
         $this->expectOutputString('Foo!');

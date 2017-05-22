@@ -10,6 +10,8 @@
 
 namespace Brain\Monkey\Expectation\Exception;
 
+use Brain\Monkey\Expectation\ExpectationTarget;
+
 /**
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @package BrainMonkey
@@ -20,6 +22,7 @@ class NotAllowedMethod extends Exception
 
     const CODE_METHOD           = 1;
     const CODE_RETURNING_METHOD = 2;
+    const CODE_WHEN_HAPPEN      = 3;
 
     /**
      * @param string $method_name
@@ -48,6 +51,25 @@ class NotAllowedMethod extends Exception
                 $method_name
             ),
             self::CODE_RETURNING_METHOD
+        );
+    }
+
+    public static function forWhenHappen(ExpectationTarget $target)
+    {
+        $type = '';
+
+        switch ($target->type()) {
+            case ExpectationTarget::TYPE_FUNCTION:
+                $type = "function";
+                break;
+            case ExpectationTarget::TYPE_FILTER_APPLIED:
+                $type = "applied filter";
+                break;
+        }
+
+        return new static(
+            "Can't use `whenHappen()` for {$type} expectations: use `andReturnUsing()` instead.",
+            self::CODE_WHEN_HAPPEN
         );
     }
 

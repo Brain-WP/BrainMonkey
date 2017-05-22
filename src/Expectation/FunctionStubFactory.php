@@ -10,7 +10,7 @@
 
 namespace Brain\Monkey\Expectation;
 
-use Brain\Monkey\Names\FunctionName;
+use Brain\Monkey\Name\FunctionName;
 
 /**
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
@@ -29,8 +29,8 @@ class FunctionStubFactory
     private $storage = [];
 
     /**
-     * @param \Brain\Monkey\Names\FunctionName $name
-     * @param string                           $scope
+     * @param \Brain\Monkey\Name\FunctionName $name
+     * @param string                          $scope
      * @return \Brain\Monkey\Expectation\FunctionStub
      * @throws \Brain\Monkey\Expectation\Exception\Exception
      */
@@ -48,10 +48,12 @@ class FunctionStubFactory
 
         if ($scope !== $stored_type) {
             throw new Exception\Exception(
-                'It was not possible to create %s for function "%s" because %s for it already exists.',
-                $scope,
-                $name->fullyQualifiedName(),
-                $stored_type
+                sprintf(
+                    'It was not possible to create %s for function "%s" because %s for it already exists.',
+                    $scope,
+                    $name->fullyQualifiedName(),
+                    $stored_type
+                )
             );
         }
 
@@ -61,7 +63,7 @@ class FunctionStubFactory
     }
 
     /**
-     * @param \Brain\Monkey\Names\FunctionName $name
+     * @param \Brain\Monkey\Name\FunctionName $name
      * @return bool
      */
     public function has(FunctionName $name)
@@ -78,7 +80,7 @@ class FunctionStubFactory
     }
 
     /**
-     * @param \Brain\Monkey\Names\FunctionName $name
+     * @param \Brain\Monkey\Name\FunctionName $name
      * @return string
      */
     private function storedType(FunctionName $name)

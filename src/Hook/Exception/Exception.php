@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Brain\Monkey\Names\Exception;
+namespace Brain\Monkey\Hook\Exception;
 
 use Brain\Monkey\Exception as BaseException;
 

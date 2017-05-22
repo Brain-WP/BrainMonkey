@@ -28,7 +28,7 @@ namespace Brain\Monkey\Functions {
 
     use Brain\Monkey\Container;
     use Brain\Monkey\Expectation\FunctionStubFactory;
-    use Brain\Monkey\Names\FunctionName;
+    use Brain\Monkey\Name\FunctionName;
 
     /**
      * Factory method: receives the name of the function to mock and returns an instance of
@@ -61,7 +61,7 @@ namespace Brain\Monkey\Functions {
         $factory = Container::instance()->functionStubFactory();
         if ( ! $factory->has($name)) {
             $factory->create($name, FunctionStubFactory::SCOPE_EXPECTATION)
-                    ->replaceUsingExpectation($expectation);
+                    ->redefineUsingExpectation($expectation);
 
         }
 
@@ -72,7 +72,7 @@ namespace Brain\Monkey\Functions {
 namespace Brain\Monkey\Actions {
 
     use Brain\Monkey\Container;
-    use Brain\Monkey\Hooks;
+    use Brain\Monkey\Hook;
 
     /**
      * @param string $action
@@ -105,7 +105,7 @@ namespace Brain\Monkey\Actions {
     {
         return Container::instance()
                         ->hookStorage()
-                        ->isHookAdded(Hooks\HookStorage::ACTIONS, $action, $callback);
+                        ->isHookAdded(Hook\HookStorage::ACTIONS, $action, $callback);
     }
 
     /**
@@ -116,7 +116,7 @@ namespace Brain\Monkey\Actions {
     {
         return Container::instance()
                         ->hookStorage()
-                        ->isHookDone(Hooks\HookStorage::ACTIONS, $action);
+                        ->isHookDone(Hook\HookStorage::ACTIONS, $action);
     }
 
     /**
@@ -134,7 +134,7 @@ namespace Brain\Monkey\Actions {
 namespace Brain\Monkey\Filters {
 
     use Brain\Monkey\Container;
-    use Brain\Monkey\Hooks;
+    use Brain\Monkey\Hook;
 
     /**
      * @param string $filter
@@ -167,7 +167,7 @@ namespace Brain\Monkey\Filters {
     {
         return Container::instance()
                         ->hookStorage()
-                        ->isHookAdded(Hooks\HookStorage::FILTERS, $filter, $callback);
+                        ->isHookAdded(Hook\HookStorage::FILTERS, $filter, $callback);
     }
 
     /**
@@ -178,7 +178,7 @@ namespace Brain\Monkey\Filters {
     {
         return Container::instance()
                         ->hookStorage()
-                        ->isHookDone(Hooks\HookStorage::FILTERS, $filter);
+                        ->isHookDone(Hook\HookStorage::FILTERS, $filter);
     }
 
     /**

@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Brain\Monkey\Names;
+namespace Brain\Monkey\Name;
 
 
 /**
@@ -44,7 +44,7 @@ final class FunctionName
      */
     public function fullyQualifiedName()
     {
-        return "{$this->namespace}\\{$this->function_name}";
+        return ltrim("{$this->namespace}\\{$this->function_name}", '\\');
     }
 
     /**
@@ -64,7 +64,7 @@ final class FunctionName
     }
 
     /**
-     * @param \Brain\Monkey\Names\FunctionName $name
+     * @param \Brain\Monkey\Name\FunctionName $name
      * @return bool
      */
     public function equals(FunctionName $name)
@@ -78,7 +78,7 @@ final class FunctionName
      *
      * @param  string $function_name
      * @return \string[]
-     * @throws \Brain\Monkey\Names\Exception\InvalidName
+     * @throws \Brain\Monkey\Name\Exception\InvalidName
      */
     private function parseName($function_name)
     {
