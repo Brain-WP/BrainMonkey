@@ -70,8 +70,14 @@ class ClosureParamStringFormTest extends TestCase
         static::assertSame('$foo', (string)$param_f);
     }
 
-    public function testFromReflectionToString()
+    public function testFromReflectionToString7()
     {
+        if (PHP_MAJOR_VERSION < 7) {
+            $this->markTestSkipped('Skipping PHP 7 test.');
+
+            return;
+        }
+
         $param = \Mockery::mock(\ReflectionParameter::class);
         /** @noinspection PhpMethodParametersCountMismatchInspection */
         $param->shouldReceive('hasType')->andReturn(true);
@@ -85,6 +91,32 @@ class ClosureParamStringFormTest extends TestCase
         /** @noinspection PhpParamsInspection */
         static::assertSame(
             'array ...$foo',
+            (string)ClosureParamStringForm::fromReflectionParameter($param)
+        );
+    }
+
+    public function testFromReflectionToString5()
+    {
+
+        if (PHP_MAJOR_VERSION >= 7) {
+            $this->markTestSkipped('Skipping PHP 5.6 test.');
+
+            return;
+        }
+
+        $param = \Mockery::mock(\ReflectionParameter::class);
+        /** @noinspection PhpMethodParametersCountMismatchInspection */
+        $param->shouldReceive('hasType')->never();
+        /** @noinspection PhpMethodParametersCountMismatchInspection */
+        $param->shouldReceive('getType')->never();
+        /** @noinspection PhpMethodParametersCountMismatchInspection */
+        $param->shouldReceive('getName')->andReturn('foo');
+        /** @noinspection PhpMethodParametersCountMismatchInspection */
+        $param->shouldReceive('isVariadic')->andReturn(true);
+
+        /** @noinspection PhpParamsInspection */
+        static::assertSame(
+            '...$foo',
             (string)ClosureParamStringForm::fromReflectionParameter($param)
         );
     }

@@ -55,8 +55,14 @@ class ClosureStringFormTest extends TestCase
         static::assertSame('function ($foo, $bar)', (string)$string_form);
     }
 
-    public function testArgsTypeHints()
+    public function testArgsTypeHints7()
     {
+        if (PHP_MAJOR_VERSION < 7) {
+            $this->markTestSkipped('Skipping PHP 7 test.');
+
+            return;
+        }
+
         $callback = function (\ArrayObject $foo, array $bar, \stdClass... $classes) {
 
         };
@@ -65,6 +71,26 @@ class ClosureStringFormTest extends TestCase
 
         static::assertSame(
             'function (ArrayObject $foo, array $bar, stdClass ...$classes)',
+            (string)$string_form
+        );
+    }
+
+    public function testArgsTypeHints5()
+    {
+        if (PHP_MAJOR_VERSION >= 7) {
+            $this->markTestSkipped('Skipping PHP 5.6 test.');
+
+            return;
+        }
+
+        $callback = function (\ArrayObject $foo, array $bar, \stdClass... $classes) {
+
+        };
+
+        $string_form = new ClosureStringForm($callback);
+
+        static::assertSame(
+            'function ($foo, $bar, ...$classes)',
             (string)$string_form
         );
     }

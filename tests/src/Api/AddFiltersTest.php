@@ -32,13 +32,13 @@ class AddFiltersTest extends TestCase
     public function testAddAndHas()
     {
         add_filter('the_title', 'strtolower', 30, 1);
-        add_filter('the_title', function ($title) {
+        add_filter('the_title', function (array $title) {
             return true;
         });
         add_filter('the_title', [$this, __FUNCTION__], 20);
 
         static::assertTrue(has_filter('the_title', 'strtolower'));
-        static::assertTrue(has_filter('the_title', 'function($title)'));
+        static::assertTrue(has_filter('the_title', 'function(array $title)'));
         static::assertTrue(has_filter('the_title', __CLASS__.'->'.__FUNCTION__.'()', 20));
 
         static::assertFalse(has_filter('the_content', 'strtolower', 30, 1));
