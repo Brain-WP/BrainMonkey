@@ -127,7 +127,9 @@ class Expectation
             $this->andAlsoExpectIt();
         }
 
-        $this->expectation = ([$this->expectation, $name])(...$arguments);
+        $callback = [$this->expectation, $name];
+
+        $this->expectation = $callback(...$arguments);
 
         return $this;
     }
