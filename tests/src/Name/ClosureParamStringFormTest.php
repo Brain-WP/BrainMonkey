@@ -53,8 +53,14 @@ class ClosureParamStringFormTest extends TestCase
         static::assertFalse(ClosureParamStringForm::fromString(' $foo ')->isVariadic());
     }
 
-    public function testFromStringToString()
+    public function testFromStringToString7()
     {
+        if (PHP_MAJOR_VERSION < 7) {
+            $this->markTestSkipped('Skipping PHP 7 test.');
+
+            return;
+        }
+
         $param_a = ClosureParamStringForm::fromString('Foo $foo');
         $param_b = ClosureParamStringForm::fromString('...$foo');
         $param_c = ClosureParamStringForm::fromString(' ... $foo');
@@ -67,6 +73,29 @@ class ClosureParamStringFormTest extends TestCase
         static::assertSame('...$foo', (string)$param_c);
         static::assertSame('Foo ...$foo', (string)$param_d);
         static::assertSame('Foo ...$foo', (string)$param_e);
+        static::assertSame('$foo', (string)$param_f);
+    }
+
+    public function testFromStringToString5()
+    {
+        if (PHP_MAJOR_VERSION >= 7) {
+            $this->markTestSkipped('Skipping PHP 5.6 test.');
+
+            return;
+        }
+
+        $param_a = ClosureParamStringForm::fromString('Foo $foo');
+        $param_b = ClosureParamStringForm::fromString('...$foo');
+        $param_c = ClosureParamStringForm::fromString(' ... $foo');
+        $param_d = ClosureParamStringForm::fromString('Foo ...$foo');
+        $param_e = ClosureParamStringForm::fromString(' Foo ... $foo ');
+        $param_f = ClosureParamStringForm::fromString(' $foo ');
+
+        static::assertSame('$foo', (string)$param_a);
+        static::assertSame('...$foo', (string)$param_b);
+        static::assertSame('...$foo', (string)$param_c);
+        static::assertSame('...$foo', (string)$param_d);
+        static::assertSame('...$foo', (string)$param_e);
         static::assertSame('$foo', (string)$param_f);
     }
 
