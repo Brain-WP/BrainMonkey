@@ -17,7 +17,7 @@ It provides **two set of helpers**:
 
   - PHP 5.6+
   - [Composer](https://getcomposer.org/) to install
- 
+
 Via Composer following packages are required:
 
   - [mockery/mockery](https://packagist.org/packages/mockery/mockery) version 1 (BSD-3-Clause)
@@ -42,4 +42,5 @@ Brain Monkey is hosted on GitHub. Feel free to open issues there for suggestions
 
 I'm Giuseppe, I deal with PHP since 2005. For questions, rants or chat ping me on Twitter ([@gmazzap](https://twitter.com/gmazzap)) 
 or on ["The Loop"](http://chat.stackexchange.com/rooms/6/the-loop) (Stack Exchange) chat.
+
 Well, it's possible I'll ignore rants.
