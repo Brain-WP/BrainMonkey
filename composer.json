@@ -22,8 +22,8 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/Giuseppe-Mazzapica/BrainMonkey/issues",
-        "source": "https://github.com/Giuseppe-Mazzapica/BrainMonkey"
+        "issues": "https://github.com/Brain-WP/BrainMonkey/issues",
+        "source": "https://github.com/Brain-WP/BrainMonkey"
     },
     "license": "MIT",
     "require": {
