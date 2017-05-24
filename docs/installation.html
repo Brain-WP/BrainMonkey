@@ -32,69 +32,79 @@
 
           <ul class="sidebar-nav">
                                                   <li>
-                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Getting Started</a>
-                      <ul>
-                                                        <li class="active">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/installation.html">
-                                      Installation
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/what-and-why.html">
-                                      What & Why
-                                  </a>
-                              </li>
-                                                </ul>
+                        <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Getting Started</a>
+                        <ul>
+                                                            <li class="active">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/installation.html">
+                                        Installation
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/what-and-why.html">
+                                        What & Why
+                                    </a>
+                                </li>
+                                                    </ul>
                     </li>
                                     <li>
-                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> PHP Functions</a>
-                      <ul>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-setup.html">
-                                      Setup
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-when.html">
-                                      Patching with when()
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-expect.html">
-                                      Testing with expect()
-                                  </a>
-                              </li>
-                                                </ul>
+                        <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> PHP Functions</a>
+                        <ul>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-setup.html">
+                                        Setup
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-when.html">
+                                        Patching with when()
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-expect.html">
+                                        Testing with expect()
+                                    </a>
+                                </li>
+                                                    </ul>
                     </li>
                                     <li>
-                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> WordPress</a>
-                      <ul>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-why-bother.html">
-                                      Why Bother
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-setup.html">
-                                      Setup
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-tools.html">
-                                      WordPress Testing Tools
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-hooks-added.html">
-                                      Testing Added Hooks
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-hooks-fired.html">
-                                      Testing Fired Hooks
-                                  </a>
-                              </li>
-                                                </ul>
+                        <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> WordPress</a>
+                        <ul>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-why-bother.html">
+                                        Why Bother
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-setup.html">
+                                        Setup
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-tools.html">
+                                        WordPress Testing Tools
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-hooks-added.html">
+                                        Testing Added Hooks
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-hooks-fired.html">
+                                        Testing Fired Hooks
+                                    </a>
+                                </li>
+                                                    </ul>
+                    </li>
+                                    <li>
+                        <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Migration</a>
+                        <ul>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/migrating-from-v1.html">
+                                        Migrating From Version 1
+                                    </a>
+                                </li>
+                                                    </ul>
                     </li>
                                         </ul>
 
@@ -113,20 +123,20 @@
                                                                                                         <h1 id="installation">Installation</h1>
 <p>To install Brain Monkey you need:</p>
 <ul>
-<li>PHP 5.4+</li>
+<li>PHP 5.6+</li>
 <li><a href="https://getcomposer.org">Composer</a></li>
 </ul>
 <p>Brain Monkey is available on Packagist, so the only thing you need to do is to add it as a dependency for your project.</p>
 <p>That can be done by running following command in your project folder:</p>
-<pre><code class="language-shell">composer require brain/monkey:1.* --dev</code></pre>
+<pre><code class="language-shell">composer require brain/monkey:2.* --dev</code></pre>
 <p>As alternative you can directly edit your <code>composer.json</code> by adding:</p>
 <pre><code class="language-json">{
   "require-dev": {
-    "brain/monkey": "~1.0"
+    "brain/monkey": "~2.0.0"
   }
 }</code></pre>
-<p>I've used <code>require-dev</code> because, being a testing tool, Brain Monkey should not be included in production.</p>
-<p>Brain Monkey can work with any testing framework, so doesn't require any of them.</p>
+<p>I've used <code>require-dev</code> because, being a testing tool, Brain Monkey should <strong>not</strong> be included in production.</p>
+<p>Brain Monkey can work with any testing framework, so it doesn't require any of them.</p>
 <p>To run your tests you'll probably need to require a testing framework too, e.g. <a href="https://phpunit.de/">PHPUnit</a> or <a href="http://www.phpspec.net/en/latest/">phpspec</a>.</p>
 <h2 id="dependencies">Dependencies</h2>
 <p>Brain Monkey needs 2 libraries to work:</p>
@@ -145,7 +155,7 @@
         </div>
         <!-- /#page-content-wrapper -->
 
-                    <a href="https://github.com/Giuseppe-Mazzapica/BrainMonkey">
+                    <a href="https://github.com/gmazzap/BrainMonkey">
                 <img style="position:fixed; top:0; right:0; border:0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
             </a>
                 <a href="#" id="menu-toggle" title="Toggle Menu"><i class="fa fa-bars"></i></a>
@@ -180,6 +190,12 @@
       ga('create', 'UA-46467639-3', 'auto');
       ga('send', 'pageview');
     </script>
-</body>
+        <!-- Livereload -->
+        <script>
+            document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] +
+                    ':35729/livereload.js?snipver=1"></' + 'script>')
+        </script>
+        <!-- End Livereload -->
+    </body>
 
 </html>

@@ -32,69 +32,79 @@
 
           <ul class="sidebar-nav">
                                                   <li>
-                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Getting Started</a>
-                      <ul>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/installation.html">
-                                      Installation
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/what-and-why.html">
-                                      What & Why
-                                  </a>
-                              </li>
-                                                </ul>
+                        <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Getting Started</a>
+                        <ul>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/installation.html">
+                                        Installation
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/what-and-why.html">
+                                        What & Why
+                                    </a>
+                                </li>
+                                                    </ul>
                     </li>
                                     <li>
-                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> PHP Functions</a>
-                      <ul>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-setup.html">
-                                      Setup
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-when.html">
-                                      Patching with when()
-                                  </a>
-                              </li>
-                                                        <li class="active">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-expect.html">
-                                      Testing with expect()
-                                  </a>
-                              </li>
-                                                </ul>
+                        <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> PHP Functions</a>
+                        <ul>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-setup.html">
+                                        Setup
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-when.html">
+                                        Patching with when()
+                                    </a>
+                                </li>
+                                                            <li class="active">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-expect.html">
+                                        Testing with expect()
+                                    </a>
+                                </li>
+                                                    </ul>
                     </li>
                                     <li>
-                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> WordPress</a>
-                      <ul>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-why-bother.html">
-                                      Why Bother
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-setup.html">
-                                      Setup
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-tools.html">
-                                      WordPress Testing Tools
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-hooks-added.html">
-                                      Testing Added Hooks
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-hooks-fired.html">
-                                      Testing Fired Hooks
-                                  </a>
-                              </li>
-                                                </ul>
+                        <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> WordPress</a>
+                        <ul>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-why-bother.html">
+                                        Why Bother
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-setup.html">
+                                        Setup
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-tools.html">
+                                        WordPress Testing Tools
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-hooks-added.html">
+                                        Testing Added Hooks
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-hooks-fired.html">
+                                        Testing Fired Hooks
+                                    </a>
+                                </li>
+                                                    </ul>
+                    </li>
+                                    <li>
+                        <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Migration</a>
+                        <ul>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/migrating-from-v1.html">
+                                        Migrating From Version 1
+                                    </a>
+                                </li>
+                                                    </ul>
                     </li>
                                         </ul>
 
@@ -111,56 +121,54 @@
                               <li class="active">PHP Functions</li>
                             </ol>
                                                                                                         <h1 id="testing-functions-with-expect">Testing functions with expect()</h1>
-<p>Often, in tests, what we need is not only to enforce a function returned value (what <code>when()</code> allows to do), but
-to test function behavior based on <strong>expectations</strong>.</p>
-<p>Mockery has a very powerful, and human readable Domain Specific Language (DSL) that allows to set expectations
-on how object methods should behave, e.g. validate arguments they should receive, how many times they are called, and so on.</p>
-<p>Brain Monkey brings that power to function testing. The entry-point is the <code>Functions::expect()</code> method.</p>
+<p>Often, in tests, what we need is not only to enforce a function returned value (what <code>Functions\when()</code> allows to do), but to test function behavior based on <strong>expectations</strong>.</p>
+<p>Mockery has a very powerful, and human readable Domain Specific Language (DSL) that allows to set expectations on how object methods should behave, e.g. validate arguments they should receive, how many times they are called, and so on.</p>
+<p>Brain Monkey brings that power to function testing. The entry-point is the <code>Functions\expect()</code> function.</p>
 <p>It receives a function name and returns a Mockery expectation object with all its power.</p>
 <p>Below there are just several examples, for the full story about Mockery expectations see its <a href="http://docs.mockery.io/en/latest/reference/index.html">documentation</a>.</p>
-<p>Only note that in functions testing the <code>shouldReceive</code> Mockery method makes <strong>no sense</strong>, don't use it (an exception will be thrown if you do that).</p>
+<p>Only note that in functions testing the <code>shouldReceive</code> Mockery method makes <strong>no sense</strong>, so don't use it (an exception will be thrown if you do that).</p>
 <h2 id="expectations-on-times-a-function-is-called">Expectations on times a function is called</h2>
-<pre><code class="language-php">Functions::expect('paganini')-&gt;once();
+<pre><code class="language-php">Functions\expect('paganini')-&gt;once();
 
-Functions::expect('tween')-&gt;twice();
+Functions\expect('tween')-&gt;twice();
 
-Functions::expect('who_knows')-&gt;zeroOrMoreTimes();
+Functions\expect('who_knows')-&gt;zeroOrMoreTimes();
 
-Functions::expect('i_should_run')-&gt;atLeast()-&gt;once();
+Functions\expect('i_should_run')-&gt;atLeast()-&gt;once();
 
-Functions::expect('i_have_a_max')-&gt;atMost()-&gt;twice();
+Functions\expect('i_have_a_max')-&gt;atMost()-&gt;twice();
 
-Functions::expect('poor_me')-&gt;never();
+Functions\expect('poor_me')-&gt;never();
 
-Functions::expect('pretty_precise')-&gt;times(3);
+Functions\expect('pretty_precise')-&gt;times(3);
 
-Functions::expect('i_have_max_and_min')-&gt;between(2, 4);</code></pre>
+Functions\expect('i_have_max_and_min')-&gt;between(2, 4);</code></pre>
 <p>There is no need to explain how it works: Mockery DSL reads like plain English.</p>
 <p>Of course, expectation on the times a function should run can be combined with arguments expectation.</p>
 <h2 id="expectations-on-received-arguments">Expectations on received arguments</h2>
 <p>Below a few examples, for the full story see <a href="http://docs.mockery.io/en/latest/reference/argument_validation.html">Mockery docs</a>.</p>
 <pre><code class="language-php">// allow anything
-Functions::expect('function_name')
+Functions\expect('function_name')
   -&gt;once()
   -&gt;withAnyArgs();
 
 // allow nothing
-Functions::expect('function_name')
+Functions\expect('function_name')
   -&gt;once()
   -&gt;withNoArgs();
 
 // validate specific arguments
-Functions::expect('function_name')
+Functions\expect('function_name')
   -&gt;once()
   -&gt;with('arg_1', 'arg2');
 
 // validate specific argument types
-Functions::expect('function_name')
+Functions\expect('function_name')
   -&gt;times(3)
   -&gt;with(Mockery::type('resource'), Mockery::type('int'));
 
 // validate anything in specific places
-Functions::expect('function_name')
+Functions\expect('function_name')
     -&gt;zeroOrMoreTimes()
     -&gt;with(Mockery::any());
 
@@ -170,37 +178,37 @@ Functions::expect('function_name')
     -&gt;with(Mockery::anyOf('a', 'b', 'c'));
 
 // regex validation
-Functions::expect('function_name')
+Functions\expect('function_name')
     -&gt;once()
     -&gt;with('/^foo/');
 
 // excluding specific values
-Functions::expect('function_name')
+Functions\expect('function_name')
     -&gt;once()
     -&gt;with(Mockery::not(2, 3));
 
 // dealing with array arguments
-Functions::expect('function_name')
+Functions\expect('function_name')
     -&gt;once()
     -&gt;with(Mockery::hasKey('foo'), Mockery::contains('bar', 'baz'));</code></pre>
 <h2 id="forcing-behavior">Forcing behavior</h2>
 <p>Excluding <code>shouldReceive</code>, all the Mockery expectation methods can be used with Brain Monkey, including
 <code>andReturn</code> or <code>andReturnUsing</code> used to enforce a function to return specific values during tests.</p>
-<p>In fact, <code>Functions::when()</code> do same thing for simple cases when no expectations are required.</p>
+<p>In fact, <code>Functions\when()</code> do same thing for simple cases when no expectations are required.</p>
 <p>Again, just a few examples:</p>
 <pre><code class="language-php">// return a specific value
-Functions::expect('function_name')
+Functions\expect('function_name')
   -&gt;once()
   -&gt;with('foo', 'bar')
   -&gt;andReturn('Baz!');
 
 // return values in order
-Functions::expect('function_name')
+Functions\expect('function_name')
   -&gt;twice()
   -&gt;andReturn('First time I run', 'Second time I run');
 
 // return values in order, alternative
-Functions::expect('function_name')
+Functions\expect('function_name')
   -&gt;twice()
   -&gt;andReturnValues(['First time I run', 'Second time I run']);
 
@@ -210,7 +218,7 @@ Functions::expect('function_name')
   -&gt;andReturnNull();
 
 // use a callback for returning a value
-Functions::expect('function_name')
+Functions\expect('function_name')
   -&gt;atLeast()
   -&gt;once()
   -&gt;andReturnUsing(function() {
@@ -218,7 +226,7 @@ Functions::expect('function_name')
   });
 
 // makes function throws an Exception (e.g. to test try statements)
-Functions::expect('function_name')
+Functions\expect('function_name')
   -&gt;once()
   -&gt;andThrow('RuntimeException'); // Both exception names and object are supported</code></pre>
                                             </div>
@@ -227,7 +235,7 @@ Functions::expect('function_name')
         </div>
         <!-- /#page-content-wrapper -->
 
-                    <a href="https://github.com/Giuseppe-Mazzapica/BrainMonkey">
+                    <a href="https://github.com/gmazzap/BrainMonkey">
                 <img style="position:fixed; top:0; right:0; border:0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
             </a>
                 <a href="#" id="menu-toggle" title="Toggle Menu"><i class="fa fa-bars"></i></a>
@@ -262,6 +270,12 @@ Functions::expect('function_name')
       ga('create', 'UA-46467639-3', 'auto');
       ga('send', 'pageview');
     </script>
-</body>
+        <!-- Livereload -->
+        <script>
+            document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] +
+                    ':35729/livereload.js?snipver=1"></' + 'script>')
+        </script>
+        <!-- End Livereload -->
+    </body>
 
 </html>

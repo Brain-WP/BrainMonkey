@@ -32,69 +32,79 @@
 
           <ul class="sidebar-nav">
                                                   <li>
-                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Getting Started</a>
-                      <ul>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/installation.html">
-                                      Installation
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/what-and-why.html">
-                                      What & Why
-                                  </a>
-                              </li>
-                                                </ul>
+                        <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Getting Started</a>
+                        <ul>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/installation.html">
+                                        Installation
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/what-and-why.html">
+                                        What & Why
+                                    </a>
+                                </li>
+                                                    </ul>
                     </li>
                                     <li>
-                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> PHP Functions</a>
-                      <ul>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-setup.html">
-                                      Setup
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-when.html">
-                                      Patching with when()
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-expect.html">
-                                      Testing with expect()
-                                  </a>
-                              </li>
-                                                </ul>
+                        <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> PHP Functions</a>
+                        <ul>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-setup.html">
+                                        Setup
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-when.html">
+                                        Patching with when()
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-expect.html">
+                                        Testing with expect()
+                                    </a>
+                                </li>
+                                                    </ul>
                     </li>
                                     <li>
-                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> WordPress</a>
-                      <ul>
-                                                        <li class="active">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-why-bother.html">
-                                      Why Bother
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-setup.html">
-                                      Setup
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-tools.html">
-                                      WordPress Testing Tools
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-hooks-added.html">
-                                      Testing Added Hooks
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-hooks-fired.html">
-                                      Testing Fired Hooks
-                                  </a>
-                              </li>
-                                                </ul>
+                        <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> WordPress</a>
+                        <ul>
+                                                            <li class="active">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-why-bother.html">
+                                        Why Bother
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-setup.html">
+                                        Setup
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-tools.html">
+                                        WordPress Testing Tools
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-hooks-added.html">
+                                        Testing Added Hooks
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-hooks-fired.html">
+                                        Testing Fired Hooks
+                                    </a>
+                                </li>
+                                                    </ul>
+                    </li>
+                                    <li>
+                        <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Migration</a>
+                        <ul>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/migrating-from-v1.html">
+                                        Migrating From Version 1
+                                    </a>
+                                </li>
+                                                    </ul>
                     </li>
                                         </ul>
 
@@ -116,13 +126,10 @@ not WordPress core.</p>
 <p>More specifically, it is useful to run <strong>unit tests</strong>.</p>
 <p>Integration tests or end-to-end tests are a thing: you need to be sure that your code works good <em>with</em> WordPress.</p>
 <p>But <strong>unit</strong> tests are meant to be run <strong>without loading WordPress environment</strong>.</p>
-<p>Every component that is unit tested, should be tested in isolation: when you test a class, you only have to test that specific class,
-assuming all other code (e.g. WordPress code) is working perfectly.</p>
-<p>This is not only because doing that tests will run much faster, but also because the key concept in unit testing is that every
-piece of code should work <em>per se</em>, in this way if a test fails there is only one possible culprit.</p>
+<p>Every component that is unit tested, should be tested in isolation: when you test a class, you only have to test that specific class, assuming all other code (e.g. WordPress code) is working perfectly.</p>
+<p>This is not only because doing that tests will run much faster, but also because the key concept in unit testing is that every piece of code should work <em>per se</em>, in this way if a test fails there is only one possible culprit.</p>
 <p>By assuming all the external code is working perfectly, it is possible to test the behavior of the SUT (System Under Test), without any <em>interference</em>.</p>
-<p>To deepen these concepts, read <a href="http://wordpress.stackexchange.com/a/164138/35541">this answer</a> I wrote for
-WordPress Development (StackExchange) site, that also contains some tips to write better <em>testable</em> WordPress code.</p>
+<p>To deepen these concepts, read <a href="http://wordpress.stackexchange.com/a/164138/35541">this answer</a> I wrote for WordPress Development (StackExchange) site, that also contains some tips to write better <em>testable</em> WordPress code.</p>
 <h2 id="if-wordpress-is-not-loaded">If WordPress is not loaded...</h2>
 <p>WordPress functions are not available, and trying to run tests in that situation, tests fail with fatal errors.</p>
 <p>Unless you use Brain Monkey.</p>
@@ -130,14 +137,14 @@ WordPress Development (StackExchange) site, that also contains some tips to writ
 <p>See the <em>PHP Function</em> documentation section  for a deep explanation on how it works.</p>
 <p>Moreover, among others, WordPress <a href="https://codex.wordpress.org/Plugin_API">Plugin API functions</a> are particularly
 important and a very fine grained control on how they are used in code is pivotal to proper test WordPress extensions.</p>
-<p>This is why Brain Monkey comes with a set of features specifically designed for that.</p>
+<p>This is why Brain Monkey comes with a set of features specifically designed for that.\   </p>
                                             </div>
                 </div>
             </div>
         </div>
         <!-- /#page-content-wrapper -->
 
-                    <a href="https://github.com/Giuseppe-Mazzapica/BrainMonkey">
+                    <a href="https://github.com/gmazzap/BrainMonkey">
                 <img style="position:fixed; top:0; right:0; border:0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
             </a>
                 <a href="#" id="menu-toggle" title="Toggle Menu"><i class="fa fa-bars"></i></a>
@@ -172,6 +179,12 @@ important and a very fine grained control on how they are used in code is pivota
       ga('create', 'UA-46467639-3', 'auto');
       ga('send', 'pageview');
     </script>
-</body>
+        <!-- Livereload -->
+        <script>
+            document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] +
+                    ':35729/livereload.js?snipver=1"></' + 'script>')
+        </script>
+        <!-- End Livereload -->
+    </body>
 
 </html>

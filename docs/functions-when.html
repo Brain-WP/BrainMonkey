@@ -32,69 +32,79 @@
 
           <ul class="sidebar-nav">
                                                   <li>
-                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Getting Started</a>
-                      <ul>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/installation.html">
-                                      Installation
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/what-and-why.html">
-                                      What & Why
-                                  </a>
-                              </li>
-                                                </ul>
+                        <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Getting Started</a>
+                        <ul>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/installation.html">
+                                        Installation
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/what-and-why.html">
+                                        What & Why
+                                    </a>
+                                </li>
+                                                    </ul>
                     </li>
                                     <li>
-                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> PHP Functions</a>
-                      <ul>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-setup.html">
-                                      Setup
-                                  </a>
-                              </li>
-                                                        <li class="active">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-when.html">
-                                      Patching with when()
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-expect.html">
-                                      Testing with expect()
-                                  </a>
-                              </li>
-                                                </ul>
+                        <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> PHP Functions</a>
+                        <ul>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-setup.html">
+                                        Setup
+                                    </a>
+                                </li>
+                                                            <li class="active">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-when.html">
+                                        Patching with when()
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-expect.html">
+                                        Testing with expect()
+                                    </a>
+                                </li>
+                                                    </ul>
                     </li>
                                     <li>
-                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> WordPress</a>
-                      <ul>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-why-bother.html">
-                                      Why Bother
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-setup.html">
-                                      Setup
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-tools.html">
-                                      WordPress Testing Tools
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-hooks-added.html">
-                                      Testing Added Hooks
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-hooks-fired.html">
-                                      Testing Fired Hooks
-                                  </a>
-                              </li>
-                                                </ul>
+                        <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> WordPress</a>
+                        <ul>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-why-bother.html">
+                                        Why Bother
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-setup.html">
+                                        Setup
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-tools.html">
+                                        WordPress Testing Tools
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-hooks-added.html">
+                                        Testing Added Hooks
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-hooks-fired.html">
+                                        Testing Fired Hooks
+                                    </a>
+                                </li>
+                                                    </ul>
+                    </li>
+                                    <li>
+                        <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Migration</a>
+                        <ul>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/migrating-from-v1.html">
+                                        Migrating From Version 1
+                                    </a>
+                                </li>
+                                                    </ul>
                     </li>
                                         </ul>
 
@@ -111,8 +121,8 @@
                               <li class="active">PHP Functions</li>
                             </ol>
                                                                                                         <h1 id="patching-functions-with-when">Patching functions with when()</h1>
-<p>The first method Brain Monkey offers to monkey patch a function is <code>when()</code>.
-This method have to be used to <strong>set a behavior</strong> for functions.</p>
+<p>The first way Brain Monkey offers to monkey patch a function is <code>Functions\when()</code>.</p>
+<p>This function has to be used to <strong>set a behavior</strong> for functions.</p>
 <p><code>when()</code> and 5 related methods are used to define functions (if not defined yet) and:</p>
 <ul>
 <li>make them return a specific value</li>
@@ -123,46 +133,48 @@ This method have to be used to <strong>set a behavior</strong> for functions.</p
 </ul>
 <p>For the sake of readability, in all the code samples below I'll assume that an <code>use</code> statement is in place:</p>
 <pre><code class="language-php">use Brain\Monkey\Functions;</code></pre>
-<p>Don't forget to add it in your code as well, or use the fully qualified class name.
-Also be sure to read the <em>PHP Functions / Setup</em> section that explain how setup Brain Monkey for usage in tests.</p>
+<p>Don't forget to add it in your code as well, or use the fully qualified class name.</p>
+<p>Also be sure to read the <em>PHP Functions / Setup</em> section that explain how setup Brain Monkey for usage in tests.</p>
 <h2><code>justReturn()</code></h2>
 <p>By using <code>when()</code> in combination with <code>justReturn()</code> you can make a (maybe) undefined function <em>just return</em> a given value:</p>
-<pre><code class="language-php">Functions::when('a_undefined_function')-&gt;justReturn('Cool!');
+<pre><code class="language-php">Functions\when('a_undefined_function')-&gt;justReturn('Cool!');
 
 echo a_undefined_function(); // echoes "Cool!"</code></pre>
 <p>Without passing a value to <code>justReturn()</code> the target function will return nothing (<code>null</code>).</p>
 <h2><code>returnArg()</code></h2>
-<p>This other when-related method is used to make the target function return one of the received arguments, by default the first.</p>
-<pre><code class="language-php">Functions::when('give_me_the_first')-&gt;returnArg(); // is the same of -&gt;returnArg(1)
-Functions::when('i_want_the_second')-&gt;returnArg(2);
-Functions::when('and_the_third_for_me')-&gt;returnArg(3);
+<p>This other <code>when</code>-related method is used to make the target function return one of the received arguments, by default the first.</p>
+<pre><code class="language-php">Functions\when('give_me_the_first')-&gt;returnArg(); // is the same of -&gt;returnArg(1)
+Functions\when('i_want_the_second')-&gt;returnArg(2);
+Functions\when('and_the_third_for_me')-&gt;returnArg(3);
 
 echo give_me_the_first('A', 'B', 'C'); // echoes "A"
 echo i_want_the_second('A', 'B', 'C'); // echoes "B"
 echo and_the_third_for_me('A', 'B', 'C'); // echoes "C"</code></pre>
 <p>Note that if the target function does not receive the desired argument, <code>returnArg()</code> throws an exception:</p>
-<pre><code class="language-php">Functions::when('needs_the_third')-&gt;returnArg(3);
+<pre><code class="language-php">Functions\when('needs_the_third')-&gt;returnArg(3);
 
-echo needs_the_third('A', 'B'); // throws an exception because required 3rd argument, but received 2</code></pre>
+// throws an exception because required 3rd argument, but received 2
+echo needs_the_third('A', 'B');</code></pre>
 <h2><code>justEcho()</code></h2>
 <p>Similar to <code>justReturn()</code>, it makes the mocked function echo some value instead of returning it.</p>
-<pre><code class="language-php">Functions::when('a_undefined_function')-&gt;justEcho('Cool!');
+<pre><code class="language-php">Functions\when('a_undefined_function')-&gt;justEcho('Cool!');
 
 a_undefined_function(); // echoes "Cool!"</code></pre>
 <h2><code>echoArg()</code></h2>
 <p>Similar to <code>returnArg()</code>, it makes the mocked function echo some received argument instead of returning it.</p>
-<pre><code class="language-php">Functions::when('echo_the_first')-&gt;echoArg(); // is the same of -&gt;echoArg(1)
-Functions::when('echo_the_second')-&gt;echoArg(2);
+<pre><code class="language-php">Functions\when('echo_the_first')-&gt;echoArg(); // is the same of -&gt;echoArg(1)
+Functions\when('echo_the_second')-&gt;echoArg(2);
 
 echo_the_first('A', 'B', 'C'); // echoes "A"
 echo_the_second('A', 'B', 'C'); // echoes "B"</code></pre>
 <h2><code>alias()</code></h2>
 <p>The last of the when-related methods allows to make a function behave just like another callback.
 The replacing function can be anything that can be run: a core function or a custom one, a class method, a closure...</p>
-<pre><code class="language-php">Functions::when('duplicate')-&gt;alias(function($value) {
+<pre><code class="language-php">Functions\when('duplicate')-&gt;alias(function($value) {
     "Was ".$value.", now is ".($value * 2);
 });
-Functions::when('bigger')-&gt;alias('strtoupper');
+
+Functions\when('bigger')-&gt;alias('strtoupper');
 
 echo duplicate(1); // echoes "Was 1, now is 2"
 echo bigger('was lower'); // echoes "WAS LOWER"</code></pre>
@@ -172,7 +184,7 @@ echo bigger('was lower'); // echoes "WAS LOWER"</code></pre>
         </div>
         <!-- /#page-content-wrapper -->
 
-                    <a href="https://github.com/Giuseppe-Mazzapica/BrainMonkey">
+                    <a href="https://github.com/gmazzap/BrainMonkey">
                 <img style="position:fixed; top:0; right:0; border:0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
             </a>
                 <a href="#" id="menu-toggle" title="Toggle Menu"><i class="fa fa-bars"></i></a>
@@ -207,6 +219,12 @@ echo bigger('was lower'); // echoes "WAS LOWER"</code></pre>
       ga('create', 'UA-46467639-3', 'auto');
       ga('send', 'pageview');
     </script>
-</body>
+        <!-- Livereload -->
+        <script>
+            document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] +
+                    ':35729/livereload.js?snipver=1"></' + 'script>')
+        </script>
+        <!-- End Livereload -->
+    </body>
 
 </html>

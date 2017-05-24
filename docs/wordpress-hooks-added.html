@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="author" content="Giuseppe Mazzapica">
-    <title>WordPress / Testing Added Hooks. Brain Monkey</title>
+    <meta name="description" content="Brain Monkey is mocking utility for PHP functions and WordPress plugin API.">    <meta name="author" content="Giuseppe Mazzapica">
+    <title>Brain Monkey: Mocking utility for PHP functions and WordPress</title>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
     <link href="https://brain-wp.github.io/BrainMonkey/css/theme.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -32,69 +32,79 @@
 
           <ul class="sidebar-nav">
                                                   <li>
-                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Getting Started</a>
-                      <ul>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/installation.html">
-                                      Installation
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/what-and-why.html">
-                                      What & Why
-                                  </a>
-                              </li>
-                                                </ul>
+                        <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Getting Started</a>
+                        <ul>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/installation.html">
+                                        Installation
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/what-and-why.html">
+                                        What & Why
+                                    </a>
+                                </li>
+                                                    </ul>
                     </li>
                                     <li>
-                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> PHP Functions</a>
-                      <ul>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-setup.html">
-                                      Setup
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-when.html">
-                                      Patching with when()
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-expect.html">
-                                      Testing with expect()
-                                  </a>
-                              </li>
-                                                </ul>
+                        <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> PHP Functions</a>
+                        <ul>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-setup.html">
+                                        Setup
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-when.html">
+                                        Patching with when()
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-expect.html">
+                                        Testing with expect()
+                                    </a>
+                                </li>
+                                                    </ul>
                     </li>
                                     <li>
-                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> WordPress</a>
-                      <ul>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-why-bother.html">
-                                      Why Bother
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-setup.html">
-                                      Setup
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-tools.html">
-                                      WordPress Testing Tools
-                                  </a>
-                              </li>
-                                                        <li class="active">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-hooks-added.html">
-                                      Testing Added Hooks
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-hooks-fired.html">
-                                      Testing Fired Hooks
-                                  </a>
-                              </li>
-                                                </ul>
+                        <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> WordPress</a>
+                        <ul>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-why-bother.html">
+                                        Why Bother
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-setup.html">
+                                        Setup
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-tools.html">
+                                        WordPress Testing Tools
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-hooks-added.html">
+                                        Testing Added Hooks
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-hooks-fired.html">
+                                        Testing Fired Hooks
+                                    </a>
+                                </li>
+                                                    </ul>
+                    </li>
+                                    <li>
+                        <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Migration</a>
+                        <ul>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/migrating-from-v1.html">
+                                        Migrating From Version 1
+                                    </a>
+                                </li>
+                                                    </ul>
                     </li>
                                         </ul>
 
@@ -106,11 +116,12 @@
             <div class="container-fluid">
                 <div class="row">
                     <div id="content" class="col-lg-11">
-                                                                                <ol class="breadcrumb">
-                              <li><a href="https://brain-wp.github.io/BrainMonkey">Brain Monkey</a></li>
-                              <li class="active">WordPress</li>
-                            </ol>
-                                                                                                        <h1 id="testing-added-hooks">Testing Added Hooks</h1>
+                                                                                                                                <!--
+currentMenu: "wphooksadded"
+currentSection: "WordPress"
+title: "Testing Added Hooks"
+-->
+<h1 id="testing-added-hooks">Testing Added Hooks</h1>
 <p>With Brain Monkey there are two ways to test some hook have been added, and with which arguments.</p>
 <p>First method (easier) makes use of WordPress functions, the second (more powerful) makes use of Brain Monkey (Mockery) expectation DSL.</p>
 <h2 id="testing-framework-agnostic">Testing framework agnostic</h2>
@@ -119,129 +130,187 @@ Examples in this page will use PHPUnit, but the concepts are applicable to any t
 <p>Also note that test classes in this page extends the class <code>MyTestCase</code> that is assumed very similar to the one coded in the <em>WordPress / Setup</em> docs section.</p>
 <h2 id="testing-with-wordpress-functions">Testing with WordPress functions: <code>has_action()</code> and <code>has_filter()</code></h2>
 <p>When Brain Monkey is loaded for tests it registers all the functions of WordPress plugin API (see <em>WordPress / WordPress Testing Tools</em>).
-Among them there are <code>has_action()</code> and <code>has_filter()</code> that, just like <em>real</em> WordPress functions can be used to test if some hook (action or filter)
-has been added, and also verify the arguments.</p>
+Among them there are <code>has_action()</code> and <code>has_filter()</code> that, just like <em>real</em> WordPress functions can be used to test if some hook (action or filter) has been added, and also verify the arguments.</p>
 <p>Let's assume the code to be tested is:</p>
-<pre><code class="language-php">class MyClass
-{
-    function addHooks()
-    {
-       add_action('init', array('MyClass', 'init'), 20);
-       add_filter('the_title', array('MyClass', 'the_title'), 99);
+<pre><code class="language-php">namespace Some\Name\Space;
+
+class MyClass {
+
+    public function addHooks() {
+
+       add_action('init', [__CLASS__, 'init'], 20);
+       add_filter('the_title', [__CLASS__, 'the_title'], 99);
     }
 }</code></pre>
 <p>in Brain Monkey, just like in real WordPress code, you can test hooks are added using WordPress functions:</p>
-<pre><code class="language-php">class MyClassTest extends MyTestCase
-{
-    function testAddHooksActuallyAddsHooks()
-    {
-        $class = new MyClass();
-        $class-&gt;addHooks();
-        $this-&gt;assertTrue( has_action('init', array('MyClass', 'init'), 20) );
-        $this-&gt;assertTrue( has_filter('the_title', array('MyClass', 'the_title'), 99) );
+<pre><code class="language-php">use Some\Name\Space\MyClass;
+
+class MyClassTest extends MyTestCase {
+
+  public function testAddHooksActuallyAddsHooks() {
+
+        ( new MyClass() )-&gt;addHooks();
+        self::assertTrue( has_action('init', [ MyClass::class, 'init' ]) );
+        self::assertTrue( has_filter('the_title', [ MyClass::class, 'the_title' ] ) );
     }
 }</code></pre>
-<p>Nice thing of this approach is that you don't need to remember Brain Monkey classes and methods names, you can just use function you, as a WordPress developer, are already used to use.</p>
+<p>Nice thing of this approach is that you don't need to remember Brain Monkey classes and methods names, you can just use functions you, as a WordPress developer, are already used to use.</p>
 <p>There's more.</p>
-<p>A problem of WordPress hooks is that when dynamic object methods or anonymous functions are used, identify them is not easy. It's pretty hard, to be honest.
-But Brain Monkey is not WordPress, and it makes these sort of things very easy. Let's assume the code to test is:</p>
-<pre><code class="language-php">class MyClass
+<p>A problem of WordPress hooks is that when dynamic object methods or anonymous functions are used, identify them is not easy. It's pretty hard, to be honest.</p>
+<p>But Brain Monkey is not WordPress, and it makes these sort of things very easy. Let's assume the code to test is:</p>
+<pre><code class="language-php">namespace Some\Name\Space; 
+
+class MyClass {
+
+    public function addHooks() {
+      /* ... */
+    }
+
+    public function addHooks() {
+       add_action('init', [ $this, 'init' ], 20);
+    }
+}</code></pre>
+<p>Using real WordPress functions, to check hooks added like in code above is pretty hard, because we don't have access to <code>$this</code> outside of the class.</p>
+<p>But Brain Monkey version of <code>has_action</code> and <code>has_filter</code> allow to check this cases with a very intuitive syntax:</p>
+<pre><code class="language-php">class MyClassTest extends MyTestCase
 {
-    function addHooks()
+    public function testAddHooksActuallyAddsHooks()
     {
-       add_action('init', array($this, 'init'), 20);
+        $class = new \Some\Name\Space\MyClass\MyClass();
+        $class-&gt;addHooks();
+
+        self::assertTrue( has_action('init', 'Some\Name\Space\MyClass-&gt;init()', 20) );
+    }
+}</code></pre>
+<p>So we have identified a dynamic method by using the class name, followed by <code>-&gt;</code> and the method name followed by parenthesis.</p>
+<p>Moreover</p>
+<ul>
+<li>a static method can be identified by the class name followed by <code>::</code> and the method name followed by parenthesis, e.g. <code>'Some\Name\Space\MyClass::init()'</code></li>
+<li>an invokable object (a class with a <code>__invoke()</code> method) can be identified by the class name followed by parenthesis, e.g. <code>'Some\Name\Space\MyClass()'</code></li>
+</ul>
+<p>Note that fully qualified names of classes are used and namespace.</p>
+<h3 id="identify-closures">Identify Closures</h3>
+<p>One tricky thing when working with hooks and closures in WordPress is that they are hard to identify, for example to remove or even to check via <code>has_action()</code> / <code>has_filter()</code> if a specific closure has been added to an hook.</p>
+<p>Brain Monkey makes this a bit easier thanks to a sort of &quot;serialization&quot; of closures: a closure can be identified by a string very similar to the PHP code used to define the closure. Hopefully, an example will make it more clear.</p>
+<p>Assuming a code like:</p>
+<pre><code class="language-php">namespace Some\Name\Space; 
+
+class MyClass {
+
+  public function addHooks() {
+
        add_filter('the_title', function($title) {
           return $title;
        }, 99);
     }
 }</code></pre>
-<p>Using real WordPress functions, to check hooks added like in code above is pretty hard, because we don't have access to <code>$this</code> outside of the class, nor to the anonymous function.</p>
-<p>But Brain Monkey version of <code>has_action</code> and <code>has_filter</code> allow to check this cases with a very intuitive syntax:</p>
+<p>It could be tested with:</p>
 <pre><code class="language-php">class MyClassTest extends MyTestCase
 {
-    function testAddHooksActuallyAddsHooks()
+    public function testAddHooksActuallyAddsHooks()
     {
-        $class = new MyClass();
+        $class = new \Some\Name\Space\MyClass();
         $class-&gt;addHooks();
 
-        $this-&gt;assertTrue( has_action('init', 'MyClass-&gt;init()', 20) );
-        $this-&gt;assertTrue( has_filter('the_title', 'function()', 99) );
+        self::assertTrue( has_filter('the_title', 'function ($title)' ) );
     }
 }</code></pre>
-<p>So we have identified</p>
+<p>It also works with type-hints and variadic arguments. E.g. a closure like:</p>
+<pre><code class="language-php">namespace Foo\Bar;
+
+function( array $foo, Baz $baz, Bar ...$bar) {
+  // ....
+}</code></pre>
+<p>could be identified like this:</p>
+<pre><code class="language-php">'function ( array $foo, Foo\Bar\Baz $baz, Foo\Bar\Bar ...$bar )';</code></pre>
+<p>Just note how classes used in type-hints were using <em>relative</em> namespace on declaration, always need the fully qualified name in the closure string representation.</p>
+<p>PHP 7+ scalar type hints are perfectly supported.</p>
+<p>The serialization also recognizes <code>static</code>closures. Following closure:</p>
+<pre><code class="language-php">static function( int $foo, Bar ...$bar ) {
+  // ....
+}</code></pre>
+<p>could be identified like this:</p>
+<pre><code class="language-php">'static function ( int $foo, Bar ...$bar )';</code></pre>
+<p>Things that are <strong>not</strong> took into account during serialization: </p>
 <ul>
-<li>a dynamic method by using the class name, followed by <code>-&gt;</code> and the method name followed by parenthesis.</li>
-<li>an anonymous function using <code>'function()''</code></li>
+<li>default values for arguments</li>
+<li>PHP 7+ return type declarations</li>
 </ul>
-<p>Moreover</p>
-<ul>
-<li>a static method can be identified by the class name followed by <code>::</code> and the method name followed by parenthesis, e.g. <code>'MyClass::init()'</code></li>
-<li>an invokable object (a class with a <code>__invoke()</code> method) can be identified by the class name followed by parenthesis, e.g. <code>'MyClass()'</code></li>
-</ul>
+<p>For example <strong>all</strong> following closures:</p>
+<pre><code class="language-php">function( array $foo, $bar ) {
+  // ....
+}
+
+function( array $foo = [], $bar = null ) {
+  // ....
+}
+
+function( array $foo, $bar ) : array {
+  // ....
+}
+
+function( array $foo, $bar = null ) : array {
+  // ....
+}</code></pre>
+<p>are serialized into :</p>
+<pre><code class="language-php">'function ( array $foo, $bar )';</code></pre>
 <h2 id="testing-with-expectations">Testing with expectations</h2>
-<p>Even if the doing tests using WordPress native functions is pretty easy, there are cases in which is not enough powerful,
-or the expectation methods are just more convenient.</p>
-<p>Moreover, Brain Monkey functions always try to mimic WordPress real functions behavior and so a call to <code>remove_action</code> or <code>remove_filter</code> can make
-impossible to test some code using <code>has_action</code> and <code>has_filter</code>, because hooks are actually removed.</p>
-<p>The solution is to use expectations, provided in Brain Monkey by Mockery. Assuming the code to test is last version above of <code>MyClass</code>, we can test it like so:</p>
-<pre><code class="language-php">use Brain\Monkey\WP\Actions;
-use Brain\Monkey\WP\Filters;
+<p>Even if the doing tests using WordPress native functions is pretty easy, there are cases in which is not enough powerful, or the expectation methods are just more convenient.</p>
+<p>Moreover, Brain Monkey functions always try to mimic WordPress real functions behavior and so a call to <code>remove_action</code> or <code>remove_filter</code> can make impossible to test some code using <code>has_action</code> and <code>has_filter</code>, because hooks are actually removed.</p>
+<p>The solution is to use expectations, provided in Brain Monkey by Mockery.</p>
+<p>Assuming the class to test is:</p>
+<pre><code class="language-php">namespace Some\Name\Space; 
+
+class MyClass {
+
+  public function addHooks() {
+
+       add_action('init', [$this, 'init']);
+
+       add_filter('the_title', function($title) {
+          return $title;
+       }, 99);
+    }
+}</code></pre>
+<p>it can be tested like so:</p>
+<pre><code class="language-php">use Brain\Monkey\Actions;
+use Brain\Monkey\Filters;
 
 class MyClassTest extends MyTestCase
 {
     function testAddHooksActuallyAddsHooks()
     {
-        Actions::expectAdded('init')-&gt;once();
+        Actions\expectAdded('init');
 
-        Filters::expectAdded('the_title')
-            -&gt;atLeast()
-            -&gt;once()
-            -&gt;with(Mockery\type('Closure'));
+        Filters\expectAdded('the_title')-&gt;with(\Mockery\type('Closure'));
 
         // let's use the code that have to satisfy our expectations
-        $class = new MyClass();
-        $class-&gt;addHooks();
+       ( new \Some\Name\Space\MyClass() )-&gt;addHooks();
     }
 }</code></pre>
 <p>This is just an example, but Mockery expectations are a very powerful testing mechanism.</p>
 <p>To know more, read <a href="http://docs.mockery.io/en/latest/">Mockery documentation</a>, and have a look to <em>PHP Functions</em> doc section
 to see how it is used seamlessly in Brain Monkey.</p>
-<h2 id="expectations-on-times-are-required">Expectations on times are required</h2>
-<p><code>expectAdded()</code> returns a Mockery expectation object, and by default it doesn't throw any error if a created expectation object is not used, unless a specific
-times expectation is set.</p>
-<p>It means that if you use <code>Actions::expectAdded('init');</code> and nothing more, the test will pass even if <code>add_action('init')</code> is never run by code under test.</p>
-<p>To be sure hooks were added you need to set times expectation. Mockery has a powerful and intuitive syntax for the scope, just a few examples:</p>
-<pre><code class="language-php">Actions::expectAdded('init')-&gt;once();
-Actions::expectAdded('init')-&gt;twice();
-Actions::expectAdded('init')-&gt;times(3);
-Actions::expectAdded('init')-&gt;atLeast()-&gt;twice();
-Actions::expectAdded('init')-&gt;atMost()-&gt;times(3);
-Actions::expectAdded('init')-&gt;between(2, 4);
-Actions::expectAdded('init')-&gt;never();</code></pre>
-<p>See Mockery documentation and  <em>PHP Functions</em> doc section for more examples and explanation (if ever needed...).</p>
 <h2 id="just-a-couple-of-things">Just a couple of things...</h2>
 <ul>
-<li>expectations must be set <em>before</em> the code to be tested runs: they are called &quot;expectations&quot; for a reason</li>
-<li>argument validation done using <code>with()</code>, validates hook arguments, not function arguments, it means what is passed to <code>add_action()</code> or <code>add_filter()</code> <strong>excluding</strong> hook name itself</li>
+<li>expectations must be set <em>before</em> the code to be tested runs: they are called &quot;expectations&quot; for a reason;</li>
+<li>argument validation done using <code>with()</code>, validates hook arguments, not function arguments, it means what is passed to <code>add_action()</code> or <code>add_filter()</code> <strong>excluding</strong> hook name itself.</li>
 </ul>
 <h2 id="dont-set-expectations-on-return-values-for-added-hooks">Don't set expectations on return values for added hooks</h2>
 <p>Maybe you already know that <code>add_action()</code> and <code>add_filter()</code> always return <code>true</code>.</p>
-<p>As already said, Brain Monkey always tries to make WordPress functions behave how they do in real WordPress code, for this reason Brain Monkey
-version of those functions returns <code>true</code> as well.</p>
-<p>But if you read <em>PHP Functions</em> doc section or Mockery documentation you probably noticed a <code>andReturn</code> method that allows to force an expectation to
-return a given value.</p>
+<p>As already said, Brain Monkey always tries to make WordPress functions behave how they do in real WordPress code, for this reason Brain Monkey version of those functions returns <code>true</code> as well.</p>
+<p>But if you read <em>PHP Functions</em> doc section or Mockery documentation you probably noticed a <code>andReturn</code> method that allows to force an expectation to return a given value.</p>
 <p>Once <code>expectAdded()</code> method works with Mockery expectations, you may be tempted to use it... if you do that <strong>an exception will be thrown</strong>.</p>
 <pre><code class="language-php">// this expectation will thrown an error!
-Filters::expectAdded('the_title')-&gt;once()-&gt;andReturn(false);</code></pre>
-<p>Reason is that if Brain Monkey had allowed a <em>mocked</em> returning value for <code>add_action</code> and <code>add_filter</code> that had been in contrast with real
-WordPress code, with disastrous effects on tests.</p>
+Filters\expectAdded('the_title')-&gt;once()-&gt;andReturn(false);</code></pre>
+<p>Reason is that if Brain Monkey had allowed a <em>mocked</em> returning value for <code>add_action</code> and <code>add_filter</code> that had been in contrast with real WordPress code, with disastrous effects on tests.</p>
                                             </div>
                 </div>
             </div>
         </div>
         <!-- /#page-content-wrapper -->
 
-                    <a href="https://github.com/Giuseppe-Mazzapica/BrainMonkey">
+                    <a href="https://github.com/gmazzap/BrainMonkey">
                 <img style="position:fixed; top:0; right:0; border:0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
             </a>
                 <a href="#" id="menu-toggle" title="Toggle Menu"><i class="fa fa-bars"></i></a>
@@ -276,6 +345,12 @@ WordPress code, with disastrous effects on tests.</p>
       ga('create', 'UA-46467639-3', 'auto');
       ga('send', 'pageview');
     </script>
-</body>
+        <!-- Livereload -->
+        <script>
+            document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] +
+                    ':35729/livereload.js?snipver=1"></' + 'script>')
+        </script>
+        <!-- End Livereload -->
+    </body>
 
 </html>

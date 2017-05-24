@@ -32,69 +32,79 @@
 
           <ul class="sidebar-nav">
                                                   <li>
-                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Getting Started</a>
-                      <ul>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/installation.html">
-                                      Installation
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/what-and-why.html">
-                                      What & Why
-                                  </a>
-                              </li>
-                                                </ul>
+                        <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Getting Started</a>
+                        <ul>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/installation.html">
+                                        Installation
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/what-and-why.html">
+                                        What & Why
+                                    </a>
+                                </li>
+                                                    </ul>
                     </li>
                                     <li>
-                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> PHP Functions</a>
-                      <ul>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-setup.html">
-                                      Setup
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-when.html">
-                                      Patching with when()
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-expect.html">
-                                      Testing with expect()
-                                  </a>
-                              </li>
-                                                </ul>
+                        <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> PHP Functions</a>
+                        <ul>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-setup.html">
+                                        Setup
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-when.html">
+                                        Patching with when()
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-expect.html">
+                                        Testing with expect()
+                                    </a>
+                                </li>
+                                                    </ul>
                     </li>
                                     <li>
-                      <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> WordPress</a>
-                      <ul>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-why-bother.html">
-                                      Why Bother
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-setup.html">
-                                      Setup
-                                  </a>
-                              </li>
-                                                        <li class="active">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-tools.html">
-                                      WordPress Testing Tools
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-hooks-added.html">
-                                      Testing Added Hooks
-                                  </a>
-                              </li>
-                                                        <li class="">
-                                  <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-hooks-fired.html">
-                                      Testing Fired Hooks
-                                  </a>
-                              </li>
-                                                </ul>
+                        <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> WordPress</a>
+                        <ul>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-why-bother.html">
+                                        Why Bother
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-setup.html">
+                                        Setup
+                                    </a>
+                                </li>
+                                                            <li class="active">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-tools.html">
+                                        WordPress Testing Tools
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-hooks-added.html">
+                                        Testing Added Hooks
+                                    </a>
+                                </li>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-hooks-fired.html">
+                                        Testing Fired Hooks
+                                    </a>
+                                </li>
+                                                    </ul>
+                    </li>
+                                    <li>
+                        <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Migration</a>
+                        <ul>
+                                                            <li class="">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/migrating-from-v1.html">
+                                        Migrating From Version 1
+                                    </a>
+                                </li>
+                                                    </ul>
                     </li>
                                         </ul>
 
@@ -111,18 +121,20 @@
                               <li class="active">WordPress</li>
                             </ol>
                                                                                                         <h1 id="wordpress-testing-tools">WordPress Testing Tools</h1>
-<p>The sole ability to mock a function is a great help in testing WordPress code.</p>
+<p>The sole ability to mocking functions is a great help on testing WordPress code.</p>
 <p>All WordPress functions can be mocked and tested using the techniques described in the <em>PHP Functions</em> section, they are PHP functions, after all.</p>
 <p>However, to test WordPress code in isolation, without a bunch of bootstrap code for every test, a more fine grained control of plugin API functions is required.</p>
 <p>This is exactly what Brain Monkey offers.</p>
 <h2 id="defined-functions">Defined functions</h2>
-<p>The following functions are defined by Brain Monkey when it is loaded for tests:</p>
+<p>Following functions are defined by Brain Monkey when it is loaded for tests:</p>
+<p><strong>Hook-related functions:</strong></p>
 <ul>
 <li><code>add_action()</code></li>
 <li><code>remove_action()</code></li>
 <li><code>do_action()</code></li>
 <li><code>do_action_ref_array()</code></li>
 <li><code>did_action()</code></li>
+<li><code>doing_action()</code></li>
 <li><code>has_action()</code></li>
 <li><code>add_filter()</code></li>
 <li><code>remove_filter()</code></li>
@@ -131,70 +143,46 @@
 <li><code>has_filter()</code></li>
 <li><code>current_filter()</code></li>
 </ul>
+<p><strong>Generic functions:</strong></p>
+<ul>
+<li><code>__return_true()</code></li>
+<li><code>__return_false()</code></li>
+<li><code>__return_null()</code></li>
+<li><code>__return_empty_array()</code></li>
+<li><code>__return_empty_string()</code></li>
+<li><code>trailingslashit()</code></li>
+<li><code>untrailingslashit()</code></li>
+</ul>
 <p>If your code uses any of these functions, and very likely it does, you don't need to define (or mock) them
 to avoid fatal errors during tests.</p>
-<p>Note that the returning value of those function (most of the time) will work out of the box as you might expect.</p>
+<p>Note that the returning value of those functions (most of the times) will work out of the box as you might expect.</p>
 <p>For example, if your code contains:</p>
 <pre><code class="language-php">do_action('my_custom_action');
+
 // something in the middle
 $did = did_action('my_custom_action');</code></pre>
-<p>the value of <code>$did</code> will correctly be <code>1</code> (<code>did_action()</code> in WordPress returns the number an action was <em>done</em>).</p>
+<p>the value of <code>$did</code> will be correctly <code>1</code> (<code>did_action()</code> in WordPress returns the number an action was <em>done</em>).</p>
 <p>Or if your code contains:</p>
-<pre><code class="language-php">$post = array(
-  'post_title' =&gt; 'My Title',
-);
+<pre><code class="language-php">$post = [ 'post_title' =&gt; 'My Title' ];
+
 $title = apply_filters('the_title', $post['post_title']);</code></pre>
 <p>the value of <code>$title</code> will be <code>'My Title'</code>, without the need of any intervention.</p>
-<p>But, of course, that's not enough. To properly test WordPress code you will probably want to:</p>
+<p>But, of course, that's not enough. To proper test WordPress code you will probably desire to:</p>
 <ul>
-<li>test if an action or a filter has been added, how many times that happened and with which arguments</li>
-<li>test if an action or a filter has been fired, how many times that happened and with which arguments</li>
-<li>perform some callback when an action is fired, being able to access the passed arguments</li>
-<li>perform some callback when an filter is applied, being able to access the passed arguments and to return specific values</li>
+<li>test if an action or a filter has been added, how many times that happen and with which arguments</li>
+<li>test if an action or a filter has been fired, how many times that happen and with which arguments</li>
+<li>perform some callback when an action is fired, being able to access passed arguments</li>
+<li>perform some callback when an filter is applied, being able to access passed arguments and to return specific values</li>
 </ul>
-<p>Brain Monkey allows to do all of this and even more. And it does that using its straightforward and human-readable syntax.</p>
-<h2 id="note-on-brain-monkey-classes">Note on Brain Monkey classes</h2>
-<p>After Brain Monkey is properly set up to be used in tests (see <em>WordPress / Setup</em>) it is possible to access to its features in two ways:</p>
-<ul>
-<li>by using the <code>Brain\Monkey</code> class that gives access to all the features</li>
-<li>by using three feature-specific classes. They are:
-<ul>
-<li><code>Brain\Monkey\Functions</code>, used to mock and tests functions. Its usage is documented in the <em>PHP Functions</em> docs section</li>
-<li><code>Brain\Monkey\Actions</code>, used to test action hooks</li>
-<li><code>Brain\Monkey\Filters</code>, used to test filter hooks</li>
-</ul></li>
-</ul>
-<p>What is possible to do with one method is also possible with the other, it's just a matter of preference.</p>
-<p>Using the first method, test classes will probably contain just one <code>use</code> statement instead of three; using feature-specific classes
-needed code is a bit less verbose.</p>
-<p>Below there are a few examples of both methods. The code assumes proper <code>use</code> statements are in place.</p>
-<p>Functions examples:</p>
-<pre><code class="language-php">// method one
-Monkey::functions()-&gt;expect('register_post_type')-&gt;once()-&gt;andReturn(true);
-
-// method two
-Functions::expect('register_post_type')-&gt;once()-&gt;andReturn(true);</code></pre>
-<p>Action and Filters examples:</p>
-<pre><code class="language-php">// actions, method one
-Monkey::actions()-&gt;expectAdded('init')-&gt;once();
-
-// actions, method two
-Actions::expectAdded('init')-&gt;once();
-
-// filters, method one
-Monkey::filters()-&gt;expectApplied('the_title')-&gt;andReturn('My Post Title');
-
-// filters, method two
-Filters::expectApplied('the_title')-&gt;andReturn('My Post Title');</code></pre>
-<p>Again, the two methods are perfectly equivalent.</p>
-<p>In the rest of the docs I'll mostly use feature-specific method, but feel free to use the one you prefer.</p>
+<p>guess what, Brain Monkey allows to do all of this and even more.</p>
+<p>And it does that using its straightforward and human readable syntax.</p>
                                             </div>
                 </div>
             </div>
         </div>
         <!-- /#page-content-wrapper -->
 
-                    <a href="https://github.com/Giuseppe-Mazzapica/BrainMonkey">
+                    <a href="https://github.com/gmazzap/BrainMonkey">
                 <img style="position:fixed; top:0; right:0; border:0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
             </a>
                 <a href="#" id="menu-toggle" title="Toggle Menu"><i class="fa fa-bars"></i></a>
@@ -229,6 +217,12 @@ Filters::expectApplied('the_title')-&gt;andReturn('My Post Title');</code></pre>
       ga('create', 'UA-46467639-3', 'auto');
       ga('send', 'pageview');
     </script>
-</body>
+        <!-- Livereload -->
+        <script>
+            document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] +
+                    ':35729/livereload.js?snipver=1"></' + 'script>')
+        </script>
+        <!-- End Livereload -->
+    </body>
 
 </html>
