@@ -280,7 +280,7 @@ self::assertSame('Foo', apply_filters('a_filter', 'Foo', 'Bar')); // pass
 The following test **passes in Brain Monkey v2**:
 
 ```php
-Brain\Monkey\WP\Filters::expectApplied('a_filter')->once();
+Brain\Monkey\Filters\expectApplied('a_filter')->once();
 
 self::assertSame('Foo', apply_filters('a_filter', 'Foo', 'Bar')); // pass in v2!
 ```
