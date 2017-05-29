@@ -291,7 +291,7 @@ self::assertSame('Foo', apply_filters('a_filter', 'Foo', 'Bar')); // fails in v1
 self::assertSame('Foo', apply_filters('a_filter', 'Foo', 'Bar')); // pass</code></pre>
 <p><strong>In Brain Monkey v2 this isn't necessary anymore.</strong> Adding expectations on applied filters does <strong>not</strong> break the default behavior of <code>apply_filters</code> behavior anymore.</p>
 <p>The following test <strong>passes in Brain Monkey v2</strong>:</p>
-<pre><code class="language-php">Brain\Monkey\WP\Filters::expectApplied('a_filter')-&gt;once();
+<pre><code class="language-php">Brain\Monkey\Filters\expectApplied('a_filter')-&gt;once();
 
 self::assertSame('Foo', apply_filters('a_filter', 'Foo', 'Bar')); // pass in v2!</code></pre>
 <hr />
