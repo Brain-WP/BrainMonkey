@@ -111,6 +111,17 @@ class ApplyFiltersTest extends TestCase
         static::assertSame('Meh', apply_filters('can_I_ask', 'How is Milk?'));
     }
 
+    public function testAddExpectationDoesNotBreakApplyFilters()
+    {
+        Filters\expectApplied('foo');
+
+        $one = apply_filters('foo', 1);
+        $two = apply_filters('foo', 2);
+
+        static::assertSame(1, $one);
+        static::assertSame(2, $two);
+    }
+
     public function testApplySameFilterDifferentArguments()
     {
         $obj = new \stdClass();
@@ -135,6 +146,21 @@ class ApplyFiltersTest extends TestCase
         apply_filters('double_filter', 'x', $obj, 'x');
     }
 
+    public function testApplySameFilterDifferentArgumentsWithoutCatchAll()
+    {
+        Filters\expectApplied('foo')->once()->with('No?')->andReturn('No!');
+        Filters\expectApplied('foo')->once()->with('Yes?')->andReturn('Yes!');
+        Filters\expectApplied('foo')->once()->with('Maybe?')->andReturn('Maybe!');
+
+        $no = apply_filters('foo', 'No?');
+        $yes = apply_filters('foo', 'Yes?');
+        $maybe = apply_filters('foo', 'Maybe?');
+
+        static::assertEquals('No!', $no);
+        static::assertEquals('Yes!', $yes);
+        static::assertEquals('Maybe!', $maybe);
+    }
+
     public function testApplySameFilterDifferentArgumentsWithCatchAll()
     {
         Filters\expectApplied('foo')->once()->with('No?')->andReturn('No!');
@@ -145,9 +171,9 @@ class ApplyFiltersTest extends TestCase
         $yes = apply_filters('foo', 'Yes?');
         $maybe = apply_filters('foo', 'Maybe?');
 
-        static::assertEquals( 'No!', $no );
-        static::assertEquals( 'Yes!', $yes );
-        static::assertEquals( 'Maybe?', $maybe );
+        static::assertEquals('No!', $no);
+        static::assertEquals('Yes!', $yes);
+        static::assertEquals('Maybe?', $maybe);
     }
 
     public function testExpectByDefaultReturnFirstArg()

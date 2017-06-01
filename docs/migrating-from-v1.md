@@ -250,7 +250,7 @@ The same applies when object instances are used for callbacks, for example, usin
 
 
 
-## [Fixed] `apply_filters` Default Behavior
+## [Improved] `apply_filters` Default Behavior
 
 The WordPress function `apply_filters()` is defined by Brain Monkey and it returns the first argument passed to it, just like WordPress:
 
@@ -261,7 +261,7 @@ self::assertSame('Foo', apply_filters('a_filter', 'Foo', 'Bar')); // pass!
 In Brain Monkey v1 this was true *unless* some expectation was added to the applied filter:
 
 ```php
-Brain\Monkey\WP\Filters::expectApplied('a_filter')->once();
+Brain\Monkey\WP\Filters::expectApplied('a_filter');
 
 self::assertSame('Foo', apply_filters('a_filter', 'Foo', 'Bar')); // fails in v1
 ```
@@ -271,16 +271,42 @@ self::assertSame('Foo', apply_filters('a_filter', 'Foo', 'Bar')); // fails in v1
 For example, the following test used to pass in Brain Monkey v1:
 
 ```php
-Brain\Monkey\WP\Filters::expectApplied('a_filter')->once()->andReturn('Foo');
+Brain\Monkey\WP\Filters::expectApplied('a_filter')->andReturn('Foo');
 
 self::assertSame('Foo', apply_filters('a_filter', 'Foo', 'Bar')); // pass
 ```
-**In Brain Monkey v2 this isn't necessary anymore.** Adding expectations on applied filters does **not** break the default behavior of `apply_filters` behavior anymore.
+**In Brain Monkey v2 this might be not necessary anymore.** 
+
+Calling `expectApplied` on applied filters does **not** break the default behavior of `apply_filters` behavior, 
+if no further expectation are added.
 
 The following test **passes in Brain Monkey v2**:
 
 ```php
-Brain\Monkey\Filters\expectApplied('a_filter')->once();
+Brain\Monkey\Filters\expectApplied('a_filter');
+
+self::assertSame('Foo', apply_filters('a_filter', 'Foo', 'Bar')); // pass in v2!
+```
+
+Note that this improved behavior is still not "perfect".
+
+`apply_filters` continue to break if `Filters\expectApplied` is called adding expectation on arguments or times called.
+
+For example:
+
+```php
+Brain\Monkey\Filters\expectApplied('a_filter')->once()->with('Foo', 'Bar');
+
+self::assertSame('Foo', apply_filters('a_filter', 'Foo', 'Bar')); // fail in v2!
+```
+
+to make it pass, we need to add expectation also for the return value. This is a bit more easier in
+version 2 thanks to the new `andReturnFirstArg()` (more on this below).
+
+For example:
+
+```php
+Brain\Monkey\Filters\expectApplied('a_filter')->once()->with('Foo', 'Bar')->andReturnFirstArg();
 
 self::assertSame('Foo', apply_filters('a_filter', 'Foo', 'Bar')); // pass in v2!
 ```
