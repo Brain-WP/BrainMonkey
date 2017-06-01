@@ -38,16 +38,20 @@ class Monkey
      */
     public static function setUp()
     {
-        $vendor = dirname(dirname(dirname(__DIR__)));
-        $patchwork = '/antecedent/patchwork/Patchwork.php';
-        if (file_exists($vendor.$patchwork)) {
-            /** @noinspection PhpIncludeInspection */
-            @require_once $vendor.$patchwork; // normal installation
-        } elseif (file_exists(dirname(dirname(__DIR__)).$patchwork)) {
-            /** @noinspection PhpIncludeInspection */
-            @require_once dirname(dirname(__DIR__)).$patchwork; // root installation
+        if (function_exists('Patchwork\redefine')) {
+            return;
         }
-        if (! function_exists('Patchwork\replace')) {
+
+        $patchwork = '/antecedent/patchwork/Patchwork.php';
+
+        if (file_exists(dirname(dirname(dirname(__DIR__))).$patchwork)) {
+            /** @noinspection PhpIncludeInspection */
+            @require_once dirname(dirname(dirname(__DIR__))).$patchwork; // normal installation
+        } elseif (file_exists(dirname(__DIR__)."/vendor{$patchwork}")) {
+            /** @noinspection PhpIncludeInspection */
+            @require_once dirname(__DIR__)."/vendor{$patchwork}"; // root installation
+        }
+        if (! function_exists('Patchwork\redefine')) {
             throw new RuntimeException(
                 'Brain Monkey was unable to load Patchwork. Please require Patchwork.php by yourself before running tests.'
             );
@@ -69,7 +73,7 @@ class Monkey
     public static function tearDown()
     {
         Functions::__flush();
-        Patchwork\undoAll();
+        Patchwork\restoreAll();
         Mockery::close();
     }
 
@@ -151,7 +155,7 @@ class Monkey
         $backtrace = debug_backtrace(0, 2);
         trigger_error(
             sprintf(
-                "Call to undefined method <b>%s()</b> in <b>%s</b> line <b>%d</b>. Fired ",
+                "Call to undefined method <b>%s()</b> in <b>%s</b> line <b>%d</b>.",
                 __CLASS__.'::'.$name,
                 $backtrace[1]['file'],
                 $backtrace[1]['line']

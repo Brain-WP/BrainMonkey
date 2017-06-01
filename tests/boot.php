@@ -17,7 +17,8 @@ if (! file_exists($autoload_path.'autoload.php')) {
     die('Please install via composer before running tests.');
 }
 
-require_once $autoload_path.'antecedent/patchwork/Patchwork.php';
 require_once $autoload_path.'phpunit/phpunit/src/Framework/Assert/Functions.php';
 require_once $autoload_path.'autoload.php';
 unset($autoload_path);
+
+\Brain\Monkey::setUp();

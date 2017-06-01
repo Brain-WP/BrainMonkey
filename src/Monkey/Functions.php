@@ -78,7 +78,7 @@ class Functions
         if (! isset(self::$functions[$functionName])) {
             self::when($functionName);
             $mockery = Mockery::mock($functionName);
-            Patchwork\replace($functionName, function () use (&$mockery, $functionName) {
+            Patchwork\redefine($functionName, function () use (&$mockery, $functionName) {
                 return call_user_func_array([$mockery, $functionName], func_get_args());
             });
             self::$functions[$functionName] = $mockery;
@@ -119,7 +119,7 @@ class Functions
      */
     public function justReturn($return = null)
     {
-        Patchwork\replace($this->name, function () use ($return) {
+        Patchwork\redefine($this->name, function () use ($return) {
             return $return;
         });
     }
@@ -156,7 +156,7 @@ class Functions
     {
         $name = $this->name;
         $n = $this->ensureArg($n);
-        Patchwork\replace($name, function () use ($n, $name) {
+        Patchwork\redefine($name, function () use ($n, $name) {
             $count = func_num_args();
             $n0 = $n - 1;
             if ($count < $n0) {
@@ -178,7 +178,7 @@ class Functions
     {
         $name = $this->name;
         $n = $this->ensureArg($n);
-        Patchwork\replace($name, function () use ($n, $name) {
+        Patchwork\redefine($name, function () use ($n, $name) {
             $count = func_num_args();
             $n0 = $n - 1;
             if ($count < $n0) {
@@ -214,7 +214,7 @@ class Functions
      */
     public function alias(callable $callback)
     {
-        Patchwork\replace($this->name, $callback);
+        Patchwork\redefine($this->name, $callback);
     }
 
     /**
