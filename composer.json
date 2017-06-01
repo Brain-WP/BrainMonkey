@@ -29,7 +29,7 @@
     "require": {
         "php": ">=5.4.0",
         "mockery/mockery": "<0.9.4 >=0.9.0",
-        "antecedent/patchwork": "1.3.*"
+        "antecedent/patchwork": "~2.0.6"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.8"
