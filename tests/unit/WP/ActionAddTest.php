@@ -152,11 +152,9 @@ class ActionAddTest extends PHPUnit_Framework_TestCase
     public function testAddedSameActionDifferentArguments()
     {
         $f1 = function () {
-
         };
 
         $f2 = function () {
-
         };
 
         Monkey::actions()

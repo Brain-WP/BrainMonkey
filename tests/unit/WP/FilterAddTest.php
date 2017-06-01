@@ -158,11 +158,9 @@ class FilterAddTest extends PHPUnit_Framework_TestCase
     public function testAddedSameFilterDifferentArguments()
     {
         $f1 = function () {
-
         };
 
         $f2 = function () {
-
         };
 
         Monkey::filters()
