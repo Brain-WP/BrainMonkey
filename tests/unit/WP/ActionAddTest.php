@@ -86,6 +86,7 @@ class ActionAddTest extends PHPUnit_Framework_TestCase
 
         assertTrue(has_action('init', 'strtolower', 30));
         assertTrue(has_action('init', 'function()', 10, 1));
+        assertTrue(has_action('init', ' function () ', 10, 1));
         assertTrue(has_action('init', get_class($this).'->'.__FUNCTION__.'()', 20, 1));
 
         assertFalse(has_action('init', 'strtolower'));

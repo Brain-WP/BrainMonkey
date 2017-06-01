@@ -112,7 +112,7 @@ abstract class Hooks
     }
 
     /**
-     * @param  string                                            $type
+     * @param  string $type
      * @return \Brain\Monkey\WP\Actions|\Brain\Monkey\WP\Filters
      */
     public static function instance($type)
@@ -222,7 +222,7 @@ abstract class Hooks
     }
 
     /**
-     * @param  string     $type
+     * @param  string $type
      * @return mixed|null
      */
     protected function runHook($type)
@@ -320,7 +320,7 @@ abstract class Hooks
         if (empty($hook) || ! is_string($hook)) {
             throw new InvalidArgumentException("{$type} name must be in a string.");
         }
-        $callback = empty($args) ?: array_shift($args);
+        $callback = empty($args) ? : array_shift($args);
         if (is_callable($callback)) {
             $getId = false;
         }
@@ -336,6 +336,10 @@ abstract class Hooks
         $argsNum = empty($args) ? 1 : array_shift($args);
         if (! is_numeric($argsNum)) {
             throw new InvalidArgumentException("To add a {$type} accepted args must be an integer.");
+        }
+
+        if ($getId && preg_match('/^\s*function\s*\(\s*\)\s*$/', $callbackId[0])) {
+            $callbackId[0] = 'function()';
         }
 
         return [
@@ -361,11 +365,11 @@ abstract class Hooks
         } elseif ($callback instanceof Closure) {
             /** @var object $callback */
             $hash = spl_object_hash($callback);
-            $id = "function()";
+            $id = 'function()';
         } elseif (is_object($callback)) {
             /** @var object $callback */
             $hash = spl_object_hash($callback);
-            $id = get_class($callback)."()";
+            $id = get_class($callback).'()';
         } elseif (is_array($callback) && is_object($callback[0])) {
             $hash = spl_object_hash($callback[0]);
             $id = get_class($callback[0])."->{$callback[1]}()";
@@ -377,9 +381,9 @@ abstract class Hooks
     }
 
     /**
-     * @param  string                             $type
-     * @param  string                             $hook
-     * @param  string                             $action
+     * @param  string $type
+     * @param  string $hook
+     * @param  string $action
      * @return \Brain\Monkey\WP\MockeryHookBridge
      */
     protected static function createBridgeFor($type, $hook, $action = 'add')
