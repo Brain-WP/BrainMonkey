@@ -33,15 +33,15 @@ class FilterFireTest extends PHPUnit_Framework_TestCase
         apply_filters('the_title', 'foo', 'bar', 'baz');
         apply_filters_ref_array('the_title', ['foo', 'bar', 'baz']);
         // just want to see that when called properly nothing bad happen
-        assertTrue(true);
+        static::assertTrue(true);
     }
 
     public function testApplyReturnsFirstArg()
     {
         $foo = apply_filters('the_title', 'foo', 'bar', 'baz');
         $fooRef = apply_filters_ref_array('the_title', ['foo', 'bar', 'baz']);
-        assertSame('foo', $foo);
-        assertSame('foo', $fooRef);
+        static::assertSame('foo', $foo);
+        static::assertSame('foo', $fooRef);
     }
 
     /**
@@ -75,10 +75,10 @@ class FilterFireTest extends PHPUnit_Framework_TestCase
         apply_filters('bar', ['foo', 'bar']);
         apply_filters_ref_array('by_ref', ['foo', 'bar', 'baz']);
 
-        assertSame(1, Monkey::filters()->applied('foo.bar'));
-        assertSame(2, Monkey::filters()->applied('bar'));
-        assertSame(1, Monkey::filters()->applied('by_ref'));
-        assertSame(0, Monkey::filters()->applied('not me'));
+        static::assertSame(1, Monkey::filters()->applied('foo.bar'));
+        static::assertSame(2, Monkey::filters()->applied('bar'));
+        static::assertSame(1, Monkey::filters()->applied('by_ref'));
+        static::assertSame(0, Monkey::filters()->applied('not me'));
     }
 
     public function testApplyWithExpectation()
@@ -116,10 +116,10 @@ class FilterFireTest extends PHPUnit_Framework_TestCase
         $contentTwo = apply_filters('the_content', 'two');
         $excerpt = apply_filters('the_excerpt', 'Zbaxrl vf terng!');
 
-        assertSame('Changed!', $title);
-        assertSame('Foo!', $contentOne);
-        assertSame('Bar!', $contentTwo);
-        assertSame('Monkey is great!', $excerpt);
+        static::assertSame('Changed!', $title);
+        static::assertSame('Foo!', $contentOne);
+        static::assertSame('Bar!', $contentTwo);
+        static::assertSame('Monkey is great!', $excerpt);
     }
 
     public function testApplyWithExpectationAndReturnCurrentFilter()
@@ -142,8 +142,8 @@ class FilterFireTest extends PHPUnit_Framework_TestCase
 
         Monkey::filters()->expectApplied('can_I_ask')->twice()->andReturnUsing($answer);
 
-        assertSame('Great!', apply_filters('can_I_ask', 'How is Monkey?'));
-        assertSame('Meh', apply_filters('can_I_ask', 'How is Milk?'));
+        static::assertSame('Great!', apply_filters('can_I_ask', 'How is Monkey?'));
+        static::assertSame('Meh', apply_filters('can_I_ask', 'How is Milk?'));
     }
 
     public function testApplySameFilterDifferentArguments()

@@ -17,7 +17,6 @@ if (! file_exists($autoload_path.'autoload.php')) {
     die('Please install via composer before running tests.');
 }
 
-require_once $autoload_path.'phpunit/phpunit/src/Framework/Assert/Functions.php';
 require_once $autoload_path.'autoload.php';
 unset($autoload_path);
 

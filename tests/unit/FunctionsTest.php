@@ -39,8 +39,8 @@ class FunctionsTest extends PHPUnit_Framework_TestCase
     {
         Functions::when('i_do_not_exists')->justReturn('Cool!');
         Functions::when('i_return_null')->justReturn();
-        assertSame('Cool!', i_do_not_exists());
-        assertNull(i_return_null());
+        static::assertSame('Cool!', i_do_not_exists());
+        static::assertNull(i_return_null());
     }
 
     public function testPassThrough()
@@ -48,9 +48,9 @@ class FunctionsTest extends PHPUnit_Framework_TestCase
         Functions::when('want_the_first')->returnArg();
         Functions::when('want_the_second')->returnArg(2);
         Functions::when('want_the_third')->returnArg(3);
-        assertSame('foo', want_the_first('foo', 'meh', 'meh'));
-        assertSame('foo', want_the_second('meh', 'foo', 'meh'));
-        assertSame('foo', want_the_third('meh', 'meh', 'foo'));
+        static::assertSame('foo', want_the_first('foo', 'meh', 'meh'));
+        static::assertSame('foo', want_the_second('meh', 'foo', 'meh'));
+        static::assertSame('foo', want_the_third('meh', 'meh', 'foo'));
     }
 
     /**
@@ -75,7 +75,7 @@ class FunctionsTest extends PHPUnit_Framework_TestCase
         Functions::when('zerozeroseven')->alias(function ($james, $bond) {
             return "My name is {$bond}, {$james} {$bond}.";
         });
-        assertSame('My name is Bond, James Bond.', zerozeroseven('James', 'Bond'));
+        static::assertSame('My name is Bond, James Bond.', zerozeroseven('James', 'Bond'));
     }
 
     /**
@@ -89,8 +89,8 @@ class FunctionsTest extends PHPUnit_Framework_TestCase
     public function testExpectNumberAndReturn()
     {
         Functions::expect('tween')->twice()->andReturn('first', 'second');
-        assertSame('first', tween());
-        assertSame('second', tween());
+        static::assertSame('first', tween());
+        static::assertSame('second', tween());
     }
 
     public function testExpectComplete()
@@ -102,7 +102,7 @@ class FunctionsTest extends PHPUnit_Framework_TestCase
                      return (($a + $b) * 2).$c;
                  });
 
-        assertSame("1000 times cool!", wow(200, 300, ' times cool!'));
+        static::assertSame("1000 times cool!", wow(200, 300, ' times cool!'));
     }
 
     public function testNamespacedFunctions()
@@ -116,10 +116,10 @@ class FunctionsTest extends PHPUnit_Framework_TestCase
         Monkey::functions()->when('c')->alias('str_rot13');
         Monkey::functions()->expect('buk')->atMost()->twice()->with(true)->andReturn('D!');
 
-        assertSame('A!', a());
-        assertSame('B!', b('B!'));
-        assertSame('C!', c('P!'));
-        assertSame('D!', buk(true));
+        static::assertSame('A!', a());
+        static::assertSame('B!', b('B!'));
+        static::assertSame('C!', c('P!'));
+        static::assertSame('D!', buk(true));
     }
 
     public function testSameFunctionDifferentArguments()
@@ -136,8 +136,8 @@ class FunctionsTest extends PHPUnit_Framework_TestCase
                  ->ordered()
                  ->andReturn('Second!');
 
-        assertSame('First!', issue5(true));
-        assertSame('Second!', issue5(false));
+        static::assertSame('First!', issue5(true));
+        static::assertSame('Second!', issue5(false));
     }
 
     public function testJustEcho()
@@ -249,7 +249,7 @@ class FunctionsTest extends PHPUnit_Framework_TestCase
      */
     public function testUndefinedFunctionSurviveTests()
     {
-        assertTrue(function_exists('since_i_am_not_defined_i_will_trigger_error'));
+        static::assertTrue(function_exists('since_i_am_not_defined_i_will_trigger_error'));
     }
 
     /**
@@ -268,7 +268,7 @@ class FunctionsTest extends PHPUnit_Framework_TestCase
     public function testNothingJustMockASurvivedFunction()
     {
         Functions::when('since_i_am_not_defined_i_will_trigger_error')->justReturn(1234567890);
-        assertSame(1234567890, since_i_am_not_defined_i_will_trigger_error());
+        static::assertSame(1234567890, since_i_am_not_defined_i_will_trigger_error());
     }
 
     /**

@@ -33,15 +33,15 @@ class ActionFireTest extends PHPUnit_Framework_TestCase
         do_action('init', 'foo', 'bar', 'baz');
         do_action_ref_array('init', ['foo', 'bar', 'baz']);
         // just want to see that when called properly nothing bad happen
-        assertTrue(true);
+        static::assertTrue(true);
     }
 
     public function testDoReturnsNull()
     {
         $nullDo = do_action('init', 'foo', 'bar', 'baz');
         $nullDoRef = do_action_ref_array('init', ['foo', 'bar', 'baz']);
-        assertNull($nullDo);
-        assertNull($nullDoRef);
+        static::assertNull($nullDo);
+        static::assertNull($nullDoRef);
     }
 
     /**
@@ -83,10 +83,10 @@ class ActionFireTest extends PHPUnit_Framework_TestCase
         do_action('bar', ['foo', 'bar']);
         do_action_ref_array('by_ref', ['foo', 'bar', 'baz']);
 
-        assertSame(1, did_action('foo.bar'));
-        assertSame(2, did_action('bar'));
-        assertSame(1, did_action('by_ref'));
-        assertSame(0, did_action('not me'));
+        static::assertSame(1, did_action('foo.bar'));
+        static::assertSame(2, did_action('bar'));
+        static::assertSame(1, did_action('by_ref'));
+        static::assertSame(0, did_action('not me'));
     }
 
     public function testDoDidWithMethods()
@@ -96,10 +96,10 @@ class ActionFireTest extends PHPUnit_Framework_TestCase
         do_action('bar', ['foo', 'bar']);
         do_action_ref_array('by_ref', ['foo', 'bar', 'baz']);
 
-        assertSame(1, Monkey::actions()->did('foo.bar'));
-        assertSame(2, Monkey::actions()->did('bar'));
-        assertSame(1, Monkey::actions()->did('by_ref'));
-        assertSame(0, Monkey::actions()->did('not me'));
+        static::assertSame(1, Monkey::actions()->did('foo.bar'));
+        static::assertSame(2, Monkey::actions()->did('bar'));
+        static::assertSame(1, Monkey::actions()->did('by_ref'));
+        static::assertSame(0, Monkey::actions()->did('not me'));
     }
 
     public function testDoWithExpectation()
@@ -136,8 +136,8 @@ class ActionFireTest extends PHPUnit_Framework_TestCase
         do_action('sum', 3);
         do_action('sum', 6);
 
-        assertSame('Yes!', $works);
-        assertSame(10, $sum);
+        static::assertSame('Yes!', $works);
+        static::assertSame(10, $sum);
     }
 
     public function testDoWithExpectationWhenHappenCurrentFilter()
@@ -152,7 +152,7 @@ class ActionFireTest extends PHPUnit_Framework_TestCase
 
         Monkey::actions()->expectFired('what_you_say')->once()->whenHappen($callback);
         do_action('what_you_say');
-        assertSame('Monkey is great!', $response);
+        static::assertSame('Monkey is great!', $response);
     }
 
     /**

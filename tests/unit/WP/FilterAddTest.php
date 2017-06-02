@@ -32,7 +32,7 @@ class FilterAddTest extends PHPUnit_Framework_TestCase
     {
         add_filter('the_title', 'strtolower', 20, 1);
         // just want to see that when called properly nothing bad happen
-        assertTrue(true);
+        static::assertTrue(true);
     }
 
     /**
@@ -75,21 +75,21 @@ class FilterAddTest extends PHPUnit_Framework_TestCase
         });
         add_filter('the_title', [$this, __FUNCTION__], 20);
 
-        assertTrue(has_filter('the_title', 'strtolower', 30, 1));
-        assertTrue(has_filter('the_title', 'function()'));
-        assertTrue(has_filter('the_title', get_class($this).'->'.__FUNCTION__.'()', 20));
+        static::assertTrue(has_filter('the_title', 'strtolower', 30, 1));
+        static::assertTrue(has_filter('the_title', 'function()'));
+        static::assertTrue(has_filter('the_title', get_class($this).'->'.__FUNCTION__.'()', 20));
 
-        assertTrue(has_filter('the_title', 'strtolower', 30));
-        assertTrue(has_filter('the_title', 'function()', 10, 1));
-        assertTrue(has_filter('the_title', get_class($this).'->'.__FUNCTION__.'()', 20, 1));
+        static::assertTrue(has_filter('the_title', 'strtolower', 30));
+        static::assertTrue(has_filter('the_title', 'function()', 10, 1));
+        static::assertTrue(has_filter('the_title', get_class($this).'->'.__FUNCTION__.'()', 20, 1));
 
-        assertFalse(has_filter('the_title', 'strtolower'));
-        assertFalse(has_filter('the_title', 'function()', 10, 3));
-        assertFalse(has_filter('the_title', get_class($this).'->'.__FUNCTION__.'()'));
+        static::assertFalse(has_filter('the_title', 'strtolower'));
+        static::assertFalse(has_filter('the_title', 'function()', 10, 3));
+        static::assertFalse(has_filter('the_title', get_class($this).'->'.__FUNCTION__.'()'));
 
-        assertFalse(has_filter('the_content', 'strtolower', 30, 1));
-        assertFalse(has_filter('foo', 'function()'));
-        assertFalse(has_filter('bar', get_class($this).'->'.__FUNCTION__.'()', 20));
+        static::assertFalse(has_filter('the_content', 'strtolower', 30, 1));
+        static::assertFalse(has_filter('foo', 'function()'));
+        static::assertFalse(has_filter('bar', get_class($this).'->'.__FUNCTION__.'()', 20));
     }
 
     public function testAddAndHasWithMethods()
@@ -102,28 +102,28 @@ class FilterAddTest extends PHPUnit_Framework_TestCase
 
         $name = get_class($this).'->'.__FUNCTION__.'()';
 
-        assertTrue(Monkey::filters()->has('the_title', 'strtolower', 30, 1));
-        assertTrue(Monkey::filters()->has('the_title', 'function()'));
-        assertTrue(Monkey::filters()->has('the_title', $name, 20));
+        static::assertTrue(Monkey::filters()->has('the_title', 'strtolower', 30, 1));
+        static::assertTrue(Monkey::filters()->has('the_title', 'function()'));
+        static::assertTrue(Monkey::filters()->has('the_title', $name, 20));
 
-        assertTrue(Monkey::filters()->has('the_title', 'strtolower', 30));
-        assertTrue(Monkey::filters()->has('the_title', 'function()', 10, 1));
-        assertTrue(Monkey::filters()->has('the_title', $name, 20));
+        static::assertTrue(Monkey::filters()->has('the_title', 'strtolower', 30));
+        static::assertTrue(Monkey::filters()->has('the_title', 'function()', 10, 1));
+        static::assertTrue(Monkey::filters()->has('the_title', $name, 20));
 
-        assertFalse(Monkey::filters()->has('the_title', 'strtolower'));
-        assertFalse(Monkey::filters()->has('the_title', 'function()', 10, 3));
-        assertFalse(Monkey::filters()->has('the_title', $name));
+        static::assertFalse(Monkey::filters()->has('the_title', 'strtolower'));
+        static::assertFalse(Monkey::filters()->has('the_title', 'function()', 10, 3));
+        static::assertFalse(Monkey::filters()->has('the_title', $name));
 
-        assertFalse(Monkey::filters()->has('the_content', 'strtolower', 30, 1));
-        assertFalse(Monkey::filters()->has('foo', 'function()'));
-        assertFalse(Monkey::filters()->has('bar', $name, 20));
+        static::assertFalse(Monkey::filters()->has('the_content', 'strtolower', 30, 1));
+        static::assertFalse(Monkey::filters()->has('foo', 'function()'));
+        static::assertFalse(Monkey::filters()->has('bar', $name, 20));
     }
 
     public function testAddWithoutCallback()
     {
-        assertFalse(Monkey::filters()->has('the_title'));
+        static::assertFalse(Monkey::filters()->has('the_title'));
         add_filter('the_title', 'strtolower', 30, 1);
-        assertTrue(Monkey::filters()->has('the_title'));
+        static::assertTrue(Monkey::filters()->has('the_title'));
     }
 
     public function testExpectAdded()
@@ -185,10 +185,10 @@ class FilterAddTest extends PHPUnit_Framework_TestCase
 
         add_filter('the_title', [$this, __FUNCTION__], 20);
 
-        assertTrue(has_filter('the_title', [$this, __FUNCTION__], 20));
+        static::assertTrue(has_filter('the_title', [$this, __FUNCTION__], 20));
 
         remove_filter('the_title', [$this, __FUNCTION__], 20);
 
-        assertFalse(has_filter('the_title', [$this, __FUNCTION__], 20));
+        static::assertFalse(has_filter('the_title', [$this, __FUNCTION__], 20));
     }
 }
