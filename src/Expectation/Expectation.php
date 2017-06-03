@@ -81,13 +81,23 @@ class Expectation
     private $default = true;
 
     /**
+     * @var \ArrayAccess
+     */
+    private $return_expectations;
+
+    /**
      * @param \Mockery\ExpectationInterface               $expectation
      * @param \Brain\Monkey\Expectation\ExpectationTarget $target
+     * @param \ArrayAccess                                $return_expectations
      */
-    public function __construct(ExpectationInterface $expectation, ExpectationTarget $target)
-    {
+    public function __construct(
+        ExpectationInterface $expectation,
+        ExpectationTarget $target,
+        \ArrayAccess $return_expectations = null
+    ) {
         $this->expectation = $expectation;
         $this->target = $target;
+        $this->return_expectations = $return_expectations ?: new \ArrayObject();
     }
 
     /**
@@ -115,8 +125,10 @@ class Expectation
             throw Exception\NotAllowedMethod::forMethod($name);
         }
 
+        $has_return = stristr($name, 'return');
+
         if (
-            stristr($name, 'return')
+            $has_return
             && ! in_array($this->target->type(), self::RETURNING_EXPECTATION_TYPES, true)
         ) {
             throw Exception\NotAllowedMethod::forReturningMethod($name);
@@ -130,6 +142,11 @@ class Expectation
         $callback = [$this->expectation, $name];
 
         $this->expectation = $callback(...$arguments);
+
+        if ($has_return) {
+            $id = $this->target->identifier();
+            $this->return_expectations->offsetExists($id) or $this->return_expectations[$id] = 1;
+        }
 
         return $this;
     }

@@ -28,6 +28,16 @@ class ExpectationFactory
     private $expectations = [];
 
     /**
+     * @var \ArrayObject
+     */
+    private $return_expectations;
+
+    public function __construct()
+    {
+        $this->return_expectations = new \ArrayObject();
+    }
+
+    /**
      * @param string $function
      * @return \Brain\Monkey\Expectation\Expectation;
      */
@@ -95,6 +105,19 @@ class ExpectationFactory
      * @param \Brain\Monkey\Expectation\ExpectationTarget $target
      * @return \Mockery\MockInterface|mixed
      */
+    public function hasReturnExpectationFor(ExpectationTarget $target)
+    {
+        if ( ! $this->hasMockFor($target)) {
+            return false;
+        }
+
+        return $this->return_expectations->offsetExists($target->identifier());
+    }
+
+    /**
+     * @param \Brain\Monkey\Expectation\ExpectationTarget $target
+     * @return \Mockery\MockInterface|mixed
+     */
     public function mockFor(ExpectationTarget $target)
     {
         return $this->hasMockFor($target)
@@ -105,6 +128,7 @@ class ExpectationFactory
     public function reset()
     {
         $this->expectations = [];
+        $this->return_expectations = new \ArrayObject();
     }
 
     /**
@@ -129,7 +153,11 @@ class ExpectationFactory
 
         $expectation = $expectation->byDefault();
 
-        $this->expectations[$id] = new Expectation($expectation, $target);
+        $this->expectations[$id] = new Expectation(
+            $expectation,
+            $target,
+            $this->return_expectations
+        );
 
         return $this->expectations[$id];
     }

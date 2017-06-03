@@ -103,7 +103,10 @@ class HookExpectationExecutor
         if ($this->factory->hasMockFor($target)) {
             $method = $target->mockMethodName();
 
-            return $this->factory->mockFor($target)->{$method}(...$args);
+            $return = $this->factory->mockFor($target)->{$method}(...$args);
+            $this->factory->hasReturnExpectationFor($target) or $return = reset($args);
+
+            return $return;
         }
 
         if ($type === ExpectationTarget::TYPE_FILTER_APPLIED) {

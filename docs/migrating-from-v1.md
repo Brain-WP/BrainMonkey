@@ -250,7 +250,7 @@ The same applies when object instances are used for callbacks, for example, usin
 
 
 
-## [Improved] `apply_filters` Default Behavior
+## [Fixed] `apply_filters` Default Behavior
 
 The WordPress function `apply_filters()` is defined by Brain Monkey and it returns the first argument passed to it, just like WordPress:
 
@@ -275,41 +275,52 @@ Brain\Monkey\WP\Filters::expectApplied('a_filter')->andReturn('Foo');
 
 self::assertSame('Foo', apply_filters('a_filter', 'Foo', 'Bar')); // pass
 ```
-**In Brain Monkey v2 this might be not necessary anymore.** 
+**In Brain Monkey v2 this is not necessary anymore.** 
 
 Calling `expectApplied` on applied filters does **not** break the default behavior of `apply_filters` behavior, 
-if no further expectation are added.
+if no further different return expectation are added.
 
 The following test **passes in Brain Monkey v2**:
 
 ```php
-Brain\Monkey\Filters\expectApplied('a_filter');
-
-self::assertSame('Foo', apply_filters('a_filter', 'Foo', 'Bar')); // pass in v2!
-```
-
-Note that this improved behavior is still not "perfect".
-
-`apply_filters` continue to break if `Filters\expectApplied` is called adding expectation on arguments or times called.
-
-For example:
-
-```php
 Brain\Monkey\Filters\expectApplied('a_filter')->once()->with('Foo', 'Bar');
 
-self::assertSame('Foo', apply_filters('a_filter', 'Foo', 'Bar')); // fail in v2!
+self::assertSame('Foo', apply_filters('a_filter', 'Foo', 'Bar')); // pass in v2!
 ```
 
-to make it pass, we need to add expectation also for the return value. This is a bit more easier in
-version 2 thanks to the new `andReturnFirstArg()` (more on this below).
+Note if any return expectation is added for a filter, then return expectation must me added for all
+the different set of arguments the filter might receive.
 
 For example:
 
 ```php
-Brain\Monkey\Filters\expectApplied('a_filter')->once()->with('Foo', 'Bar')->andReturnFirstArg();
+Brain\Monkey\Filters\expectApplied('a_filter')->once()->with('Foo')->andReturn('Foo!');
+Brain\Monkey\Filters\expectApplied('a_filter')->once()->with('Bar');
 
-self::assertSame('Foo', apply_filters('a_filter', 'Foo', 'Bar')); // pass in v2!
+self::assertSame('Foo!', apply_filters('a_filter', 'Foo')); // pass
+self::assertSame('Bar', apply_filters('a_filter', 'Bar')); // fail!
 ```
+
+The second assertion fails because since we added a return expectation for the filter "'a_filter'"
+we need to add return expectation for _all_ the possible arguments.
+
+This task is easier in Brain Monkey v2 thanks to the introduction of `andReturnFirstArg()` expectation
+method (more on this below).
+
+For example:
+
+```php
+Brain\Monkey\Filters\expectApplied('a_filter')->once()->with('Foo')->andReturn('Foo!');
+Brain\Monkey\Filters\expectApplied('a_filter')->zeroOrMoreTimes()->withAnyArgs()->andReturnFirstArg();
+
+self::assertSame('Foo', apply_filters('a_filter', 'Foo', 'Bar')); // pass
+self::assertSame('Bar', apply_filters('a_filter', 'Bar')); // pass!
+```
+
+`andReturnFirstArg()` used in combination with Mockery methods `zeroOrMoreTimes()->withAnyArgs()` 
+allows to create a "catch all" behavior for filters when a return expectation has been added, without
+having to create specific expectation for each of the possible arguments a filter might receive.
+
 ---
 
 

@@ -111,17 +111,6 @@ class ApplyFiltersTest extends TestCase
         static::assertSame('Meh', apply_filters('can_I_ask', 'How is Milk?'));
     }
 
-    public function testAddExpectationDoesNotBreakApplyFilters()
-    {
-        Filters\expectApplied('foo');
-
-        $one = apply_filters('foo', 1);
-        $two = apply_filters('foo', 2);
-
-        static::assertSame(1, $one);
-        static::assertSame(2, $two);
-    }
-
     public function testApplySameFilterDifferentArguments()
     {
         $obj = new \stdClass();
@@ -174,6 +163,31 @@ class ApplyFiltersTest extends TestCase
         static::assertEquals('No!', $no);
         static::assertEquals('Yes!', $yes);
         static::assertEquals('Maybe?', $maybe);
+    }
+
+    public function testAddExpectationWithDifferentArgsDoesNotBreakApplyFilters()
+    {
+        Filters\expectApplied('foo')->once()->with(1);
+        Filters\expectApplied('foo')->once()->with(2);
+
+        $one = apply_filters('foo', 1);
+        $two = apply_filters('foo', 2);
+
+        static::assertSame(1, $one);
+        static::assertSame(2, $two);
+    }
+
+    public function testAddExpectationWithSameArgsDoesNotBreakApplyFilters()
+    {
+        Filters\expectApplied('foo')->times(3);
+
+        $one = apply_filters('foo', 1);
+        $two = apply_filters('foo', 2);
+        $three = apply_filters('foo', 3);
+
+        static::assertSame(1, $one);
+        static::assertSame(2, $two);
+        static::assertSame(3, $three);
     }
 
     public function testExpectByDefaultReturnFirstArg()
