@@ -90,7 +90,7 @@
                                     </a>
                                 </li>
                                                             <li class="">
-                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-hooks-fired.html">
+                                    <a href="https://brain-wp.github.io/BrainMonkey/docs/wordpress-hooks-done.html">
                                         Testing Fired Hooks
                                     </a>
                                 </li>
@@ -99,7 +99,7 @@
                                     <li>
                         <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Migration</a>
                         <ul>
-                                                            <li class="">
+                                                            <li class="active">
                                     <a href="https://brain-wp.github.io/BrainMonkey/docs/migrating-from-v1.html">
                                         Migrating From Version 1
                                     </a>
@@ -281,19 +281,42 @@ add_action( 'bar', 'Some\Name\Space\aFunction' );</code></pre>
 <p>The WordPress function <code>apply_filters()</code> is defined by Brain Monkey and it returns the first argument passed to it, just like WordPress:</p>
 <pre><code class="language-php">self::assertSame('Foo', apply_filters('a_filter', 'Foo', 'Bar')); // pass!</code></pre>
 <p>In Brain Monkey v1 this was true <em>unless</em> some expectation was added to the applied filter:</p>
-<pre><code class="language-php">Brain\Monkey\WP\Filters::expectApplied('a_filter')-&gt;once();
+<pre><code class="language-php">Brain\Monkey\WP\Filters::expectApplied('a_filter');
 
 self::assertSame('Foo', apply_filters('a_filter', 'Foo', 'Bar')); // fails in v1</code></pre>
 <p><strong>The test above fails in Brain Monkey v1</strong>. The reason is that even if the expectation in first line is validated, it breaks the default <code>apply_filters</code> behavior, requiring the return value to be added to expectation to make the test pass again.</p>
 <p>For example, the following test used to pass in Brain Monkey v1:</p>
-<pre><code class="language-php">Brain\Monkey\WP\Filters::expectApplied('a_filter')-&gt;once()-&gt;andReturn('Foo');
+<pre><code class="language-php">Brain\Monkey\WP\Filters::expectApplied('a_filter')-&gt;andReturn('Foo');
 
 self::assertSame('Foo', apply_filters('a_filter', 'Foo', 'Bar')); // pass</code></pre>
-<p><strong>In Brain Monkey v2 this isn't necessary anymore.</strong> Adding expectations on applied filters does <strong>not</strong> break the default behavior of <code>apply_filters</code> behavior anymore.</p>
+<p><strong>In Brain Monkey v2 this is not necessary anymore.</strong> </p>
+<p>Calling <code>expectApplied</code> on applied filters does <strong>not</strong> break the default behavior of <code>apply_filters</code> behavior,
+if no further different return expectation are added.</p>
 <p>The following test <strong>passes in Brain Monkey v2</strong>:</p>
-<pre><code class="language-php">Brain\Monkey\Filters\expectApplied('a_filter')-&gt;once();
+<pre><code class="language-php">Brain\Monkey\Filters\expectApplied('a_filter')-&gt;once()-&gt;with('Foo', 'Bar');
 
 self::assertSame('Foo', apply_filters('a_filter', 'Foo', 'Bar')); // pass in v2!</code></pre>
+<p>Note if any return expectation is added for a filter, then return expectation must me added for all
+the different set of arguments the filter might receive.</p>
+<p>For example:</p>
+<pre><code class="language-php">Brain\Monkey\Filters\expectApplied('a_filter')-&gt;once()-&gt;with('Foo')-&gt;andReturn('Foo!');
+Brain\Monkey\Filters\expectApplied('a_filter')-&gt;once()-&gt;with('Bar');
+
+self::assertSame('Foo!', apply_filters('a_filter', 'Foo')); // pass
+self::assertSame('Bar', apply_filters('a_filter', 'Bar')); // fail!</code></pre>
+<p>The second assertion fails because since we added a return expectation for the filter &quot;'a_filter'&quot;
+we need to add return expectation for <em>all</em> the possible arguments.</p>
+<p>This task is easier in Brain Monkey v2 thanks to the introduction of <code>andReturnFirstArg()</code> expectation
+method (more on this below).</p>
+<p>For example:</p>
+<pre><code class="language-php">Brain\Monkey\Filters\expectApplied('a_filter')-&gt;once()-&gt;with('Foo')-&gt;andReturn('Foo!');
+Brain\Monkey\Filters\expectApplied('a_filter')-&gt;zeroOrMoreTimes()-&gt;withAnyArgs()-&gt;andReturnFirstArg();
+
+self::assertSame('Foo', apply_filters('a_filter', 'Foo', 'Bar')); // pass
+self::assertSame('Bar', apply_filters('a_filter', 'Bar')); // pass!</code></pre>
+<p><code>andReturnFirstArg()</code> used in combination with Mockery methods <code>zeroOrMoreTimes()-&gt;withAnyArgs()</code>
+allows to create a &quot;catch all&quot; behavior for filters when a return expectation has been added, without
+having to create specific expectation for each of the possible arguments a filter might receive.</p>
 <hr />
 <h2 id="added-utility-functions-stubs">[Added] Utility Functions Stubs</h2>
 <p>There are WordPress functions that are often used in WordPress plugins or themes that are pretty much <em>logicless</em>, but still they need to be mocked in tests if WordPress is not available.</p>
@@ -358,7 +381,7 @@ Brain\Monkey\Filters\expectApplied('the_title')-&gt;andReturnUsing(function($arg
         </div>
         <!-- /#page-content-wrapper -->
 
-                    <a href="https://github.com/gmazzap/BrainMonkey">
+                    <a href="https://github.com/Brain-WP/BrainMonkey">
                 <img style="position:fixed; top:0; right:0; border:0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
             </a>
                 <a href="#" id="menu-toggle" title="Toggle Menu"><i class="fa fa-bars"></i></a>
@@ -369,13 +392,13 @@ Brain\Monkey\Filters\expectApplied('the_title')-&gt;andReturnUsing(function($arg
 
     <footer class="footer hidden-xs hidden-sm">
       Made by hands by
-      <a href="http://gm.zoomlab.it/" title="Giuseppe Mazzapica Home Page" target="_blank">Giuseppe Mazzapica</a>, with
+      <a href="https://gmazzap.me/" title="Giuseppe Mazzapica Home Page" target="_blank">Giuseppe Mazzapica</a>, with
       <a href="http://couscous.io/" title="Couscous" target="_blank">Couscous</a>,
       <a href="http://getbootstrap.com/" title="Bootstrap" target="_blank">Bootstrap</a> &amp;
       <a href="https://highlightjs.org/" title="highlight.js" target="_blank">highlight.js</a>
 
       <span class="socials">
-        <a href="https://github.com/Giuseppe-Mazzapica" title="GitHub" target="_blank"><i class="fa fa-github-alt"></i></a>
+        <a href="https://github.com/gmazzap" title="GitHub" target="_blank"><i class="fa fa-github-alt"></i></a>
         <a href="https://twitter.com/gmazzap" title="Twitter" target="_blank"><i class="fa fa-twitter"></i></a>
         <a href="http://wordpress.stackexchange.com/users/35541/" title="Stack Exchange" target="_blank"><i class="fa fa-stack-exchange"></i></a>
       </span>
