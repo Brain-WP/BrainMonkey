@@ -1,6 +1,6 @@
 <!--
 currentMenu: "migrating-from-v1"
-currentSection: "Migrating"
+currentSection: "Migration"
 title: "Migrating  From v1 To v2"
 -->
 # Migrating From v1 To v2
@@ -9,9 +9,10 @@ title: "Migrating  From v1 To v2"
 
 ## [Updated] Patchwork Version
 
-Patchwork has been updated to version 2. This now allows to redefine PHP core functions and not only custom defined functions. (There are some limitations, see http://patchwork2.org/limitations/).
+Patchwork has been updated to version 2. This new version allows to redefine PHP core functions and 
+not only custom defined functions. (There are limitations, see http://patchwork2.org/limitations/).
 
-This new Patchwork version seems to fix an annoying issue with undesired Patchwork cache.
+This new Patchwork version seems to also fix an annoying issue with undesired Patchwork cache.
 
 ---
 
@@ -21,21 +22,21 @@ This new Patchwork version seems to fix an annoying issue with undesired Patchwo
 
 On version 1 of Brain Monkey there where 4 static methods dedicated to setup:
 
-- `Brain\Monkey::setUp()` -> called before each test that use only functions redefinition (no WP features)
-- `Brain\Monkey::tearDown()` -> called after each test that use only functions redefinition (no WP features)
-- `Brain\Monkey::setUpWp()` -> called before each test that use functions redefinition and WP features
-- `Brain\Monkey::tearDownWp()` -> called after each test that use functions redefinition and WP features
-
+- `Brain\Monkey::setUp()` -> before each test that use only functions redefinition (no WP features)
+- `Brain\Monkey::tearDown()` -> after each test that use only functions redefinition (no WP features)
+- `Brain\Monkey::setUpWp()` -> before each test that use functions redefinition and WP features
+- `Brain\Monkey::tearDownWp()` -> after each test that use functions redefinition and WP features
 
 
 This has been simplified, in fact, **only two setup functions exists in Brain Monkey v2**:
 
-- `Brain\Monkey\setUp()` -> called before each test that use functions redefinition and WP features
+- `Brain\Monkey\setUp()` -> before each test that use functions redefinition and WP features
+- `Brain\Monkey\tearDown()` -> after each test, no matter if for functions redefinition or for also 
+  WP features
 
-- `Brain\Monkey\tearDown()` -> called after each test, no matter if for functions redefinition only or also for  WP features
 
-
-Which means that for  function redefinitions, only `Brain\Monkey\tearDown()` have to called after each test, and nothing _before_ each test.
+Which means that for  function redefinitions, only `Brain\Monkey\tearDown()` have to be called after 
+each test, and nothing _before_ each test.
 
 To also use WP features, `Brain\Monkey\setUp()` have also to called before each test.
 
@@ -45,14 +46,14 @@ To also use WP features, `Brain\Monkey\setUp()` have also to called before each 
 
 ## [Changed] New API - BREAKING!
 
+Big part of Brain Monkey is acting as a "bridge" between Mockery an Patchwork, that is, make Mockery 
+DSL for expectations available for functions and WordPress hooks.
 
-
-Big part of Brain Monkey is acting as a "bridge" between Mockery an Patchwork, that is, make Mockery DSL for expectations available for functions and WordPress hooks.
-
-To access the Mockery API, there were in Brain Monkey v1 provided two different methods:
+To access the Mockery API, Brain Monkey v1 provided two different methods:
 
 1. using static methods on the `Brain\Monkey` class
-2. using static methods on one of the three feature-specific classes `Brain\Monkey\Functions`, `Brain\Monkey\WP\Actions` or `Brain\Monkey\WP\Filters`
+2. using static methods on one of the three feature-specific classes `Brain\Monkey\Functions`, 
+   `Brain\Monkey\WP\Actions` or `Brain\Monkey\WP\Filters`
 
 For example:
 
@@ -81,7 +82,7 @@ Brain\Monkey\Filters\expectApplied('the_title');
 
 #### Renamed method for done actions
 
-For WordPress filters, there were in Brain Monkey v1 the two methods:
+For WordPress filters, there were in Brain Monkey v1 two methods:
 
 - `Filters::expectAdded()`
 - `Filters::expectApplied()`
@@ -93,7 +94,9 @@ But for actions there were:
 - `Action::expectAdded()`
 - `Action::expectFired()`
 
-`expectAdded()` pairs with `add_action()`, but `expectFired()` does not really pair with `do_action()`: this is why in Brain Monkey v2 **the method `expectFired()` has been replaced by the function `expectDone()`**.
+`expectAdded()` pairs with `add_action()`, but `expectFired()` does not really pair with
+`do_action()`: this is why in Brain Monkey v2 **the method `expectFired()` has been replaced by the 
+function `expectDone()`**.
 
 So, in version 2 there are total of 5 entry-point **functions** to Mockery API:
 
@@ -103,14 +106,13 @@ So, in version 2 there are total of 5 entry-point **functions** to Mockery API:
 - `Brain\Monkey\Filters\expectAdded()`
 - `Brain\Monkey\Filters\expectApplied()`
 
-
 ---
 
 
 
 ## [Changed] Default Expectations Behavior - BREAKING!
 
-In Brain Monkey v1, expectation on the "times" an expected event have to happen was required.
+In Brain Monkey v1, expectation on the "times" an expected event happen was required.
 
 ```php
 class MyClass {
@@ -132,13 +134,19 @@ class MyClassTest extends MyTestCase {
 }
 ```
 
-This **test passed in Brain Monkey v1**, because even if `Actions::expectAdded()` was used, the test does not fail unless something like `Actions::expectAdded('init')->once()` was used, which made the test pass only if `add_action( 'init' )` was called once.
+This **test passed in Brain Monkey v1**, because even if `Actions::expectAdded()` was used, the test 
+does not fail unless something like `Actions::expectAdded('init')->once()` was used, which made the 
+test pass only if `add_action( 'init' )` was called once.
 
-The reason is that Mockery default behavior is to add a `->zeroOrMoreTimes()` as expectation on number of times a method is called, so when the expectation is called *zero times*, that's a valid outcome.
+The reason is that Mockery default behavior is to add a `->zeroOrMoreTimes()` as expectation on number 
+of times a method is called, so when the expectation is called *zero times*, that's a valid outcome.
 
-This was somehow confusing (because reading `expectAdded` one could *expect* the test to fail if that thing did not happened), and also made tests unnecessarily verbose.
+This was somehow confusing (because reading `expectAdded` one could *expect* the test to fail if that 
+thing did not happened), and also made tests unnecessarily verbose.
 
-**In Brain Monkey v2, the default set on Mockery expectations is `->atLeast()->once()`** so, for example, the test above fails in Brain Monkey v2 if `MyClass::doSomething()` does not call `add_action('init')` at least once.
+**Brain Monkey v2, set Mockery expectation default to `->atLeast()->once()`** so, for example, 
+the test above fails in Brain Monkey v2 if `MyClass::doSomething()` does not call `add_action('init')` 
+at least once.
 
 ---
 
@@ -146,9 +154,11 @@ This was somehow confusing (because reading `expectAdded` one could *expect* the
 
 ## [Changed] Closure String Representation - BREAKING!
 
-Brain Monkey allows to do some basic tests using `has_action()` / `has_filter()`, functions, to test if some portion of code have added some hooks.
+Brain Monkey allows to do some basic tests using `has_action()` / `has_filter()`, functions, to test 
+if some portion of code have added some hooks.
 
-A "special" syntax, was added already in Brain Monkey v1 to permit the checking for hooks added using object instances as part of the hook callback, without having any reference to those objects. 
+A "special" syntax, was already added in Brain Monkey v1 to permit the checking for hooks added using 
+object instances as part of the hook callback, without having any reference to those objects. 
 
 For example, assuming a function like:
 
@@ -172,9 +182,13 @@ self::assertTrue(has_action('example_one', 'A\Name\Space\SomeClass->aMethod()'))
 self::assertTrue(has_action('example_two', 'function()')); // pass
 ```
 
-The syntax for string representation of callbacks including objects, is unchanged in Brain Monkey v2, however, **the syntax for closures  string representation has been changed to allow more fine grained control**.
+The syntax for string representation of callbacks including objects is unchanged in Brain Monkey v2, 
+however, **the syntax for closures string representation has been changed to allow more fine grained 
+control**.
 
-In fact, in Brain Monkey v1 *all* the closures were represented as the string `"function()"`, in Brain Monkey v2 closure string representations also contain the parameters used in the closure signature:
+In fact, in Brain Monkey v1 *all* the closures were represented as the string `"function()"`, 
+in Brain Monkey v2 closure string representations also contain the parameters used in the closure 
+signature:
 
 ```php
 // Brain Monkey v2:
@@ -221,7 +235,9 @@ Note how type-hints using classes always have fully qualified names in string re
 
 ## [Changed] Relaxed `callable` check
 
-In Brain Monkey v1 methods and functions that accept a `callable` like, for example, second argument to  `add_action()` / `add_filter()`, checked the received argument to be an actual callable PHP entity, using `is_callable`:
+In Brain Monkey v1 methods and functions that accept a `callable` like, for example, second argument 
+to  `add_action()` / `add_filter()`, checked the received argument to be an actual callable PHP 
+entity, using `is_callable`:
 
 ```php
 // this fail in Brain Monkey v1 if `SomeClass` was not available 
@@ -232,19 +248,30 @@ add_action( 'foo', [ SomeClass::class, 'aMethod' ] );
 add_action( 'bar', 'Some\Name\Space\aFunction' );
 ```
 
-For these reasons, it was often required to create a mock for unavailable classes or functions just to don't make Brain Monkey throw an exception, even if the mock was not used and not relevant for the test.
+For these reasons, it was often required to create a mock for unavailable classes or functions just 
+to don't make Brain Monkey throw an exception, even if the mock was not used and not relevant for the
+test.
 
-Brain Monkey v2 is less strict on checking for `callable` and it accepts anything that _looks like_ a callable.
+Brain Monkey v2 is less strict on checking for `callable` and it accepts anything that _looks like_ 
+a callable.
 
-Something like `[SomeClass::class, 'aMethod']` would be accepted even if `SomeClass` is not loaded at all, because *it looks like* a callable. Same goes for `'Some\Name\Space\aFunction'`.
+Something like `[SomeClass::class, 'aMethod']` would be accepted even if `SomeClass` is not loaded 
+at all, because *it looks like* a callable. Same goes for `'Some\Name\Space\aFunction'`.
 
-However, something like `[SomeClass::class, 'a-Method']` or  `[SomeClass::class, 'aMethod', 1]`  or even `Some\Name\Space\a Function` will throw an exception because method and function names can't contain hyphens or spaces and when a callback is made of an array, it must have exactly two arguments.
+However, something like `[SomeClass::class, 'a-Method']` or  `[SomeClass::class, 'aMethod', 1]` 
+or even `Some\Name\Space\a Function` will throw an exception because method and function names can't 
+contain hyphens or spaces and when a callback is made of an array, it must have exactly two arguments.
 
-This more "relaxed" check allows to save creation of mocks that are not necessary for the logic of the test.
+This more "relaxed" check allows to save creation of mocks that are not necessary for the logic of 
+the test.
 
-It worth nothing that when doing something like  `[SomeClass::class, 'aMethod']`  **if** the class `SomeClass` is available, Brain Monkey checks it to have an accessible method named `aMethod`, and raise an exception if not, but will not do any check if the class is not available.
+It worth noting that when doing something like  `[SomeClass::class, 'aMethod']`  **if** the class 
+`SomeClass` is available, Brain Monkey checks it to have an accessible method named `aMethod`, and 
+raise an exception if not, but will not do any check if the class is not available.
 
-The same applies when object instances are used for callbacks, for example, using as callback argument `[$someObject, 'aMethod']`, the instance of `$someObject` is checked to have an accessible method named `aMethod`.
+The same applies when object instances are used for callbacks, for example, using as callback argument 
+`[$someObject, 'aMethod']`, the instance of `$someObject` is checked to have an accessible method
+named `aMethod`.
 
 ---
 
@@ -252,7 +279,8 @@ The same applies when object instances are used for callbacks, for example, usin
 
 ## [Fixed] `apply_filters` Default Behavior
 
-The WordPress function `apply_filters()` is defined by Brain Monkey and it returns the first argument passed to it, just like WordPress:
+The WordPress function `apply_filters()` is defined by Brain Monkey and it returns the first argument 
+passed to it, just like WordPress:
 
 ```php
 self::assertSame('Foo', apply_filters('a_filter', 'Foo', 'Bar')); // pass!
@@ -266,7 +294,9 @@ Brain\Monkey\WP\Filters::expectApplied('a_filter');
 self::assertSame('Foo', apply_filters('a_filter', 'Foo', 'Bar')); // fails in v1
 ```
 
-**The test above fails in Brain Monkey v1**. The reason is that even if the expectation in first line is validated, it breaks the default `apply_filters` behavior, requiring the return value to be added to expectation to make the test pass again.
+**The test above fails in Brain Monkey v1**. The reason is that even if the expectation in first line 
+is validated, it breaks the default `apply_filters` behavior, requiring the return value to be added 
+to expectation to make the test pass again.
 
 For example, the following test used to pass in Brain Monkey v1:
 
@@ -275,10 +305,11 @@ Brain\Monkey\WP\Filters::expectApplied('a_filter')->andReturn('Foo');
 
 self::assertSame('Foo', apply_filters('a_filter', 'Foo', 'Bar')); // pass
 ```
+
 **In Brain Monkey v2 this is not necessary anymore.** 
 
-Calling `expectApplied` on applied filters does **not** break the default behavior of `apply_filters` behavior, 
-if no further different return expectation are added.
+Calling `expectApplied` on applied filters does **not** break the default behavior of `apply_filters` 
+behavior, if no return expectations are added.
 
 The following test **passes in Brain Monkey v2**:
 
@@ -288,8 +319,8 @@ Brain\Monkey\Filters\expectApplied('a_filter')->once()->with('Foo', 'Bar');
 self::assertSame('Foo', apply_filters('a_filter', 'Foo', 'Bar')); // pass in v2!
 ```
 
-Note if any return expectation is added for a filter, then return expectation must me added for all
-the different set of arguments the filter might receive.
+Please note that if any return expectation is added for a filter, return expectations must be added 
+for all the set of arguments the filter might receive.
 
 For example:
 
@@ -319,7 +350,10 @@ self::assertSame('Bar', apply_filters('a_filter', 'Bar')); // pass!
 
 `andReturnFirstArg()` used in combination with Mockery methods `zeroOrMoreTimes()->withAnyArgs()` 
 allows to create a "catch all" behavior for filters when a return expectation has been added, without
-having to create specific expectation for each of the possible arguments a filter might receive.
+having to create specific expectations for each of the possible arguments a filter might receive.
+
+Of course, adding specific expectations for each of the possible arguments a filter might receive is 
+still possible.
 
 ---
 
@@ -327,9 +361,11 @@ having to create specific expectation for each of the possible arguments a filte
 
 ## [Added] Utility Functions Stubs
 
-There are WordPress functions that are often used in WordPress plugins or themes that are pretty much *logicless*, but still they need to be mocked in tests if WordPress is not available.
+There are WordPress functions that are often used in WordPress plugins or themes that are pretty much 
+*logicless*, but still they need to be mocked in tests if WordPress is not available.
 
-Brain Monkey v2 now ships stubs for those functions, so it is not necessary to mock them anymore, they are:
+Brain Monkey v2 now ships stubs for those functions, so it is not necessary to mock them anymore, 
+they are:
 
 - `__return_true`
 - `__return_false`
@@ -340,7 +376,8 @@ Brain Monkey v2 now ships stubs for those functions, so it is not necessary to m
 - `trailingslashit`
 - `untrailingslashit`
 
-Those functions do exactly what they are expected to do, even if WordPress is not loaded: some functions mocking is now saved.
+Those functions do exactly what they are expected to do, even if WordPress is not loaded: some 
+functions mocking is now saved.
 
 Of course, their behavior can still be mocked, e.g. to make a test fail on purpose.
 
@@ -350,11 +387,15 @@ Of course, their behavior can still be mocked, e.g. to make a test fail on purpo
 
 ## [Added] Support for `doing_action()` and `doing_filter()`
 
-When adding expectation on returning value of filters, or when using `whenHappen` to respond to actions, inside the expectation callback, the function `current_filter()` in Brain Monkey v1 used to correctly resolve to the action / filter being executed.
+When adding expectation on returning value of filters, or when using `whenHappen` to respond to 
+actions, inside the expectation callback, the function `current_filter()` in Brain Monkey v1 used to
+correctly resolve to the action / filter being executed.
 
-The functions `doing_action()` and `doing_filter()` didn't work: they were not provided at all with Brain Monkey v1 and required to be mocked "manually" .
+The functions `doing_action()` and `doing_filter()` didn't work: they were not provided at all with 
+Brain Monkey v1 and required to be mocked "manually" .
 
-In Brain Monkey v2 those two functions are provided as well, and correctly return true or false when used inside the callback used to set expectation on returning values of filters, or when using `whenHappen` to respond to actions.
+In Brain Monkey v2 those two functions are provided as well, and correctly return true or false when 
+used inside the callbacks used to respond to hooks.
 
 ---
 
@@ -362,7 +403,8 @@ In Brain Monkey v2 those two functions are provided as well, and correctly retur
 
 ## [Added] Method `andReturnFirstArg()`
 
-When adding expectation on returning value of applied filters or functions, it is now possible to use `andReturnFirstArg()` to make the Mockery expectation return first argument received.
+When adding expectations on returning value of applied filters or functions, it is now possible to 
+use `andReturnFirstArg()` to make the Mockery expectations return first argument received.
 
 ```php
 // Brain\Monkey v2:
@@ -374,6 +416,7 @@ Brain\Monkey\Filters\expectApplied('the_title')->andReturnFirstArg();
 Brain\Monkey\Functions\expect('foo')->andReturnUsing(function($arg) {
   return $arg;
 });
+
 Brain\Monkey\Filters\expectApplied('the_title')->andReturnUsing(function($arg) {
   return $arg;
 });
@@ -385,7 +428,8 @@ Brain\Monkey\Filters\expectApplied('the_title')->andReturnUsing(function($arg) {
 
 ## [Added] Method `andAlsoExpectIt()`
 
-In Mockery, when creating expectation for multiple methods of same class, the method `getMock()` allows to do it without leaving "fluent interface chain", for example:
+In Mockery, when creating expectations for multiple methods of same class, the method `getMock()` 
+allows to do it without leaving "fluent interface chain", for example:
 
 ```php
 Mockery\mock(SomeClass::class)
@@ -409,7 +453,8 @@ Brain\Monkey\Filters\expectApplied('some_filter')
   ->zeroOrMoreTimes()->withAnyArgs()->andReturnFirstArg();
 ```
 
-Of course, it also works in other kind of expectations, like for functions or for actions added or done.
+Of course, it also works in other kind of expectations, like for functions or for actions added or 
+done.
 
 ---
 
@@ -417,8 +462,12 @@ Of course, it also works in other kind of expectations, like for functions or fo
 
 ## [Added] New Exceptions Classes
 
-In Brain Monkey v1, when exceptions were thrown, PHP core exception classes were used, like `\RuntimeException` or `\InvalidArgumentException` and so on.
+In Brain Monkey v1, when exceptions were thrown, PHP core exception classes were used, like 
+`\RuntimeException` or `\InvalidArgumentException` and so on.
 
-In Brain Monkey v2, different custom exceptions classes have been added, to make very easy to catch any error thrown by Brain Monkey.
+In Brain Monkey v2, different custom exceptions classes have been added, to make very easy to catch 
+any error thrown by Brain Monkey.
 
-Now, in fact, every exception thrown by Brain Monkey is of a custom type, and there's a hierarchy of exceptions classes for a total of 16 exception classes, all inheriting (one  or more levels deep) the "base" exception class that is `Brain\Monkey\Exception`.
+Now, in fact, every exception thrown by Brain Monkey is of a custom type, and there's a hierarchy of 
+exceptions classes for a total of 16 exception classes, all inheriting (one  or more levels deep) 
+the "base" exception class that is `Brain\Monkey\Exception`.
