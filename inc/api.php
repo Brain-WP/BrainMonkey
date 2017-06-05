@@ -8,14 +8,24 @@
  * file that was distributed with this source code.
  */
 
+// Ignore this. Just a safeguard in case of WordPress + Composer broken (really broken) setup.
+namespace { if (function_exists('Brain\Monkey\setUp')) return; }
+
 namespace Brain\Monkey {
 
+    /**
+     * Setup function to be called before _each_ unit test. This is not required to just mock
+     * PHP functions without using WP features.
+     */
     function setUp()
     {
         require_once dirname(__DIR__).'/inc/wp-hook-functions.php';
         require_once dirname(__DIR__).'/inc/wp-helper-functions.php';
     }
 
+    /**
+     * Setup function to be called after _each_ unit test. This is *always* required.
+     */
     function tearDown()
     {
         Container::instance()->reset();
@@ -31,6 +41,8 @@ namespace Brain\Monkey\Functions {
     use Brain\Monkey\Name\FunctionName;
 
     /**
+     * API entrypoint for plain functions stub.
+     *
      * Factory method: receives the name of the function to mock and returns an instance of
      * FunctionStub.
      *
@@ -45,6 +57,8 @@ namespace Brain\Monkey\Functions {
     }
 
     /**
+     * API entrypoint for plain functions expectations.
+     *
      * Returns a Mockery Expectation object, where is possible to set all the expectations, using
      * Mockery methods.
      *
@@ -75,6 +89,11 @@ namespace Brain\Monkey\Actions {
     use Brain\Monkey\Hook;
 
     /**
+     * API entrypoint for added action expectations.
+     *
+     * Takes the action name and returns a Mockery Expectation object, where is possible to set all
+     * the expectations, using Mockery methods.
+     *
      * @param string $action
      * @return \Brain\Monkey\Expectation\Expectation
      */
@@ -86,6 +105,11 @@ namespace Brain\Monkey\Actions {
     }
 
     /**
+     * API entrypoint for fired action expectations.
+     *
+     * Takes the action name and returns a Mockery Expectation object, where is possible to set all
+     * the expectations, using Mockery methods.
+     *
      * @param string $action
      * @return \Brain\Monkey\Expectation\Expectation
      */
@@ -97,6 +121,10 @@ namespace Brain\Monkey\Actions {
     }
 
     /**
+     * Utility method to check if any or specific callback has been added to given action.
+     *
+     * Brain Monkey version of `has_action` will alias here.
+     *
      * @param string $action
      * @param null   $callback
      * @return bool
@@ -109,6 +137,10 @@ namespace Brain\Monkey\Actions {
     }
 
     /**
+     * Utility method to check if given action has been done.
+     *
+     * Brain Monkey version of `did_action` will alias here.
+     *
      * @param string $action
      * @return int
      */
@@ -120,6 +152,10 @@ namespace Brain\Monkey\Actions {
     }
 
     /**
+     * Utility method to check if given action is currently being done.
+     *
+     * Brain Monkey version of `doing_action` will alias here.
+     *
      * @param string $action
      * @return bool
      */
@@ -137,6 +173,11 @@ namespace Brain\Monkey\Filters {
     use Brain\Monkey\Hook;
 
     /**
+     * API entrypoint for added filter expectations.
+     *
+     * Takes the filter name and returns a Mockery Expectation object, where is possible to set all
+     * the expectations, using Mockery methods.
+     *
      * @param string $filter
      * @return \Brain\Monkey\Expectation\Expectation
      */
@@ -148,6 +189,11 @@ namespace Brain\Monkey\Filters {
     }
 
     /**
+     * API entrypoint for applied filter expectations.
+     *
+     * Takes the filter name and returns a Mockery Expectation object, where is possible to set all
+     * the expectations, using Mockery methods.
+     *
      * @param string $filter
      * @return \Brain\Monkey\Expectation\Expectation
      */
@@ -159,6 +205,10 @@ namespace Brain\Monkey\Filters {
     }
 
     /**
+     * Utility method to check if any or specific callback has been added to given filter.
+     *
+     * Brain Monkey version of `has_filter` will alias here.
+     *
      * @param string $filter
      * @param null   $callback
      * @return bool
@@ -171,6 +221,10 @@ namespace Brain\Monkey\Filters {
     }
 
     /**
+     * Utility method to check if given filter as been applied.
+     *
+     * There's no WordPress function counter part for it.
+     *
      * @param string $filter
      * @return int
      */
@@ -182,6 +236,10 @@ namespace Brain\Monkey\Filters {
     }
 
     /**
+     * Utility method to check if given filter is currently being done.
+     *
+     * Brain Monkey version of `doing_filter` will alias here.
+     *
      * @param string $filter
      * @return bool
      */
