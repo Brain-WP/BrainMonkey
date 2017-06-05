@@ -12,7 +12,7 @@
  * @package BrainMonkey
  */
 
-if (function_exists('Patchwork\replace')) {
+if (function_exists('Patchwork\redefine')) {
     return;
 }
 
@@ -24,7 +24,7 @@ if (file_exists(dirname(dirname(dirname(__DIR__)))."/antecedent/patchwork/Patchw
     @require_once dirname(__DIR__)."/vendor/antecedent/patchwork/Patchwork.php";
 }
 
-if ( ! function_exists('Patchwork\replace')) {
+if ( ! function_exists('Patchwork\redefine')) {
     throw new \Brain\Monkey\Exception(
         'Brain Monkey was unable to load Patchwork. Please require Patchwork.php by yourself before running tests.'
     );
