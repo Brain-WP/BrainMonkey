@@ -14,10 +14,8 @@
 
 $autoload_path = dirname(__DIR__).'/vendor/';
 if (! file_exists($autoload_path.'autoload.php')) {
-    die('Please install via composer before running tests.');
+    die('Please install via Composer before running tests.');
 }
 
-require_once $autoload_path.'antecedent/patchwork/Patchwork.php';
-require_once $autoload_path.'phpunit/phpunit/src/Framework/Assert/Functions.php';
 require_once $autoload_path.'autoload.php';
 unset($autoload_path);

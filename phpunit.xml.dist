@@ -1,14 +1,28 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.8/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/5.7/phpunit.xsd"
          bootstrap="tests/boot.php"
          colors="true"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
          stopOnFailure="false">
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">src</directory>
+        </whitelist>
+    </filter>
     <testsuites>
-        <testsuite name="U">
-            <directory>tests/unit</directory>
+        <testsuite name="api">
+            <directory>tests/src/Api</directory>
+        </testsuite>
+        <testsuite name="expectation">
+            <directory>tests/src/Expectation</directory>
+        </testsuite>
+        <testsuite name="name">
+            <directory>tests/src/Name</directory>
+        </testsuite>
+        <testsuite name="hook">
+            <directory>tests/src/Hook</directory>
         </testsuite>
     </testsuites>
 </phpunit>

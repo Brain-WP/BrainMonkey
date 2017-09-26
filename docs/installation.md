@@ -7,7 +7,7 @@ title: "Installation"
 
 To install Brain Monkey you need:
 
- - PHP 5.4+
+ - PHP 5.6+
  - [Composer](https://getcomposer.org)
 
 Brain Monkey is available on Packagist, so the only thing you need to do is to add it as a dependency for your project.
@@ -15,7 +15,7 @@ Brain Monkey is available on Packagist, so the only thing you need to do is to a
 That can be done by running following command in your project folder:
 
 ```shell
-composer require brain/monkey:1.* --dev
+composer require brain/monkey:2.* --dev
 ```
 
 As alternative you can directly edit your `composer.json` by adding:
@@ -23,16 +23,18 @@ As alternative you can directly edit your `composer.json` by adding:
 ```json
 {
   "require-dev": {
-    "brain/monkey": "~1.0"
+    "brain/monkey": "~2.0.0"
   }
 }
 ```
 
-I've used `require-dev` because, being a testing tool, Brain Monkey should not be included in production.
+I've used `require-dev` because, being a testing tool, Brain Monkey should **not** be included in production.
 
-Brain Monkey can work with any testing framework, so doesn't require any of them.
+Brain Monkey can work with any testing framework, so it doesn't require any of them.
 
 To run your tests you'll probably need to require a testing framework too, e.g. [PHPUnit](https://phpunit.de/) or [phpspec](http://www.phpspec.net/en/latest/).
+
+
 
 ## Dependencies
 
