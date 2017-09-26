@@ -39,7 +39,6 @@
             "Brain\\Monkey\\": "src/"
         },
         "files": [
-            "inc/patchwork-loader.php",
             "inc/api.php"
         ]
     },

@@ -35,7 +35,10 @@ final class Container
      */
     public static function instance()
     {
-        self::$instance or self::$instance = new static();
+        if (!self::$instance) {
+            require_once dirname(__DIR__).'/inc/patchwork-loader.php';
+            self::$instance = new static();
+        }
 
         return self::$instance;
     }
@@ -83,6 +86,9 @@ final class Container
         return $this->service(__FUNCTION__, new Expectation\FunctionStubFactory());
     }
 
+    /**
+     * @return void
+     */
     public function reset()
     {
         $this->expectationFactory()->reset();

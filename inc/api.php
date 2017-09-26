@@ -19,6 +19,7 @@ namespace Brain\Monkey {
      */
     function setUp()
     {
+        require_once dirname(__DIR__).'/inc/patchwork-loader.php';
         require_once dirname(__DIR__).'/inc/wp-hook-functions.php';
         require_once dirname(__DIR__).'/inc/wp-helper-functions.php';
     }
