@@ -9,10 +9,10 @@ title: "Bulk functions patching"
 
 However, it can be quite verbose when multiple functions needed to be patched.
 
-When one uses `when()` they is not interested in adding expectations, but more often than not is
-interested in just assuring the target function is defined (and maybe) on its return value.
+When one uses `when()` they are not interested in adding expectations but usually are
+interested in ensuring the target function is defined, and maybe its return value.
 
-For these reason version 2.1 introduced two new API functions to define multiple functions in bulk:
+For this reason, version 2.1 introduced two new API functions to define multiple functions in bulk:
 
 - `bulkDefine()`
 - `bulkDefinePassTrough()`
@@ -29,7 +29,7 @@ Functions\bulkDefine([
 ]);
 ```
 
-An interesting feature is that when value is `callable` the given function is aliased to that
+An interesting feature is that when the value is a `callable`, the given function is aliased to that
 callable:
 
 ```php
@@ -42,12 +42,12 @@ Functions\bulkDefine([
 ]);
 ```
 
-This means that using `bulkDefine()` is not actually possible to define a function that returns a
-callable, in that case `when()` will do just fine.
+This means that using `bulkDefine()` does not allow you to define a function that returns a
+callable. In that case, `when()` will do just fine.
 
 It is also possible to pass function names as array item _values_ and without keys (implicit 
-numeric keys), in that case the return value for the functions will be anything is passed as
-second argument to `bulkDefine()`, or `null` if no second argument is used.
+numeric keys). In that case, the return value for the functions will be the value that is passed as
+the second argument to `bulkDefine()`, or `null` if no second argument is used.
 
 Example:
 
@@ -57,11 +57,11 @@ Functions\bulkDefine(['is_user_logged_in','current_user_can'], true);
 
 ## `bulkDefinePassTrough()`
 
-Many core functions in WP return the first argument passed to them maybe modified in some way.
-For testing purposes is often desired that the first argument is returned unchanged, this is
+Many core functions in WordPress return the first argument passed to them, possibly modified in some way.
+For testing purposes, it is often desired that the first argument is returned unchanged; this is
 what `when( $function_name )->justReturnArg()` does for _a_ function.
 
-`Functions\bulkDefinePassTrough()` allows to do same thing for _multiple_ functions:
+`Functions\bulkDefinePassTrough()` allows the same thing for _multiple_ functions:
 
 ```php
 Functions\bulkDefinePassTrough([
