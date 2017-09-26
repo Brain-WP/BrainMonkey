@@ -3,7 +3,7 @@ currentMenu: "functionsbulk"
 currentSection: "PHP Functions"
 title: "Bulk functions patching"
 -->
-#Bulk functions patching
+# Bulk functions patching
 
 `when()` and its related methods are quite simple and straightforward.
 
