@@ -9,7 +9,12 @@
  */
 
 // Ignore this. Just a safeguard in case of WordPress + Composer broken (really broken) setup.
-namespace { if (function_exists('Brain\Monkey\setUp')) return; }
+namespace {
+
+    if (function_exists('Brain\Monkey\setUp')) {
+        return;
+    }
+}
 
 namespace Brain\Monkey {
 
@@ -55,6 +60,51 @@ namespace Brain\Monkey\Functions {
         return Container::instance()
                         ->functionStubFactory()
                         ->create(new FunctionName($function_name), FunctionStubFactory::SCOPE_STUB);
+    }
+
+    /**
+     * API method to simple and fast multiple functions definition.
+     *
+     * It does not allow to add expectations.
+     *
+     * It accepts both associative array items, where array item key is the function name and array
+     * item value is the wanted return value, or numeric array (implicit numeric keys) where the
+     * array item value is function name and the return value is set to the 2nd given argument (or
+     * null by default).
+     *
+     * If the return value is a callable, the function will be aliased to that callable.
+     * 
+     * @param array      $functions
+     * @param mixed|null $default_return
+     */
+    function bulkDefine(array $functions, $default_return = null)
+    {
+        foreach ($functions as $key => $value) {
+
+            list($function_name, $return_value) = is_numeric($key)
+                ? [$value, $default_return]
+                : [$key, $value];
+
+            is_callable($return_value)
+                ? when($function_name)->alias($return_value)
+                : when($function_name)->justReturn($return_value);
+        }
+    }
+
+    /**
+     * API method to simple and fast multiple functions definition that return the first
+     * argument passed to them, without any modification.
+     *
+     * Useful, for example, for quick stubbing multiple WP escaping or translation functions.
+     *
+     * @param array $functions
+     */
+    function bulkDefinePassTrough(array $functions)
+    {
+        foreach ($functions as $function_name) {
+
+            when($function_name)->returnArg();
+        }
     }
 
     /**
