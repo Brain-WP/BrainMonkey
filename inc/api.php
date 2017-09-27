@@ -63,21 +63,26 @@ namespace Brain\Monkey\Functions {
     }
 
     /**
-     * API method to simple and fast multiple functions definition.
+     * API method to fast & simple create multiple functions stubs.
      *
      * It does not allow to add expectations.
      *
-     * It accepts both associative array items, where array item key is the function name and array
-     * item value is the wanted return value, or numeric array (implicit numeric keys) where the
-     * array item value is function name and the return value is set to the 2nd given argument (or
-     * null by default).
+     * The function name to create stub for can be passed as array key or as array value (with no key).
      *
-     * If the return value is a callable, the function will be aliased to that callable.
+     * When the function name is in the key, the value can be:
+     *   - a callable, in which case the function will be aliased to it
+     *   - anything else, in which case a stub returning given value will be created for the function
+     * 
+     * When the function name is in the value, and no key is set, the behavior will change based on
+     * the second param:
+     *   - when 2nd param is `null` (default) the created stub will return the 1st param it will receive
+     *   - when 2nd param is anything else the created stub will return it
+     *
      * 
      * @param array      $functions
      * @param mixed|null $default_return
      */
-    function bulkDefine(array $functions, $default_return = null)
+    function stubs(array $functions, $default_return = null)
     {
         foreach ($functions as $key => $value) {
 
@@ -85,25 +90,14 @@ namespace Brain\Monkey\Functions {
                 ? [$value, $default_return]
                 : [$key, $value];
 
-            is_callable($return_value)
-                ? when($function_name)->alias($return_value)
+            if (is_callable($return_value)) {
+                when($function_name)->alias($return_value);
+                continue;
+            }
+
+            $default_return === null
+                ? when($function_name)->returnArg()
                 : when($function_name)->justReturn($return_value);
-        }
-    }
-
-    /**
-     * API method to simple and fast multiple functions definition that return the first
-     * argument passed to them, without any modification.
-     *
-     * Useful, for example, for quick stubbing multiple WP escaping or translation functions.
-     *
-     * @param array $functions
-     */
-    function bulkDefinePassTrough(array $functions)
-    {
-        foreach ($functions as $function_name) {
-
-            when($function_name)->returnArg();
         }
     }
 
