@@ -309,6 +309,7 @@ class FunctionsTest extends TestCase
 
         static::assertNull(i_return_null());
         static::assertNull(i_return_null_too());
-        static::assertSame('yes', (i_return_a_callback())());
+        $cb = i_return_a_callback();
+        static::assertSame('yes', $cb());
     }
 }
