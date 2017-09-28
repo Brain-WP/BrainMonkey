@@ -95,7 +95,7 @@ namespace Brain\Monkey\Functions {
                 continue;
             }
 
-            $default_return === null
+            $return_value === null
                 ? when($function_name)->returnArg()
                 : when($function_name)->justReturn($return_value);
         }
