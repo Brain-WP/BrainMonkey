@@ -75,8 +75,8 @@ Functions\stubs(
 ## Gotcha
 
 When passing to `stubs()` a function name as array item key and a `callable` as value, the function
-will be aliased to that callable. It means that using `stubs()` is not possible to create a stub
-for a function that returns a callback, by doing:
+will be aliased to that callable. It means that using `stubs()` is **not** possible to create a stub
+for a function that returns a callback by doing something like:
 
 ```php
 Functions\stubs(
@@ -100,31 +100,31 @@ Functions\stubs(
 
 will work.
 
-Moreover, using a function name as array item value (no key), and passing `null` as second param to
-`stubs()`, it will create a stub that returns the first argument received.
-It means that using `stubs()` is not possible to create a stub for a function that returns `null` by
-doing:
+Moreover, when doing something like this:
 
 ```php
 Functions\stubs(
-   [ 
-        'function_that_returns_null' => null
-   ]
+   [ 'function_that_returns_null' => null ]
 );
 ```
 
-But:
+or like this:
 
 ```php
 Functions\stubs(
-   [
-        'function_that_returns_null' => function() { 
-            return null;
-        }
-   ]
+   [ 'function_that_returns_null' ],
+   null
 );
 ```
 
-will work.
 
-In both cases, `when()` will do just fine as well.
+the return value of the stub will **not** be `null`, because when return value is set to `null` 
+Brain Monkey will make the function stub return the first received value.
+
+The only way to use `stubs()` for creating a stub that returns `null` is:
+
+```php
+Functions\stubs(
+   [ 'function_that_returns_null' => function() { return null; } ]
+);
+```
