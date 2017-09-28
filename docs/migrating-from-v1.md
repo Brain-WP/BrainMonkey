@@ -463,7 +463,7 @@ done.
 ## [Added] New Exceptions Classes
 
 In Brain Monkey v1, when exceptions were thrown, PHP core exception classes were used, like 
-`\RuntimeException` or `\InvalidArgumentException` and so on.
+`\RuntimeException` or `\InvalidArgumentException`, and so on.
 
 In Brain Monkey v2, different custom exceptions classes have been added, to make very easy to catch 
 any error thrown by Brain Monkey.
