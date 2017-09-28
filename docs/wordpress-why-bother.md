@@ -38,4 +38,4 @@ See the *PHP Function* documentation section  for a deep explanation on how it w
 Moreover, among others, WordPress [Plugin API functions](https://codex.wordpress.org/Plugin_API) are particularly
 important and a very fine grained control on how they are used in code is pivotal to proper test WordPress extensions.
 
-This is why Brain Monkey comes with a set of features specifically designed for that.\	 
+This is why Brain Monkey comes with a set of features specifically designed for that.

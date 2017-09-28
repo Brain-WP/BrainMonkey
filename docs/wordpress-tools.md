@@ -80,6 +80,6 @@ But, of course, that's not enough. To proper test WordPress code you will probab
  - perform some callback when an action is fired, being able to access passed arguments
  - perform some callback when an filter is applied, being able to access passed arguments and to return specific values
 
-guess what, Brain Monkey allows to do all of this and even more.
+Guess what, Brain Monkey allows to do all of this and even more.
 
 And it does that using its straightforward and human readable syntax.

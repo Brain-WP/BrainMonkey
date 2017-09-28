@@ -301,7 +301,7 @@ class MyClass {
 }
 ```
 
-It is possible write a test like this:
+It is possible to write a test like this:
 
 ```php
 use Brain\Monkey\Actions;
