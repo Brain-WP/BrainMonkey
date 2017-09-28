@@ -76,10 +76,55 @@ Functions\stubs(
 
 When passing to `stubs()` a function name as array item key and a `callable` as value, the function
 will be aliased to that callable. It means that using `stubs()` is not possible to create a stub
-for a function that returns a callback.
+for a function that returns a callback, by doing:
+
+```php
+Functions\stubs(
+   [ 
+        'function_that_returns_a_callback' => 'the_expected_returned_callback'
+   ]
+);
+```
+
+But:
+
+```php
+Functions\stubs(
+   [
+        'function_that_returns_a_callback' => function() { 
+            return 'the_expected_returned_callback';
+        }
+   ]
+);
+```
+
+will work.
 
 Moreover, using a function name as array item value (no key), and passing `null` as second param to
 `stubs()`, it will create a stub that returns the first argument received.
-It means that using `stubs()` is not possible to create a stub for a function that returns `null`. 
+It means that using `stubs()` is not possible to create a stub for a function that returns `null` by
+doing:
 
-In both cases `when()` will do just fine.
+```php
+Functions\stubs(
+   [ 
+        'function_that_returns_null' => null
+   ]
+);
+```
+
+But:
+
+```php
+Functions\stubs(
+   [
+        'function_that_returns_null' => function() { 
+            return null;
+        }
+   ]
+);
+```
+
+will work.
+
+In both cases, `when()` will do just fine as well.
