@@ -59,14 +59,16 @@ Functions\stubs(
 // Given functions will return the first argument they will receive,
 // just like `when( $function_name )->justReturnArg()` was used for all of them.
 Functions\stubs(
-   'esc_attr',
-   'esc_html',
-   'esc_textarea',
-   '__',
-   '_x',
-   'esc_html__',
-   'esc_html_x',
-   'esc_attr_x',
+   [
+        'esc_attr',
+        'esc_html',
+        'esc_textarea',
+        '__',
+        '_x',
+        'esc_html__',
+        'esc_html_x',
+        'esc_attr_x',
+   ]
 );
 ```
 
