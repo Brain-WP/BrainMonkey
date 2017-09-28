@@ -220,4 +220,74 @@ class FunctionsTest extends TestCase
 
         Functions\expect('test');
     }
+
+    public function testStubsReturnValue()
+    {
+        Functions\stubs([
+            'is_user_logged_in' => true,
+            'current_user_can'  => true,
+        ]);
+
+        static::assertTrue(is_user_logged_in());
+        static::assertTrue(current_user_can());
+
+        Functions\stubs([
+            'is_user_logged_in' => 1,
+            'current_user_can'  => 2,
+        ]);
+
+        static::assertSame(1, is_user_logged_in());
+        static::assertSame(2, current_user_can());
+    }
+
+    public function testStubsCallable()
+    {
+        Functions\stubs([
+            'wp_get_current_user' => function () {
+                $user = \Mockery::mock('\WP_User');
+                $user->shouldReceive('to_array')->andReturn(['ID' => 123]);
+
+                return $user;
+            }
+        ]);
+
+        static::assertSame(['ID' => 123], wp_get_current_user()->to_array());
+    }
+
+    public function testStubsPassThrough()
+    {
+        Functions\stubs([
+            'esc_attr',
+            'esc_html',
+            'esc_textarea',
+        ]);
+
+        static::assertSame('x', esc_attr('x'));
+        static::assertSame('y', esc_html('y'));
+        static::assertSame('z', esc_textarea('z'));
+    }
+
+    public function testStubsAll()
+    {
+        Functions\stubs([
+            'is_user_logged_in' => 'a',
+            'current_user_can'  => 123,
+            'wp_get_current_user' => function () {
+                $user = \Mockery::mock('\WP_User');
+                $user->shouldReceive('to_array')->andReturn(['ID' => 456]);
+
+                return $user;
+            },
+            'esc_attr',
+            'esc_html',
+            'esc_textarea',
+        ]);
+
+        static::assertSame('a', is_user_logged_in());
+        static::assertSame(123, current_user_can());
+        static::assertSame(['ID' => 456], wp_get_current_user()->to_array());
+        static::assertSame('!', esc_attr('!'));
+        static::assertSame('?', esc_html('?'));
+        static::assertSame('@', esc_textarea('@'));
+    }
 }
