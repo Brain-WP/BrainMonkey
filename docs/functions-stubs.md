@@ -18,11 +18,11 @@ For this reason, version 2.1 introduced a new API function to define multiple fu
 
 `Functions\stubs()` accepts an array of functions to be defined.
 
-The function names can be passed as array item _keys_ or as array item _values_ (with no key).
+The function names can be passed as array item _keys_ or as array item _values_ and no key.
 
-When the function name is the item key, the item value can be:
+When the function name is the item key, the item value can be either:
 
-- `a callable`, in which case the function will be aliased to it
+- a `callable`, in which case the function will be aliased to it
 - anything else, in which case a stub returning given value will be created for the function
 
 Example:
@@ -38,26 +38,26 @@ Functions\stubs([
 ```
 
 When the function name is the array item value, and no item key is used, the behavior will change 
-based on the second param passed to `stubs()`:
+based on the second argument passed to `stubs()`:
 
-- when 2nd param is `null` (default), the created stub will return the 1st param it will receive
-- when 2nd param is anything else, the created stub will return just it
+- when 2nd argument is `null` (default), the created stub will return the 1st param it will receive
+- when 2nd argument is anything else the created stub will use it as its return value
 
 
 Example:
 
 ```php
-// given functions will return `true`
+// Given functions will return `true`
 Functions\stubs(
     [
         'is_user_logged_in',
-        'current_user_can'
+        'current_user_can',
     ],
     true
 );
 
-// given functions will return the first argument they will receive
-// just like `when( $function_name )->justReturnArg()` was used
+// Given functions will return the first argument they will receive,
+// just like `when( $function_name )->justReturnArg()` was used for all of them.
 Functions\stubs(
    'esc_attr',
    'esc_html',
