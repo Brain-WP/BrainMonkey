@@ -129,9 +129,9 @@ Functions\stubs(
 );
 ```
 
-or more concisely:
+or the equivalent but more concise:
 
 ```php
 // __return_null is defined by Brain Monkey since version 2
-Functions\stubs([ 'function_that_returns_null' => '__return_null' ]);
+Functions\stubs( [ 'function_that_returns_null' => '__return_null' ] );
 ```
