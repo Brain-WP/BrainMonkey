@@ -270,8 +270,8 @@ class FunctionsTest extends TestCase
     public function testStubsAll()
     {
         Functions\stubs([
-            'is_user_logged_in' => 'a',
-            'current_user_can'  => 123,
+            'is_user_logged_in'   => 'a',
+            'current_user_can'    => 123,
             'wp_get_current_user' => function () {
                 $user = \Mockery::mock('\WP_User');
                 $user->shouldReceive('to_array')->andReturn(['ID' => 456]);
@@ -289,5 +289,26 @@ class FunctionsTest extends TestCase
         static::assertSame('!', esc_attr('!'));
         static::assertSame('?', esc_html('?'));
         static::assertSame('@', esc_textarea('@'));
+    }
+
+    public function testStubsEdgeCases()
+    {
+        Functions\stubs(
+            [
+                'i_return_null'       => function () {
+                    return null;
+                },
+                'i_return_null_too'   => '__return_null',
+                'i_return_a_callback' => function () {
+                    return function() {
+                        return 'yes';
+                    };
+                },
+            ]
+        );
+
+        static::assertNull(i_return_null());
+        static::assertNull(i_return_null_too());
+        static::assertSame('yes', (i_return_a_callback())());
     }
 }
