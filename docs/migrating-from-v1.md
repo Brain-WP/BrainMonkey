@@ -91,8 +91,8 @@ named after the WordPress functions `add_filter()` /  `apply_filters()`
 
 But for actions there were:
 
-- `Action::expectAdded()`
-- `Action::expectFired()`
+- `Actions::expectAdded()`
+- `Actions::expectFired()`
 
 `expectAdded()` pairs with `add_action()`, but `expectFired()` does not really pair with
 `do_action()`: this is why in Brain Monkey v2 **the method `expectFired()` has been replaced by the 
