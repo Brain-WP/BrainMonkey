@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="author" content="Giuseppe Mazzapica">
-    <title>Getting Started / Installation. Brain Monkey</title>
+    <title>PHP Functions / Bulk patching with stubs(). Brain Monkey</title>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
     <link href="https://brain-wp.github.io/BrainMonkey/css/theme.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -34,7 +34,7 @@
                                                   <li>
                         <a class="section" href="#sidebar-wrapper"><i class="fa fa-caret-right"></i> Getting Started</a>
                         <ul>
-                                                            <li class="active">
+                                                            <li class="">
                                     <a href="https://brain-wp.github.io/BrainMonkey/docs/installation.html">
                                         Installation
                                     </a>
@@ -59,7 +59,7 @@
                                         Patching with when()
                                     </a>
                                 </li>
-                                                            <li class="">
+                                                            <li class="active">
                                     <a href="https://brain-wp.github.io/BrainMonkey/docs/functions-stubs.html">
                                         Bulk patching with stubs()
                                     </a>
@@ -123,37 +123,96 @@
                     <div id="content" class="col-lg-11">
                                                                                 <ol class="breadcrumb">
                               <li><a href="https://brain-wp.github.io/BrainMonkey">Brain Monkey</a></li>
-                              <li class="active">Getting Started</li>
+                              <li class="active">PHP Functions</li>
                             </ol>
-                                                                                                        <h1 id="installation">Installation</h1>
-<p>To install Brain Monkey you need:</p>
+                                                                                                        <h1 id="bulk-patching-with-stubs">Bulk patching with stubs()</h1>
+<p><code>when()</code> and its related methods are quite simple and straightforward.</p>
+<p>However, it can be quite verbose when multiple functions needed to be patched.</p>
+<p>When one uses <code>when()</code> they are not interested in adding expectations but usually are
+interested in ensuring the target function is defined, and maybe its return value.</p>
+<p>For this reason, version 2.1 introduced a new API function to define multiple functions in bulk: <code>stubs()</code></p>
+<h2><code>stubs()</code></h2>
+<p><code>Functions\stubs()</code> accepts an array of functions to be defined.</p>
+<p>The function names can be passed as array item <em>keys</em> or as array item <em>values</em> and no key.</p>
+<p>When the function name is the item key, the item value can be either:</p>
 <ul>
-<li>PHP 5.6+</li>
-<li><a href="https://getcomposer.org">Composer</a></li>
+<li>a <code>callable</code>, in which case the function will be aliased to it</li>
+<li>anything else, in which case a stub returning given value will be created for the function</li>
 </ul>
-<p>Brain Monkey is available on Packagist, so the only thing you need to do is to add it as a dependency for your project.</p>
-<p>That can be done by running following command in your project folder:</p>
-<pre><code class="language-shell">composer require brain/monkey:2.* --dev</code></pre>
-<p>As alternative you can directly edit your <code>composer.json</code> by adding:</p>
-<pre><code class="language-json">{
-  "require-dev": {
-    "brain/monkey": "~2.0.0"
-  }
-}</code></pre>
-<p>I've used <code>require-dev</code> because, being a testing tool, Brain Monkey should <strong>not</strong> be included in production.</p>
-<p>Brain Monkey can work with any testing framework, so it doesn't require any of them.</p>
-<p>To run your tests you'll probably need to require a testing framework too, e.g. <a href="https://phpunit.de/">PHPUnit</a> or <a href="http://www.phpspec.net/en/latest/">phpspec</a>.</p>
-<h2 id="dependencies">Dependencies</h2>
-<p>Brain Monkey needs 2 libraries to work:</p>
+<p>Example:</p>
+<pre><code class="language-php">Functions\stubs([
+    'is_user_logged_in'   =&gt; true,
+    'current_user_can'    =&gt; true,
+    'wp_get_current_user' =&gt; function() {
+        return \Mockery::mock('\WP_User');
+    }
+]);</code></pre>
+<p>When the function name is the array item value, and no item key is used, the behavior will change
+based on the second argument passed to <code>stubs()</code>:</p>
 <ul>
-<li><a href="http://docs.mockery.io/en/latest/">Mockery</a> (BSD-3-Clause)</li>
-<li><a href="http://antecedent.github.io/patchwork/">Patchwork</a> (MIT)</li>
+<li>when 2nd argument is <code>null</code> (default), the created stub will return the 1st param it will receive</li>
+<li>when 2nd argument is anything else the created stub will use it as its return value</li>
 </ul>
-<p>They will be installed for you by Composer.</p>
-<p>When installed in development mode (to test itself), Brain Monkey also requires:</p>
-<ul>
-<li><a href="https://phpunit.de/">PHPUnit</a> (MIT)</li>
-</ul>
+<p>Example:</p>
+<pre><code class="language-php">// Given functions will return `true`
+Functions\stubs(
+    [
+        'is_user_logged_in',
+        'current_user_can',
+    ],
+    true
+);
+
+// Given functions will return the first argument they will receive,
+// just like `when( $function_name )-&gt;justReturnArg()` was used for all of them.
+Functions\stubs(
+   [
+        'esc_attr',
+        'esc_html',
+        'esc_textarea',
+        '__',
+        '_x',
+        'esc_html__',
+        'esc_html_x',
+        'esc_attr_x',
+   ]
+);</code></pre>
+<h2 id="gotcha">Gotcha</h2>
+<p>When passing to <code>stubs()</code> a function name as array item key and a <code>callable</code> as value, the function
+will be aliased to that callable. It means that using <code>stubs()</code> is <strong>not</strong> possible to create a stub
+for a function that returns a callback by doing something like:</p>
+<pre><code class="language-php">Functions\stubs(
+   [ 
+        'function_that_returns_a_callback' =&gt; 'the_expected_returned_callback'
+   ]
+);</code></pre>
+<p>But:</p>
+<pre><code class="language-php">Functions\stubs(
+   [
+        'function_that_returns_a_callback' =&gt; function() { 
+            return 'the_expected_returned_callback';
+        }
+   ]
+);</code></pre>
+<p>will work.</p>
+<p>Moreover, when doing something like this:</p>
+<pre><code class="language-php">Functions\stubs(
+   [ 'function_that_returns_null' =&gt; null ]
+);</code></pre>
+<p>or like this:</p>
+<pre><code class="language-php">Functions\stubs(
+   [ 'function_that_returns_null' ],
+   null
+);</code></pre>
+<p>the return value of the stub will <strong>not</strong> be <code>null</code>, because when return value is set to <code>null</code>
+Brain Monkey will make the function stub return the first received value.</p>
+<p>The only way to use <code>stubs()</code> for creating a stub that returns <code>null</code> is:</p>
+<pre><code class="language-php">Functions\stubs(
+   [ 'function_that_returns_null' =&gt; function() { return null; } ]
+);</code></pre>
+<p>or the equivalent but more concise:</p>
+<pre><code class="language-php">// __return_null is defined by Brain Monkey since version 2
+Functions\stubs( [ 'function_that_returns_null' =&gt; '__return_null' ] );</code></pre>
                                             </div>
                 </div>
             </div>
