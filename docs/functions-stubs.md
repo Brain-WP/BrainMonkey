@@ -5,7 +5,7 @@ title: "Bulk patching with stubs()"
 -->
 # Bulk patching with stubs()
 
-`when()` and its related methods are quite simple and straightforward.
+`when()` and its related functions are quite simple and straightforward.
 
 However, it can be quite verbose when multiple functions needed to be patched.
 
@@ -23,7 +23,7 @@ The function names can be passed as array item _keys_ or as array item _values_ 
 When the function name is the item key, the item value can be either:
 
 - a `callable`, in which case the function will be aliased to it
-- anything else, in which case a stub returning given value will be created for the function
+- anything else, in which case a stub returning a given value will be created for the function
 
 Example:
 
@@ -40,8 +40,8 @@ Functions\stubs([
 When the function name is the array item value, and no item key is used, the behavior will change 
 based on the second argument passed to `stubs()`:
 
-- when 2nd argument is `null` (default), the created stub will return the 1st param it will receive
-- when 2nd argument is anything else the created stub will use it as its return value
+- when the second argument is `null` (default), the created stub will return the first parameter it would receive
+- when the second argument is anything else, the created stub will use it as its return value
 
 
 Example:
@@ -56,7 +56,7 @@ Functions\stubs(
     true
 );
 
-// Given functions will return the first argument they will receive,
+// Given functions will return the first argument they would receive,
 // just like `when( $function_name )->justReturnArg()` was used for all of them.
 Functions\stubs(
    [
@@ -72,11 +72,11 @@ Functions\stubs(
 );
 ```
 
-## Gotcha
+### Gotcha
 
-When passing to `stubs()` a function name as array item key and a `callable` as value, the function
-will be aliased to that callable. It means that using `stubs()` is **not** possible to create a stub
-for a function that returns a callback by doing something like:
+When passing a function name as an array item key and a `callable` as the value, the function
+will be aliased to that callable. That means it is **not** possible to create a stub
+for a function that returns a callback, by doing something like:
 
 ```php
 Functions\stubs(
@@ -86,7 +86,7 @@ Functions\stubs(
 );
 ```
 
-But:
+But this will work:
 
 ```php
 Functions\stubs(
@@ -97,8 +97,6 @@ Functions\stubs(
    ]
 );
 ```
-
-will work.
 
 Moreover, when doing something like this:
 
