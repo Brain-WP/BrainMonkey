@@ -38,9 +38,13 @@ PHPUnit users will probably want to add these methods to a custom test case clas
 
 ```php
 use PHPUnit_Framework_TestCase;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Brain\Monkey;
 
 class MyTestCase extends PHPUnit_Framework_TestCase {
+
+    // Adds Mockery expectations to the PHPUnit assertions count.
+    use MockeryPHPUnitIntegration;
 
     protected function setUp() {
         parent::setUp();
