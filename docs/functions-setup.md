@@ -47,10 +47,13 @@ Let's take PHPUnit as example, the average test case class that uses Brain Monke
 
 ```php
 use PHPUnit_Framework_TestCase;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Brain\Monkey;
 
 class MyTestCase extends PHPUnit_Framework_TestCase
 {
+    // Adds Mockery expectations to the PHPUnit assertions count.
+    use MockeryPHPUnitIntegration;
 
     protected function tearDown()
     {
