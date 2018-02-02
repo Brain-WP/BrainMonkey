@@ -253,7 +253,7 @@ class MyClassTest extends MyTestCase
     {
         Actions\expectAdded('init');
       
-        Filters\expectAdded('the_title')->with(\Mockery\type('Closure'));
+        Filters\expectAdded('the_title')->with(\Mockery::type('Closure'));
 
         // let's use the code that have to satisfy our expectations
        ( new \Some\Name\Space\MyClass() )->addHooks();
