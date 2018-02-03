@@ -1,5 +1,5 @@
 <!--
-currentMenu: "wphooksfired"
+currentMenu: "wphooksdone"
 currentSection: "WordPress"
 title: "Testing Fired Hooks"
 -->

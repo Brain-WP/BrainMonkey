@@ -1,5 +1,3 @@
-
-
 <!--
 currentMenu: "wphooksadded"
 currentSection: "WordPress"
