@@ -137,7 +137,7 @@ Who is interested in the first part can use only it, just like this second group
 <p>When unit tests are done in the right way, the SUT (System Under Test) must be tested in <strong>isolation</strong>.</p>
 <p>Long story short, it means that any <em>external</em> code used in the SUT must be assumed as perfectly working.</p>
 <p>This is a key concept in unit tests.</p>
-<p>In PHP, to create &quot;mock&quot; and &quot;stubs&quot; for objects is a pretty easy task, framework like <a href="https://phpunit.de/manual/current/en/test-doubles.html">PHPUnit</a> or <a href="http://www.phpspec.net/en/latest/manual/prophet-objects.html">phpspec</a> have embedded features to do that, and libraries like <a href="https://github.com/padraic/mockery">Mockery</a> make it even easier.</p>
+<p>In PHP, to create &quot;mock&quot; and &quot;stubs&quot; for objects is a pretty easy task, framework like <a href="https://phpunit.de/manual/current/en/test-doubles.html">PHPUnit</a> or <a href="https://www.phpspec.net/en/latest/manual/prophet-objects.html">phpspec</a> have embedded features to do that, and libraries like <a href="https://github.com/padraic/mockery">Mockery</a> make it even easier.</p>
 <p>But when <em>external</em> code make use of <strong>functions</strong> things become harder, because PHP testing framework can't mock or monkey patch functions.</p>
 <p>This is where Brain Monkey comes into play: its aim is to bring that easiness to function testing.</p>
 <p>This involves:</p>
@@ -177,13 +177,13 @@ Who is interested in the first part can use only it, just like this second group
       Made by hands by
       <a href="https://gmazzap.me/" title="Giuseppe Mazzapica Home Page" target="_blank">Giuseppe Mazzapica</a>, with
       <a href="http://couscous.io/" title="Couscous" target="_blank">Couscous</a>,
-      <a href="http://getbootstrap.com/" title="Bootstrap" target="_blank">Bootstrap</a> &amp;
+      <a href="https://getbootstrap.com/" title="Bootstrap" target="_blank">Bootstrap</a> &amp;
       <a href="https://highlightjs.org/" title="highlight.js" target="_blank">highlight.js</a>
 
       <span class="socials">
         <a href="https://github.com/gmazzap" title="GitHub" target="_blank"><i class="fa fa-github-alt"></i></a>
         <a href="https://twitter.com/gmazzap" title="Twitter" target="_blank"><i class="fa fa-twitter"></i></a>
-        <a href="http://wordpress.stackexchange.com/users/35541/" title="Stack Exchange" target="_blank"><i class="fa fa-stack-exchange"></i></a>
+        <a href="https://wordpress.stackexchange.com/users/35541/" title="Stack Exchange" target="_blank"><i class="fa fa-stack-exchange"></i></a>
       </span>
 
     </footer>
@@ -199,12 +199,6 @@ Who is interested in the first part can use only it, just like this second group
       ga('create', 'UA-46467639-3', 'auto');
       ga('send', 'pageview');
     </script>
-        <!-- Livereload -->
-        <script>
-            document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] +
-                    ':35729/livereload.js?snipver=1"></' + 'script>')
-        </script>
-        <!-- End Livereload -->
     </body>
 
 </html>
