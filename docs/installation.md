@@ -32,7 +32,7 @@ I've used `require-dev` because, being a testing tool, Brain Monkey should **not
 
 Brain Monkey can work with any testing framework, so it doesn't require any of them.
 
-To run your tests you'll probably need to require a testing framework too, e.g. [PHPUnit](https://phpunit.de/) or [phpspec](http://www.phpspec.net/en/latest/).
+To run your tests you'll probably need to require a testing framework too, e.g. [PHPUnit](https://phpunit.de/) or [phpspec](https://www.phpspec.net/en/latest/).
 
 
 
@@ -41,7 +41,7 @@ To run your tests you'll probably need to require a testing framework too, e.g. 
 Brain Monkey needs 2 libraries to work:
 
  - [Mockery](http://docs.mockery.io/en/latest/) (BSD-3-Clause)
- - [Patchwork](http://antecedent.github.io/patchwork/) (MIT)
+ - [Patchwork](http://patchwork2.org/) (MIT)
 
 They will be installed for you by Composer.
 

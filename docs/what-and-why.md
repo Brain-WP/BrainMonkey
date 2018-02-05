@@ -24,7 +24,7 @@ Long story short, it means that any *external* code used in the SUT must be assu
 
 This is a key concept in unit tests.
 
-In PHP, to create "mock" and "stubs" for objects is a pretty easy task, framework like [PHPUnit](https://phpunit.de/manual/current/en/test-doubles.html) or [phpspec](http://www.phpspec.net/en/latest/manual/prophet-objects.html) have embedded features to do that, and libraries like [Mockery](https://github.com/padraic/mockery) make it even easier.
+In PHP, to create "mock" and "stubs" for objects is a pretty easy task, framework like [PHPUnit](https://phpunit.de/manual/current/en/test-doubles.html) or [phpspec](https://www.phpspec.net/en/latest/manual/prophet-objects.html) have embedded features to do that, and libraries like [Mockery](https://github.com/padraic/mockery) make it even easier.
 
 But when *external* code make use of **functions** things become harder, because PHP testing framework can't mock or monkey patch functions.
 
@@ -44,7 +44,7 @@ This is the reason why Brain Monkey comes with a set of WordPress-specific tools
 
 ## Under the hood
 
-Brain Monkey gets all its power from two great libraries: [**Mockery**](http://docs.mockery.io/) and [**Patchwork**](http://antecedent.github.io/patchwork/).
+Brain Monkey gets all its power from two great libraries: [**Mockery**](http://docs.mockery.io/) and [**Patchwork**](http://patchwork2.org/).
 
 What actually Brain Monkey does is to connect the *function redefinition* feature of Patchwork with the powerful testing mechanism and DSL provided by Mockery, and thanks to that Brain Monkey has:
 

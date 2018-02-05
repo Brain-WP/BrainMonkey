@@ -21,7 +21,7 @@ This is not only because doing that tests will run much faster, but also because
 
 By assuming all the external code is working perfectly, it is possible to test the behavior of the SUT (System Under Test), without any *interference*.
 
-To deepen these concepts, read [this answer](http://wordpress.stackexchange.com/a/164138/35541) I wrote for WordPress Development (StackExchange) site, that also contains some tips to write better *testable* WordPress code.
+To deepen these concepts, read [this answer](https://wordpress.stackexchange.com/a/164138/35541) I wrote for WordPress Development (StackExchange) site, that also contains some tips to write better *testable* WordPress code.
 
 
 

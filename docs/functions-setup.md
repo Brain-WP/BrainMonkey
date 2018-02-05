@@ -17,7 +17,7 @@ Examples in this page will use PHPUnit, but the concepts are applicable at any t
 
 ## Warning
 
-Brain Monkey uses [Patchwork](http://antecedent.github.io/patchwork/) to redefine functions.
+Brain Monkey uses [Patchwork](http://patchwork2.org/) to redefine functions.
 
 Brain Monkey 2.* requires Patchwork 2 which allows to re-define both userland and core functions,
 with some [limitations](http://patchwork2.org/limitations/).
