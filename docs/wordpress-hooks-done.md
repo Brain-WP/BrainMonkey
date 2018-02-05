@@ -1,10 +1,10 @@
 <!--
 currentMenu: "wphooksdone"
 currentSection: "WordPress"
-title: "Testing Fired Hooks"
+title: "Testing Done Hooks"
 -->
 
-# Testing Fired Hooks
+# Testing Done Hooks
 
 
 
