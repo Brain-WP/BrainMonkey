@@ -35,6 +35,7 @@ use Mockery\ExpectationInterface;
  * @method Expectation between(int $min, int $max)
  * @method Expectation zeroOrMoreTimes()
  * @method Expectation with(...$args)
+ * @method Expectation withArgs($args)
  * @method Expectation withAnyArgs()
  * @method Expectation andReturn(...$args)
  * @method Expectation andReturnNull()
