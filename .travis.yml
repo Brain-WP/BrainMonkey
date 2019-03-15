@@ -12,7 +12,7 @@ before_script:
   - travis_retry composer update --no-interaction --prefer-source  --classmap-authoritative
 
 script:
-  - vendor/bin/phpunit --coverage-clover=coverage.xml
+  - vendor/bin/phpunit
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
