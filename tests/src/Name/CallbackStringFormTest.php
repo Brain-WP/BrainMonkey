@@ -44,6 +44,13 @@ class CallbackStringFormTest extends TestCase
         static::assertSame('Foo\\Bar\\Baz', (string)$string_form_escape);
     }
 
+    public function testStaticMethodFromStringToString()
+    {
+        $string_form = new CallbackStringForm('Foo\Bar\Baz::method');
+
+        static::assertSame('Foo\Bar\Baz::method()', (string)$string_form);
+    }
+
     public function testStaticMethodToString()
     {
         $string_form_a = new CallbackStringForm(['Foo\Bar\Baz', 'method']);
