@@ -70,7 +70,7 @@ namespace Some\Name\Space;
   
 class MyClass {
   
-    public function addHooks() {
+    public function init() {
       /* ... */
     }
   
