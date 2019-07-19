@@ -43,6 +43,7 @@ namespace Brain\Monkey {
 namespace Brain\Monkey\Functions {
 
     use Brain\Monkey\Container;
+    use Brain\Monkey\Expectation\EscapeHelper;
     use Brain\Monkey\Expectation\FunctionStubFactory;
     use Brain\Monkey\Name\FunctionName;
 
@@ -125,6 +126,51 @@ namespace Brain\Monkey\Functions {
         }
 
         return $expectation;
+    }
+
+    /**
+     * Stub translation functions.
+     *
+     * @see EscapeHelper
+     */
+    function stubTranslationFunctions()
+    {
+        stubs(
+            [
+                '__',
+                '_x',
+                'translate',
+                'esc_html__' => [EscapeHelper::class, 'esc'],
+                'esc_html_x' => [EscapeHelper::class, 'esc'],
+                'esc_attr__' => [EscapeHelper::class, 'esc'],
+                'esc_attr_x' => [EscapeHelper::class, 'esc'],
+                'esc_html_e' => [EscapeHelper::class, 'escAndEcho'],
+                'esc_attr_e' => [EscapeHelper::class, 'escAndEcho'],
+            ]
+        );
+
+        when('_e')->echoArg();
+        when('_ex')->echoArg();
+    }
+
+    /**
+     * Stub escape functions with default behavior.
+     *
+     * @see EscapeHelper
+     */
+    function stubEscapeFunctions()
+    {
+        stubs(
+            [
+                'esc_js'       => [EscapeHelper::class, 'esc'],
+                'esc_sql'      => 'addslashes',
+                'esc_attr'     => [EscapeHelper::class, 'esc'],
+                'esc_html'     => [EscapeHelper::class, 'esc'],
+                'esc_textarea' => [EscapeHelper::class, 'esc'],
+                'esc_url'      => [EscapeHelper::class, 'escUrl'],
+                'esc_url_raw'  => [EscapeHelper::class, 'escUrlRaw'],
+            ]
+        );
     }
 }
 
