@@ -48,12 +48,12 @@ namespace Brain\Monkey\Functions {
     use Brain\Monkey\Name\FunctionName;
 
     /**
-     * API entrypoint for plain functions stub.
+     * API entry-point for plain functions stub.
      *
      * Factory method: receives the name of the function to mock and returns an instance of
      * FunctionStub.
      *
-     * @param  string $function_name the name of the function to mock
+     * @param string $function_name the name of the function to mock
      * @return \Brain\Monkey\Expectation\FunctionStub
      */
     function when($function_name)
@@ -68,18 +68,21 @@ namespace Brain\Monkey\Functions {
      *
      * It does not allow to add expectations.
      *
-     * The function name to create stub for can be passed as array key or as array value (with no key).
+     * The function name to create stub for can be passed as array key or as array value (with no
+     * key).
      *
      * When the function name is in the key, the value can be:
      *   - a callable, in which case the function will be aliased to it
-     *   - anything else, in which case a stub returning given value will be created for the function
-     * 
+     *   - anything else, in which case a stub returning given value will be created for the
+     *   function
+     *
      * When the function name is in the value, and no key is set, the behavior will change based on
      * the second param:
-     *   - when 2nd param is `null` (default) the created stub will return the 1st param it will receive
+     *   - when 2nd param is `null` (default) the created stub will return the 1st param it will
+     *   receive
      *   - when 2nd param is anything else the created stub will return it
      *
-     * 
+     *
      * @param array      $functions
      * @param mixed|null $default_return
      */
@@ -103,7 +106,7 @@ namespace Brain\Monkey\Functions {
     }
 
     /**
-     * API entrypoint for plain functions expectations.
+     * API entry-point for plain functions expectations.
      *
      * Returns a Mockery Expectation object, where is possible to set all the expectations, using
      * Mockery methods.
@@ -180,7 +183,7 @@ namespace Brain\Monkey\Actions {
     use Brain\Monkey\Hook;
 
     /**
-     * API entrypoint for added action expectations.
+     * API entry-point for added action expectations.
      *
      * Takes the action name and returns a Mockery Expectation object, where is possible to set all
      * the expectations, using Mockery methods.
@@ -196,7 +199,7 @@ namespace Brain\Monkey\Actions {
     }
 
     /**
-     * API entrypoint for fired action expectations.
+     * API entry-point for fired action expectations.
      *
      * Takes the action name and returns a Mockery Expectation object, where is possible to set all
      * the expectations, using Mockery methods.
@@ -264,7 +267,7 @@ namespace Brain\Monkey\Filters {
     use Brain\Monkey\Hook;
 
     /**
-     * API entrypoint for added filter expectations.
+     * API entry-point for added filter expectations.
      *
      * Takes the filter name and returns a Mockery Expectation object, where is possible to set all
      * the expectations, using Mockery methods.
@@ -280,7 +283,7 @@ namespace Brain\Monkey\Filters {
     }
 
     /**
-     * API entrypoint for applied filter expectations.
+     * API entry-point for applied filter expectations.
      *
      * Takes the filter name and returns a Mockery Expectation object, where is possible to set all
      * the expectations, using Mockery methods.
