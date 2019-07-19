@@ -46,13 +46,15 @@ Following functions are defined by Brain Monkey when it is loaded for tests:
  - `__return_empty_string()`
  - `trailingslashit()`
  - `untrailingslashit()`
+ - `absint()` (since 2.3)
+ - `is_wp_error()` (since 2.3)
 
 
 
 If your code uses any of these functions, and very likely it does, you don't need to define (or mock) them
 to avoid fatal errors during tests.
 
-Note that the returning value of those functions (most of the times) will work out of the box as you might expect.
+Note that the returning value of those functions (_most of the times_) will work out of the box as you might expect.
 
 For example, if your code contains:
 
@@ -73,13 +75,18 @@ $title = apply_filters('the_title', $post['post_title']);
 ```
 the value of `$title` will be `'My Title'`, without the need of any intervention.
 
-But, of course, that's not enough. To proper test WordPress code you will probably desire to:
+This works as long as there's no code that actually adds filters to `"the_title"` hook, so we expect
+that the title stay unchanged. And that's what happen.
+
+If in the code under test there's something that adds filters (i.e. calls `add_filter`), the
+_Brain Monkey version_ of `apply_filters` will still return the value unchanged, but will allow to
+test that `apply_filters` has been called, how many times, with which callbacks and arguments are used.
+
+More generally, in the regards of WP hook API, Brain Monkey allow to:
 
  - test if an action or a filter has been added, how many times that happen and with which arguments
  - test if an action or a filter has been fired, how many times that happen and with which arguments
  - perform some callback when an action is fired, being able to access passed arguments
  - perform some callback when an filter is applied, being able to access passed arguments and to return specific values
 
-Guess what, Brain Monkey allows to do all of this and even more.
-
-And it does that using its straightforward and human readable syntax.
+And it does that using its straightforward and human-readable syntax.
