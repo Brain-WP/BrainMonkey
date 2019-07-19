@@ -67,3 +67,17 @@ if ( ! function_exists('trailingslashit')) {
         return rtrim($string, '/\\').'/';
     }
 }
+
+if ( ! function_exists('absint')) {
+    function absint($number)
+    {
+        return abs((int)$number);
+    }
+}
+
+if ( ! function_exists('is_wp_error')) {
+    function is_wp_error($thing)
+    {
+        return $thing instanceof \WP_Error;
+    }
+}
