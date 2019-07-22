@@ -259,6 +259,22 @@ namespace Brain\Monkey\Actions {
                         ->hookRunningStack()
                         ->has($action);
     }
+
+    /**
+     * API entry-point for removed action expectations.
+     *
+     * Takes the action name and returns a Mockery Expectation object, where is possible to set all
+     * the expectations, using Mockery methods.
+     *
+     * @param string $action
+     * @return \Brain\Monkey\Expectation\Expectation
+     */
+    function expectRemoved($action)
+    {
+        return Container::instance()
+                        ->expectationFactory()
+                        ->forActionRemoved($action);
+    }
 }
 
 namespace Brain\Monkey\Filters {
@@ -342,6 +358,22 @@ namespace Brain\Monkey\Filters {
         return Container::instance()
                         ->hookRunningStack()
                         ->has($filter);
+    }
+
+    /**
+     * API entry-point for removed action expectations.
+     *
+     * Takes the action name and returns a Mockery Expectation object, where is possible to set all
+     * the expectations, using Mockery methods.
+     *
+     * @param string $filter
+     * @return \Brain\Monkey\Expectation\Expectation
+     */
+    function expectRemoved($filter)
+    {
+        return Container::instance()
+                        ->expectationFactory()
+                        ->forFilterRemoved($filter);
     }
 }
 

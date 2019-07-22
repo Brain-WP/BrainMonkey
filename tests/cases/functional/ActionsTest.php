@@ -56,6 +56,19 @@ class ActionsTest extends Monkey\Tests\FunctionalTestCase
         do_action('my_hook', 'Hello', 'World');
     }
 
+    public function testRemove()
+    {
+        Monkey\Actions\expectRemoved('my_hook')
+            ->once()
+            ->with('my_callback', 30);
+
+        add_action('my_hook', 'my_callback', 30);
+
+        $removed = remove_action('my_hook', 'my_callback', 30);
+
+        static::assertTrue($removed);
+    }
+
     public function testExpectAppliedThenDone()
     {
         $this->expectOutputString('Hello World');

@@ -15,8 +15,9 @@
 use Brain\Monkey;
 
 if ( ! function_exists('add_action')) {
-    function add_action($action, ...$args)
+    function add_action($action, $function, $priority = 10, $accepted_args = 1)
     {
+        $args = [$function, $priority, $accepted_args];
         $container = Monkey\Container::instance();
         $container->hookStorage()->pushToAdded(Monkey\Hook\HookStorage::ACTIONS, $action, $args);
         $container->hookExpectationExecutor()->executeAddAction($action, $args);
@@ -26,8 +27,9 @@ if ( ! function_exists('add_action')) {
 }
 
 if ( ! function_exists('add_filter')) {
-    function add_filter($filter, ...$args)
+    function add_filter($filter, $function, $priority = 10, $accepted_args = 1)
     {
+        $args = [$function, $priority, $accepted_args];
         $container = Monkey\Container::instance();
         $container->hookStorage()->pushToAdded(Monkey\Hook\HookStorage::FILTERS, $filter, $args);
         $container->hookExpectationExecutor()->executeAddFilter($filter, $args);
@@ -96,20 +98,28 @@ if ( ! function_exists('did_action')) {
 }
 
 if ( ! function_exists('remove_action')) {
-    function remove_action($action, ...$args)
+    function remove_action($action, $function, $priority = 10)
     {
-        return Monkey\Container::instance()
-                               ->hookStorage()
-                               ->removeFromAdded(Monkey\Hook\HookStorage::ACTIONS, $action, $args);
+        $container = Monkey\Container::instance();
+        $storage = $container->hookStorage();
+        $args = [$function, $priority];
+
+        $container->hookExpectationExecutor()->executeRemoveAction($action, $args);
+
+        return $storage->removeFromAdded(Monkey\Hook\HookStorage::ACTIONS, $action, $args);
     }
 }
 
 if ( ! function_exists('remove_filter')) {
-    function remove_filter($filter, ...$args)
+    function remove_filter($filter, $function, $priority = 10)
     {
-        return Monkey\Container::instance()
-                               ->hookStorage()
-                               ->removeFromAdded(Monkey\Hook\HookStorage::FILTERS, $filter, $args);
+        $container = Monkey\Container::instance();
+        $storage = $container->hookStorage();
+        $args = [$function, $priority];
+
+        $container->hookExpectationExecutor()->executeRemoveFilter($filter, $args);
+
+        return $storage->removeFromAdded(Monkey\Hook\HookStorage::FILTERS, $filter, $args);
     }
 }
 

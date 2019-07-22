@@ -10,6 +10,7 @@
 
 namespace Brain\Monkey\Hook;
 
+use Brain\Monkey\Expectation\Expectation;
 use Brain\Monkey\Expectation\ExpectationTarget;
 use Brain\Monkey\Expectation\ExpectationFactory;
 
@@ -89,6 +90,26 @@ class HookExpectationExecutor
         $is_running or $this->stack->reset();
 
         return $return;
+    }
+
+    /**
+     * @param string $action
+     * @param array $args
+     * @return mixed
+     */
+    public function executeRemoveAction($action, array $args)
+    {
+        return $this->execute(ExpectationTarget::TYPE_ACTION_REMOVED, $action, $args);
+    }
+
+    /**
+     * @param string $filter
+     * @param array $args
+     * @return mixed
+     */
+    public function executeRemoveFilter($filter, array $args)
+    {
+        return $this->execute(ExpectationTarget::TYPE_FILTER_REMOVED, $filter, $args);
     }
 
     /**

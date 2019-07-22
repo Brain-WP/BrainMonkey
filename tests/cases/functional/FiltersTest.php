@@ -49,6 +49,20 @@ class FiltersTest extends Monkey\Tests\FunctionalTestCase
         static::assertSame('HELLO WORLD', $title);
     }
 
+    public function testRemove()
+    {
+        Monkey\Filters\expectRemoved('my_hook')
+            ->once()
+            ->with('my_callback', 10);
+
+        add_filter('my_hook', 'my_callback');
+
+        $removed = remove_filter('my_hook', 'my_callback');
+
+        static::assertTrue($removed);
+    }
+
+
     public function testExpectAppliedThenDone()
     {
         /** @var callable|null $on_my_hook */

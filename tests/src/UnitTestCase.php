@@ -23,6 +23,7 @@ class UnitTestCase extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
+        $this->expect_mockery_exception = null;
         $libPath = explode('/tests/src/', str_replace('\\', '/', __FILE__))[0];
 
         require_once "{$libPath}/inc/wp-helper-functions.php";
@@ -69,8 +70,6 @@ class UnitTestCase extends \PHPUnit_Framework_TestCase
             if (get_class($e) !== $this->expect_mockery_exception) {
                 throw $e;
             }
-        } finally {
-            $this->expect_mockery_exception = null;
         }
     }
 

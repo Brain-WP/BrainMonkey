@@ -57,10 +57,13 @@ class AddActionTest extends Monkey\Tests\UnitTestCase
 
     public function testExpectAdded()
     {
-        Actions\expectAdded('init')->times(3)->with(
-            \Mockery::anyOf('strtolower', 'strtoupper', [$this, __FUNCTION__]),
-            \Mockery::type('int')
-        );
+        Actions\expectAdded('init')
+            ->times(3)
+            ->with(
+                \Mockery::anyOf('strtolower', 'strtoupper', [$this, __FUNCTION__]),
+                \Mockery::type('int')
+            );
+
         Actions\expectAdded('foo')->never();
         Actions\expectAdded('wp_footer')->once();
 
