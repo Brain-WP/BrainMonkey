@@ -43,13 +43,14 @@
         ]
     },
     "autoload-dev": {
-        "psr-4": {
-            "Brain\\Monkey\\Tests\\": "tests/src/"
-        },
         "files": [
-            "inc/wp-helper-functions.php",
-            "inc/wp-hook-functions.php"
-        ]
+            "vendor/antecedent/patchwork/Patchwork.php"
+        ],
+        "psr-4": {
+            "Brain\\Monkey\\Tests\\": "tests/src/",
+            "Brain\\Monkey\\Tests\\Unit\\": "tests/cases/unit/",
+            "Brain\\Monkey\\Tests\\Functional\\": "tests/cases/functional/"
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

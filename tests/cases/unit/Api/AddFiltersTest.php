@@ -8,10 +8,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Brain\Monkey\Tests\Api;
+namespace Brain\Monkey\Tests\Unit\Api;
 
 use Brain\Monkey\Filters;
-use Brain\Monkey\Tests\TestCase;
+use Brain\Monkey\Tests\UnitTestCase;
 use Mockery\Exception\InvalidCountException;
 
 /**
@@ -19,7 +19,7 @@ use Mockery\Exception\InvalidCountException;
  * @license http://opensource.org/licenses/MIT MIT
  * @package BrainMonkey
  */
-class AddFiltersTest extends TestCase
+class AddFiltersTest extends UnitTestCase
 {
 
     public function testAddNull()

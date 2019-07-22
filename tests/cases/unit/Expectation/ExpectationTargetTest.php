@@ -8,15 +8,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Brain\Monkey\Tests\Expectation;
+namespace Brain\Monkey\Tests\Unit\Expectation;
 
 use Brain\Monkey\Exception;
 use Brain\Monkey\Expectation\Exception\InvalidExpectationName;
 use Brain\Monkey\Expectation\Exception\InvalidExpectationType;
 use Brain\Monkey\Expectation\ExpectationTarget;
-use Brain\Monkey\Tests\TestCase;
+use Brain\Monkey\Tests\UnitTestCase;
 
-class ExpectationTargetTest extends TestCase
+class ExpectationTargetTest extends UnitTestCase
 {
 
     public function testConstructorThrowExceptionIfInvalidType()

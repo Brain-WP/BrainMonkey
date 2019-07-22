@@ -8,16 +8,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Brain\Monkey\Tests\Expectation;
+namespace Brain\Monkey\Tests\Unit\Expectation;
 
 use Brain\Monkey\Expectation\Exception\ExpectationArgsRequired;
 use Brain\Monkey\Expectation\Exception\NotAllowedMethod;
 use Brain\Monkey\Expectation\Expectation;
 use Brain\Monkey\Expectation\ExpectationTarget;
-use Brain\Monkey\Tests\TestCase;
+use Brain\Monkey\Tests\UnitTestCase;
 use Mockery\ExpectationInterface;
 
-class ExpectationTest extends TestCase
+class ExpectationTest extends UnitTestCase
 {
 
     public function testNotAllowedMethodsThrowException()

@@ -8,10 +8,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Brain\Monkey\Tests\Hook;
+namespace Brain\Monkey\Tests\Unit\Hook;
 
 use Brain\Monkey\Hook\HookRunningStack;
-use Brain\Monkey\Tests\TestCase;
+use Brain\Monkey\Tests\UnitTestCase;
 
 
 /**
@@ -19,7 +19,7 @@ use Brain\Monkey\Tests\TestCase;
  * @package BrainMonkey
  * @license http://opensource.org/licenses/MIT MIT
  */
-class HookRunningStackTest extends TestCase
+class HookRunningStackTest extends UnitTestCase
 {
 
     public function testPushAndLast()

@@ -8,14 +8,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Brain\Monkey\Tests\Expectation;
+namespace Brain\Monkey\Tests\Unit\Expectation;
 
 use Brain\Monkey\Expectation\Exception\Exception;
 use Brain\Monkey\Expectation\FunctionStubFactory;
 use Brain\Monkey\Name\FunctionName;
-use Brain\Monkey\Tests\TestCase;
+use Brain\Monkey\Tests\UnitTestCase;
 
-class FunctionStubFactoryTest extends TestCase
+class FunctionStubFactoryTest extends UnitTestCase
 {
 
     public function testCreateReturnSameStubWhenCalledMoreTimes()

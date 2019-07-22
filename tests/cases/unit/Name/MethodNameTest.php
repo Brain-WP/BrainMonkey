@@ -8,18 +8,18 @@
  * file that was distributed with this source code.
  */
 
-namespace Brain\Monkey\Tests\Name;
+namespace Brain\Monkey\Tests\Unit\Name;
 
 use Brain\Monkey\Name\Exception\InvalidName;
 use Brain\Monkey\Name\MethodName;
-use Brain\Monkey\Tests\TestCase;
+use Brain\Monkey\Tests\UnitTestCase;
 
 /**
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @package BrainMonkey
  * @license http://opensource.org/licenses/MIT MIT
  */
-class MethodNameTest extends TestCase
+class MethodNameTest extends UnitTestCase
 {
 
     public function testConstructorThrowsIfBadName()
