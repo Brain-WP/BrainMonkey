@@ -26,7 +26,7 @@ class UnitTestCase extends \PHPUnit_Framework_TestCase
         $libPath = explode('/tests/src/', str_replace('\\', '/', __FILE__))[0];
 
         require_once "{$libPath}/inc/wp-helper-functions.php";
-        require_once "{$libPath}/inc//wp-hook-functions.php";
+        require_once "{$libPath}/inc/wp-hook-functions.php";
     }
 
     protected function tearDown()
