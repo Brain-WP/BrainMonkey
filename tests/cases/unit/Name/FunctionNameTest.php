@@ -8,18 +8,18 @@
  * file that was distributed with this source code.
  */
 
-namespace Brain\Monkey\Tests\Name;
+namespace Brain\Monkey\Tests\Unit\Name;
 
 use Brain\Monkey\Name\Exception\InvalidName;
 use Brain\Monkey\Name\FunctionName;
-use Brain\Monkey\Tests\TestCase;
+use Brain\Monkey\Tests\UnitTestCase;
 
 /**
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @package BrainMonkey
  * @license http://opensource.org/licenses/MIT MIT
  */
-class FunctionNameTest extends TestCase
+class FunctionNameTest extends UnitTestCase
 {
 
     public function testConstructorThrowsIfBadName()
@@ -59,7 +59,7 @@ class FunctionNameTest extends TestCase
     public function testEquals()
     {
         $function_a = new FunctionName(__NAMESPACE__.'\\'.__FUNCTION__);
-        $function_b = new FunctionName('\\Brain\\Monkey\\Tests\Name\\testEquals');
+        $function_b = new FunctionName('\\Brain\\Monkey\\Tests\\Unit\\Name\\testEquals');
 
         static::assertTrue($function_a->equals($function_b));
         static::assertTrue($function_b->equals($function_a));

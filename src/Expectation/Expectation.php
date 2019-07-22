@@ -34,7 +34,6 @@ use Mockery\ExpectationInterface;
  * @method Expectation ordered()
  * @method Expectation between(int $min, int $max)
  * @method Expectation zeroOrMoreTimes()
- * @method Expectation with(...$args)
  * @method Expectation withArgs($args)
  * @method Expectation withAnyArgs()
  * @method Expectation andReturn(...$args)
@@ -49,6 +48,16 @@ class Expectation
     const RETURNING_EXPECTATION_TYPES = [
         ExpectationTarget::TYPE_FILTER_APPLIED,
         ExpectationTarget::TYPE_FUNCTION
+    ];
+
+    const ADDING_TYPES = [
+        ExpectationTarget::TYPE_ACTION_ADDED,
+        ExpectationTarget::TYPE_FILTER_ADDED
+    ];
+
+    const REMOVING_TYPES = [
+        ExpectationTarget::TYPE_ACTION_REMOVED,
+        ExpectationTarget::TYPE_FILTER_REMOVED
     ];
 
     const NO_ARGS_EXPECTATION_TYPES = [
@@ -118,7 +127,6 @@ class Expectation
      * @param  string $name
      * @param  array  $arguments
      * @return static
-     * @throws \Brain\Monkey\Expectation\Exception\NotAllowedMethod
      */
     public function __call($name, array $arguments = [])
     {
@@ -182,7 +190,6 @@ class Expectation
      * and setting an expectation of no arguments for those triggers an error in Brain Monkey.
      *
      * @return static
-     * @throws \Brain\Monkey\Expectation\Exception\ExpectationArgsRequired
      */
     public function withNoArgs()
     {
@@ -191,6 +198,34 @@ class Expectation
         }
 
         $this->expectation = $this->expectation->withNoArgs();
+
+        return $this;
+    }
+
+    /**
+     * @param mixed ...$args
+     * @return static
+     */
+    public function with(...$args)
+    {
+        $argsNum = count($args);
+
+        if ( ! $argsNum &&
+            ! in_array($this->target->type(), self::NO_ARGS_EXPECTATION_TYPES, true)
+        ) {
+            throw Exception\ExpectationArgsRequired::forExpectationType($this->target);
+        }
+
+        if (in_array($this->target->type(), self::ADDING_TYPES, true) && $argsNum < 3) {
+            $argsNum < 2 and $args[] = 10;
+            $args[] = 1;
+        }
+
+        if (in_array($this->target->type(), self::REMOVING_TYPES, true) && $argsNum === 1) {
+            $args[] = 10;
+        }
+
+        $this->expectation = $this->expectation->with(...$args);
 
         return $this;
     }
@@ -216,7 +251,6 @@ class Expectation
      *
      * @param  callable $callback
      * @return static
-     * @throws \Brain\Monkey\Expectation\Exception\NotAllowedMethod
      */
     public function whenHappen(callable $callback)
     {
@@ -231,7 +265,6 @@ class Expectation
 
     /**
      * @return static
-     * @throws \Brain\Monkey\Expectation\Exception\NotAllowedMethod
      */
     public function andReturnFirstArg()
     {

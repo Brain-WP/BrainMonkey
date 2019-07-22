@@ -71,6 +71,17 @@ class ExpectationFactory
     }
 
     /**
+     * @param string $action
+     * @return \Brain\Monkey\Expectation\Expectation;
+     */
+    public function forActionRemoved($action)
+    {
+        return $this->create(
+            new ExpectationTarget(ExpectationTarget::TYPE_ACTION_REMOVED, $action)
+        );
+    }
+
+    /**
      * @param string $filter
      * @return \Brain\Monkey\Expectation\Expectation;
      */
@@ -89,6 +100,17 @@ class ExpectationFactory
     {
         return $this->create(
             new ExpectationTarget(ExpectationTarget::TYPE_FILTER_APPLIED, $filter)
+        );
+    }
+
+    /**
+     * @param string $filter
+     * @return \Brain\Monkey\Expectation\Expectation;
+     */
+    public function forFilterRemoved($filter)
+    {
+        return $this->create(
+            new ExpectationTarget(ExpectationTarget::TYPE_FILTER_REMOVED, $filter)
         );
     }
 

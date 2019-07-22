@@ -165,7 +165,7 @@ Just note how classes used in type-hints were using _relative_ namespace on decl
 
 PHP 7+ scalar type hints are perfectly supported.
 
-The serialization also recognizes `static `closures. Following closure:
+The serialization also recognizes `static` closures. Following closure:
 
 ```php
 static function( int $foo, Bar ...$bar ) {

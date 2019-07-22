@@ -36,7 +36,6 @@ class ClosureParamStringForm
     /**
      * @param string $param
      * @return static
-     * @throws \Brain\Monkey\Name\Exception\InvalidClosureParam
      */
     public static function fromString($param)
     {
@@ -85,7 +84,6 @@ class ClosureParamStringForm
      * @param string $param_name
      * @param string $type_name
      * @param bool   $variadic
-     * @throws \Brain\Monkey\Name\Exception\InvalidClosureParam
      */
     private function __construct($param_name, $type_name = '', $variadic = false)
     {

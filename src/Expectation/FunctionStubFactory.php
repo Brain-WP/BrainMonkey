@@ -32,7 +32,6 @@ class FunctionStubFactory
      * @param \Brain\Monkey\Name\FunctionName $name
      * @param string                          $scope
      * @return \Brain\Monkey\Expectation\FunctionStub
-     * @throws \Brain\Monkey\Expectation\Exception\Exception
      */
     public function create(FunctionName $name, $scope)
     {

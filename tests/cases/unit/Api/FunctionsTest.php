@@ -8,10 +8,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Brain\Monkey\Tests\Api;
+namespace Brain\Monkey\Tests\Unit\Api;
 
 use Brain\Monkey\Functions;
-use Brain\Monkey\Tests\TestCase;
+use Brain\Monkey\Tests\UnitTestCase;
 use Mockery\Exception\InvalidCountException;
 
 /**
@@ -19,7 +19,7 @@ use Mockery\Exception\InvalidCountException;
  * @license http://opensource.org/licenses/MIT MIT
  * @package BrainMonkey
  */
-class FunctionsTest extends TestCase
+class FunctionsTest extends UnitTestCase
 {
 
     public function testJustReturn()
@@ -229,7 +229,7 @@ class FunctionsTest extends TestCase
         ]);
 
         static::assertTrue(is_user_logged_in());
-        static::assertTrue(current_user_can());
+        static::assertTrue(current_user_can('x'));
 
         Functions\stubs([
             'is_user_logged_in' => 1,
@@ -237,7 +237,7 @@ class FunctionsTest extends TestCase
         ]);
 
         static::assertSame(1, is_user_logged_in());
-        static::assertSame(2, current_user_can());
+        static::assertSame(2, current_user_can('y'));
     }
 
     public function testStubsCallable()
@@ -284,7 +284,7 @@ class FunctionsTest extends TestCase
         ]);
 
         static::assertSame('a', is_user_logged_in());
-        static::assertSame(123, current_user_can());
+        static::assertSame(123, current_user_can('xy'));
         static::assertSame(['ID' => 456], wp_get_current_user()->to_array());
         static::assertSame('!', esc_attr('!'));
         static::assertSame('?', esc_html('?'));
@@ -307,9 +307,70 @@ class FunctionsTest extends TestCase
             ]
         );
 
+        /** @noinspection PhpUndefinedFunctionInspection */
         static::assertNull(i_return_null());
+        /** @noinspection PhpUndefinedFunctionInspection */
         static::assertNull(i_return_null_too());
+        /** @noinspection PhpUndefinedFunctionInspection */
         $cb = i_return_a_callback();
         static::assertSame('yes', $cb());
+    }
+
+    public function testStubsTranslationsReturn()
+    {
+        Functions\stubTranslationFunctions();
+
+        static::assertSame('Foo', __('Foo', 'my-txt-domain'));
+        static::assertSame('Foo!', _x('Foo!', 'context',  'my-txt-domain'));
+        static::assertSame('Bar!', esc_html__('Bar!', 'my-txt-domain'));
+        static::assertSame('Baz!', esc_attr__('Baz!', 'my-txt-domain'));
+        static::assertSame('Foo bar', esc_attr_x('Foo bar', 'context',  'my-txt-domain'));
+    }
+
+    public function testStubsTranslationsEcho()
+    {
+        Functions\stubTranslationFunctions();
+
+        $this->expectOutputString('ABCD');
+
+        static::assertNull(_e('A', 'my-txt-domain'));
+        static::assertNull(_ex('B', 'context',  'my-txt-domain'));
+        static::assertNull(esc_html_e('C', 'my-txt-domain'));
+        static::assertNull(esc_attr_e('D', 'my-txt-domain'));
+    }
+
+    public function testStubsEscapeFunctionsNoUrlNoSql()
+    {
+        Functions\stubEscapeFunctions();
+
+        $lorem = '<b>Lorem ipsum</b>';
+        $escaped = htmlspecialchars($lorem);
+
+        static::assertSame($escaped, esc_html($lorem));
+        static::assertSame($escaped, esc_attr($lorem));
+        static::assertSame($escaped, esc_js($lorem));
+        static::assertSame($escaped, esc_textarea($lorem));
+    }
+
+    public function testStubsEscapeUrl()
+    {
+        Functions\stubEscapeFunctions();
+
+        static::assertSame('http://www.example.com', esc_url('http://www.example.com'));
+        static::assertSame('https://www.example.com', esc_url('https://www.example.com'));
+        static::assertSame('http://no-schema', esc_url('no-schema'));
+        static::assertSame('http://www.example.com?f&b=x', esc_url_raw('www.example.com?f&b=x'));
+        static::assertSame(
+            'http://example.com?f&b=x&#039;y&#038;',
+            esc_url('http://example.com?f&b=x\'y&amp;')
+        );
+    }
+
+    public function testStubsEscapeSql()
+    {
+        Functions\stubEscapeFunctions();
+
+        static::assertSame("hello, \\'world\\'", esc_sql("hello, 'world'"));
+        static::assertSame('<b>hello world</b>', esc_sql('<b>hello world</b>'));
     }
 }

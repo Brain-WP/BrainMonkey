@@ -29,8 +29,10 @@ final class ExpectationTarget
 
     const TYPE_ACTION_ADDED   = 'add_action';
     const TYPE_ACTION_DONE    = 'do_action';
+    const TYPE_ACTION_REMOVED = 'remove_action';
     const TYPE_FILTER_ADDED   = 'add_filter';
     const TYPE_FILTER_APPLIED = 'apply_filters';
+    const TYPE_FILTER_REMOVED = 'remove_filter';
     const TYPE_FUNCTION       = 'function';
     const TYPE_NULL           = '';
 
@@ -38,8 +40,10 @@ final class ExpectationTarget
         self::TYPE_FUNCTION,
         self::TYPE_ACTION_ADDED,
         self::TYPE_ACTION_DONE,
+        self::TYPE_ACTION_REMOVED,
         self::TYPE_FILTER_ADDED,
         self::TYPE_FILTER_APPLIED,
+        self::TYPE_FILTER_REMOVED,
     ];
 
     const HOOK_SANITIZE_MAP = [
@@ -93,8 +97,6 @@ final class ExpectationTarget
     /**
      * @param string $type
      * @param string $name
-     * @throws \Brain\Monkey\Expectation\Exception\InvalidExpectationName
-     * @throws \Brain\Monkey\Expectation\Exception\InvalidExpectationType
      */
     public function __construct($type, $name)
     {
@@ -157,11 +159,17 @@ final class ExpectationTarget
             case ExpectationTarget::TYPE_ACTION_DONE:
                 $name = "do_action_{$name}";
                 break;
+            case ExpectationTarget::TYPE_ACTION_REMOVED:
+                $name = "remove_action_{$name}";
+                break;
             case ExpectationTarget::TYPE_FILTER_ADDED:
                 $name = "add_filter_{$name}";
                 break;
             case ExpectationTarget::TYPE_FILTER_APPLIED:
                 $name = "apply_filters_{$name}";
+                break;
+            case ExpectationTarget::TYPE_FILTER_REMOVED:
+                $name = "remove_filter_{$name}";
                 break;
             default :
                 throw new \UnexpectedValueException(sprintf('Unexpected %s type.', __CLASS__));

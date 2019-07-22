@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Brain\Monkey\Tests\Api;
+namespace Brain\Monkey\Tests\Unit\Api;
 
 use Brain\Monkey;
 use Brain\Monkey\Actions;
@@ -19,7 +19,7 @@ use Mockery\Exception\InvalidCountException;
  * @license http://opensource.org/licenses/MIT MIT
  * @package BrainMonkey
  */
-class DoActionTest extends Monkey\Tests\TestCase
+class DoActionTest extends Monkey\Tests\UnitTestCase
 {
 
     public function testDoNull()

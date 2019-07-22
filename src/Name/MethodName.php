@@ -26,7 +26,6 @@ final class MethodName
 
     /**
      * @param string $method_name
-     * @throws \Brain\Monkey\Name\Exception\InvalidName
      */
     public function __construct($method_name)
     {

@@ -8,13 +8,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Brain\Monkey\Tests\Expectation\Exception;
+namespace Brain\Monkey\Tests\Unit\Expectation\Exception;
 
 
 use Brain\Monkey\Expectation\Exception\Exception;
-use Brain\Monkey\Tests\TestCase;
+use Brain\Monkey\Tests\UnitTestCase;
 
-class ExceptionTest extends TestCase
+class ExceptionTest extends UnitTestCase
 {
 
     public function testBecauseOf()

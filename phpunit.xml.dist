@@ -1,6 +1,5 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/5.7/phpunit.xsd"
-         bootstrap="tests/boot.php"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/5.7/phpunit.xsd"
          colors="true"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
@@ -12,17 +11,23 @@
         </whitelist>
     </filter>
     <testsuites>
-        <testsuite name="api">
-            <directory>tests/src/Api</directory>
+        <testsuite name="unit">
+            <directory>tests/cases/unit</directory>
         </testsuite>
-        <testsuite name="expectation">
-            <directory>tests/src/Expectation</directory>
+        <testsuite name="unit:api">
+            <directory>tests/cases/unit/Api</directory>
         </testsuite>
-        <testsuite name="name">
-            <directory>tests/src/Name</directory>
+        <testsuite name="unit:expectation">
+            <directory>tests/cases/unit/Expectation</directory>
         </testsuite>
-        <testsuite name="hook">
-            <directory>tests/src/Hook</directory>
+        <testsuite name="unit:name">
+            <directory>tests/cases/unit/Name</directory>
+        </testsuite>
+        <testsuite name="unit:hook">
+            <directory>tests/cases/unit/Hook</directory>
+        </testsuite>
+        <testsuite name="functional">
+            <directory>tests/cases/functional</directory>
         </testsuite>
     </testsuites>
 </phpunit>

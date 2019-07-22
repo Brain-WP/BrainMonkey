@@ -26,7 +26,6 @@ final class ClassName
 
     /**
      * @param string $class_name
-     * @throws \Brain\Monkey\Name\Exception\InvalidName
      */
     public function __construct($class_name)
     {

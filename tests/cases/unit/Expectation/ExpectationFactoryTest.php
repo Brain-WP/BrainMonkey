@@ -8,15 +8,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Brain\Monkey\Tests\Expectation;
+namespace Brain\Monkey\Tests\Unit\Expectation;
 
 use Brain\Monkey\Expectation\Expectation;
 use Brain\Monkey\Expectation\ExpectationFactory;
 use Brain\Monkey\Expectation\ExpectationTarget;
-use Brain\Monkey\Tests\TestCase;
+use Brain\Monkey\Tests\UnitTestCase;
 use Mockery\Exception\InvalidCountException;
 
-class ExpectationFactoryTest extends TestCase
+class ExpectationFactoryTest extends UnitTestCase
 {
 
     public function testForFunctionExecuted()

@@ -77,8 +77,7 @@ final class FunctionName
      * When name is valid returns an array of the name itself and its namespace parts.
      *
      * @param  string $function_name
-     * @return \string[]
-     * @throws \Brain\Monkey\Name\Exception\InvalidName
+     * @return string[]
      */
     private function parseName($function_name)
     {

@@ -8,17 +8,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Brain\Monkey\Tests\Expectation;
+namespace Brain\Monkey\Tests\Unit\Expectation;
 
 use Brain\Monkey\Expectation\Exception\InvalidArgumentForStub;
 use Brain\Monkey\Expectation\FunctionStub;
 use Brain\Monkey\Name\FunctionName;
-use Brain\Monkey\Tests\TestCase;
+use Brain\Monkey\Tests\UnitTestCase;
 
 /**
  * @runTestsInSeparateProcesses
  */
-class FunctionStubTest extends TestCase
+class FunctionStubTest extends UnitTestCase
 {
 
     public function testConstructorDeclareFunction()

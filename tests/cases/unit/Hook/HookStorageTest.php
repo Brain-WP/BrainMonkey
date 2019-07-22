@@ -8,11 +8,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Brain\Monkey\Tests\Hook;
+namespace Brain\Monkey\Tests\Unit\Hook;
 
 use Brain\Monkey\Hook\Exception\InvalidHookArgument;
 use Brain\Monkey\Hook\HookStorage;
-use Brain\Monkey\Tests\TestCase;
+use Brain\Monkey\Tests\UnitTestCase;
 
 
 /**
@@ -20,7 +20,7 @@ use Brain\Monkey\Tests\TestCase;
  * @package BrainMonkey
  * @license http://opensource.org/licenses/MIT MIT
  */
-class HookStorageTest extends TestCase
+class HookStorageTest extends UnitTestCase
 {
 
     public function testPushToAddedThrowsIfBadType()
