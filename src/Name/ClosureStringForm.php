@@ -32,8 +32,6 @@ final class ClosureStringForm
     /**
      * @param string $closure_string
      * @return string
-     * @throws \Brain\Monkey\Name\Exception\InvalidCallable
-     * @throws \Brain\Monkey\Name\Exception\NotInvokableObjectAsCallback
      */
     public static function normalizeString($closure_string)
     {

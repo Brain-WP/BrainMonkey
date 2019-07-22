@@ -50,7 +50,6 @@ final class CallbackStringForm
 
     /**
      * @return string
-     * @throws \Brain\Monkey\Name\Exception\NotInvokableObjectAsCallback
      */
     public function __toString()
     {
@@ -60,8 +59,6 @@ final class CallbackStringForm
     /**
      * @param $callback
      * @return string
-     * @throws \Brain\Monkey\Name\Exception\InvalidCallable
-     * @throws \Brain\Monkey\Name\Exception\NotInvokableObjectAsCallback
      */
     private function parseCallback($callback)
     {
@@ -109,8 +106,6 @@ final class CallbackStringForm
     /**
      * @param string $callback
      * @return bool|string
-     * @throws \Brain\Monkey\Name\Exception\InvalidCallable
-     * @throws \Brain\Monkey\Name\Exception\NotInvokableObjectAsCallback
      */
     private function parseString($callback)
     {
@@ -166,8 +161,6 @@ final class CallbackStringForm
      * @param string       $class_name
      * @param string       $method
      * @param string|array $callable
-     * @throws \Brain\Monkey\Name\Exception\InvalidCallable
-     * @throws \Brain\Monkey\Name\Exception\NotInvokableObjectAsCallback
      */
     private function assertMethodCallable($class_name, $method, $callable)
     {

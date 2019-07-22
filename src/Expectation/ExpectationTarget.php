@@ -93,8 +93,6 @@ final class ExpectationTarget
     /**
      * @param string $type
      * @param string $name
-     * @throws \Brain\Monkey\Expectation\Exception\InvalidExpectationName
-     * @throws \Brain\Monkey\Expectation\Exception\InvalidExpectationType
      */
     public function __construct($type, $name)
     {

@@ -112,7 +112,6 @@ PHP;
      * Redefine target function making it echo an arbitrary value.
      *
      * @param mixed $value
-     * @throws \Brain\Monkey\Expectation\Exception\InvalidArgumentForStub
      */
     public function justEcho($value = null)
     {
@@ -159,7 +158,6 @@ PHP;
      * Redefined function will throw an exception if the function does not receive desired argument.
      *
      * @param int $arg_num The position (1-based) of the argument to echo
-     * @throws \Brain\Monkey\Expectation\Exception\InvalidArgumentForStub
      */
     public function echoArg($arg_num = 1)
     {
@@ -189,7 +187,6 @@ PHP;
     /**
      * @param  int $arg_num
      * @return bool
-     * @throws \Brain\Monkey\Expectation\Exception\InvalidArgumentForStub
      */
     private function assertValidArgNum($arg_num)
     {
@@ -204,7 +201,6 @@ PHP;
 
     /**
      * @param string $function_name
-     * @throws \Brain\Monkey\Expectation\Exception\MissedPatchworkReplace
      */
     private function assertRedefined($function_name)
     {
@@ -216,7 +212,6 @@ PHP;
     /**
      * @param        $value
      * @param string $coming
-     * @throws \Brain\Monkey\Expectation\Exception\InvalidArgumentForStub
      */
     private function assertPrintable($value, $coming = '')
     {

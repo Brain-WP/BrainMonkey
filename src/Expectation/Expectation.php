@@ -117,7 +117,6 @@ class Expectation
      * @param  string $name
      * @param  array  $arguments
      * @return static
-     * @throws \Brain\Monkey\Expectation\Exception\NotAllowedMethod
      */
     public function __call($name, array $arguments = [])
     {
@@ -181,7 +180,6 @@ class Expectation
      * and setting an expectation of no arguments for those triggers an error in Brain Monkey.
      *
      * @return static
-     * @throws \Brain\Monkey\Expectation\Exception\ExpectationArgsRequired
      */
     public function withNoArgs()
     {
@@ -215,7 +213,6 @@ class Expectation
      *
      * @param  callable $callback
      * @return static
-     * @throws \Brain\Monkey\Expectation\Exception\NotAllowedMethod
      */
     public function whenHappen(callable $callback)
     {
@@ -230,7 +227,6 @@ class Expectation
 
     /**
      * @return static
-     * @throws \Brain\Monkey\Expectation\Exception\NotAllowedMethod
      */
     public function andReturnFirstArg()
     {
