@@ -10,8 +10,8 @@
 
 namespace Brain\Monkey\Tests\Unit\Api;
 
+use Brain\Monkey;
 use Brain\Monkey\Actions;
-use Brain\Monkey\Tests\UnitTestCase;
 use Mockery\Exception\InvalidCountException;
 
 /**
@@ -19,7 +19,7 @@ use Mockery\Exception\InvalidCountException;
  * @license http://opensource.org/licenses/MIT MIT
  * @package BrainMonkey
  */
-class AddActionTest extends UnitTestCase
+class AddActionTest extends Monkey\Tests\UnitTestCase
 {
     public function testAddNull()
     {
@@ -38,18 +38,14 @@ class AddActionTest extends UnitTestCase
         add_action('init', 'strtolower', 30, 1);
         add_action('init', function ( $x, ...$y ) { return true; });
         add_action('init', [new \ArrayObject(), 'getArrayCopy'], 5);
-        add_action('init', 'SomeClass\To\Test::method', 1);
 
         static::assertTrue(has_action('init', 'strtolower'));
         static::assertTrue(has_action('init', 'function( $x, ...$y )'));
         static::assertTrue(has_action('init', 'ArrayObject->getArrayCopy()'));
-        static::assertTrue(has_action('init', 'SomeClass\To\Test::method'));
-        static::assertTrue(has_action('init', 'SomeClass\To\Test::method()'));
 
         static::assertFalse(has_action('pre_get_posts', 'strtolower'));
         static::assertFalse(has_action('foo', 'function()'));
         static::assertFalse(has_action('baz', 'ArrayObject->getArrayCopy()'));
-        static::assertFalse(has_action('baz', 'SomeClass\To\Test->method()'));
     }
 
     public function testAddAndHasWithoutCallback()
@@ -61,10 +57,13 @@ class AddActionTest extends UnitTestCase
 
     public function testExpectAdded()
     {
-        Actions\expectAdded('init')->times(3)->with(
-            \Mockery::anyOf('strtolower', 'strtoupper', [$this, __FUNCTION__]),
-            \Mockery::type('int')
-        );
+        Actions\expectAdded('init')
+            ->times(3)
+            ->with(
+                \Mockery::anyOf('strtolower', 'strtoupper', [$this, __FUNCTION__]),
+                \Mockery::type('int')
+            );
+
         Actions\expectAdded('foo')->never();
         Actions\expectAdded('wp_footer')->once();
 

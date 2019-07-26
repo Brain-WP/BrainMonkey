@@ -34,7 +34,6 @@ use Mockery\ExpectationInterface;
  * @method Expectation ordered()
  * @method Expectation between(int $min, int $max)
  * @method Expectation zeroOrMoreTimes()
- * @method Expectation withArgs($args)
  * @method Expectation withAnyArgs()
  * @method Expectation andReturn(...$args)
  * @method Expectation andReturnNull()
@@ -72,7 +71,6 @@ class Expectation
         'shouldExpect',
         'mock',
         'getMock',
-        'byDefault'
     ];
 
     /**
@@ -135,6 +133,11 @@ class Expectation
         }
 
         $has_return = stristr($name, 'return');
+        $has_default = $name === 'byDefault';
+
+        if ($has_default && $this->target->type() !== ExpectationTarget::TYPE_FUNCTION) {
+            throw Exception\NotAllowedMethod::forByDefault();
+        }
 
         if (
             $has_return
