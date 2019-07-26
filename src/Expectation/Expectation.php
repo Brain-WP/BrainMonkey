@@ -71,7 +71,6 @@ class Expectation
         'shouldExpect',
         'mock',
         'getMock',
-        'byDefault'
     ];
 
     /**
@@ -134,6 +133,11 @@ class Expectation
         }
 
         $has_return = stristr($name, 'return');
+        $has_default = $name === 'byDefault';
+
+        if ($has_default && $this->target->type() !== ExpectationTarget::TYPE_FUNCTION) {
+            throw Exception\NotAllowedMethod::forByDefault();
+        }
 
         if (
             $has_return

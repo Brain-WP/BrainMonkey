@@ -23,6 +23,7 @@ class NotAllowedMethod extends Exception
     const CODE_METHOD           = 1;
     const CODE_RETURNING_METHOD = 2;
     const CODE_WHEN_HAPPEN      = 3;
+    const CODE_BY_DEFAULT       = 4;
 
     /**
      * @param string $method_name
@@ -36,6 +37,17 @@ class NotAllowedMethod extends Exception
                 $method_name
             ),
             self::CODE_METHOD
+        );
+    }
+
+    /**
+     * @return static
+     */
+    public static function forByDefault()
+    {
+        return new static(
+            'byDefault method is not allowed for Brain Monkey hook expectation.',
+            self::CODE_BY_DEFAULT
         );
     }
 
