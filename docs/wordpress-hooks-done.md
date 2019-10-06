@@ -1,21 +1,10 @@
-<!--
-currentMenu: "wphooksdone"
-currentSection: "WordPress"
-title: "Testing Done Hooks"
--->
-
 # Testing Done Hooks
-
-
 
 ## Testing framework agnostic
 
-Brain Monkey can be used with any testing framework.
-Examples in this page will use PHPUnit, but the concepts are applicable to any testing framework.
+Brain Monkey can be used with any testing framework. Examples in this page will use PHPUnit, but the concepts are applicable to any testing framework.
 
-Also note that test classes in this page extends the class `MyTestCase` that is assumed very similar to the one coded in the *WordPress / Setup* docs section.
-
-
+Also note that test classes in this page extends the class `MyTestCase` that is assumed very similar to the one coded in the _WordPress / Setup_ docs section.
 
 ## Simple tests with `did_action()` and `Filters\applied()`
 
@@ -27,9 +16,9 @@ Assuming a class like the following:
 
 ```php
 class MyClass {
-  
+
     function fireHooks() {
-      
+
        do_action('my_action', $this);
 
        return apply_filters('my_filter', 'Filter applied', $this);
@@ -60,9 +49,6 @@ So, `did_action()` and `Filters\applied()` are fine for simple tests, mostly bec
 
 In Brain Monkey those tasks can be done testing fired hooks with expectations.
 
-
-
-
 ## Test fired hooks with expectations
 
 A powerful testing mechanism for fired hooks is provided by Brain Monkey thanks to Mockery expectations.
@@ -72,7 +58,6 @@ The entry points to use it are the `Actions\expectDone()` and `Filters\expectApp
 As usual, below there a just a couple of examples, for the full story see [Mockery docs](http://docs.mockery.io/en/latest/reference/expectations.html).
 
 Assuming the `MyClass` above in this page, it can be tested with:
-
 
 ```php
 use Brain\Monkey\Actions;
@@ -95,19 +80,14 @@ class MyClassTest extends MyTestCase
 }
 ```
 
-
-
 ## Just a couple of things...
 
- - expectations must be set *before* the code to be tested runs: they are called "expectations" for a reason
- - argument validation done using `with()`, validates hook arguments, not function arguments, it means what is passed to `do_action` or `apply_filters` **excluding** hook name itself
-
-
-
+* expectations must be set _before_ the code to be tested runs: they are called "expectations" for a reason
+* argument validation done using `with()`, validates hook arguments, not function arguments, it means what is passed to `do_action` or `apply_filters` **excluding** hook name itself
 
 ## Respond to filters
 
-Yet again, Brain Monkey, when possible, tries to make WordPress functions it redefines behave in the same way of *real* WordPress functions.
+Yet again, Brain Monkey, when possible, tries to make WordPress functions it redefines behave in the same way of _real_ WordPress functions.
 
 Brain Monkey `apply_filters` by default returns the first argument passed to it, just like WordPress function does when no callback is added to the filter.
 
@@ -119,9 +99,9 @@ Luckily, Mockery provides `andReturn()` and `andReturnUsing()` expectation metho
 use Brain\Monkey\Filters;
 
 class MyClassTest extends MyTestCase {
-  
+
     function testFireHooksReturnValue() {
-      
+
         Filters\expectApplied('my_filter')
             ->once()
             ->with('Filter applied', Mockery::type(MyClass::class))
@@ -182,17 +162,15 @@ self::assertSame( 'This time bar!', apply_filters( 'my_filter', 'Bar' ) );
 self::assertSame( 'Meh!', apply_filters( 'my_filter', 'Meh!' ) );
 ```
 
-
-
 ## Respond to actions
 
 To return a value from a filter is routine, not so for actions.
 
-In fact, `do_action()` always returns `null` so, if Brain Monkey would allow a *mocked* returning value for `do_action()` expectations, it would be in contrast with real WordPress code, with disastrous effects on tests.
+In fact, `do_action()` always returns `null` so, if Brain Monkey would allow a _mocked_ returning value for `do_action()` expectations, it would be in contrast with real WordPress code, with disastrous effects on tests.
 
 So, don't try to use neither `andReturn()` or `andReturnUsing()` with `Actions\expectDone()` because it will throw an exception.
 
-However, sometimes one may be in the need do *something* when code calls `do_action()`, like WordPress actually does.
+However, sometimes one may be in the need do _something_ when code calls `do_action()`, like WordPress actually does.
 
 This is the reason Brain Monkey introduces `whenHappen()` method for action expectations. The method takes a callback to be ran when an action is fired.
 
@@ -200,11 +178,11 @@ Let's assume a class like the following:
 
 ```php
 class MyClass {
-  
+
     public $post;
 
     function setPost() {
-      
+
         global $post;
         $this->post = $post;
 
@@ -221,9 +199,9 @@ It is possible write a test like this:
 use Brain\Monkey\Actions;
 
 class MyClassTest extends MyTestCase {
-  
+
     function testFireHooksReturnValue() {
-      
+
         Action\expectDone('my_class_set_post')
             ->with(Mockery::type(MyClass::class))
             ->whenHappen(function($my_class) {
@@ -237,9 +215,6 @@ class MyClassTest extends MyTestCase {
 }
 ```
 
-
-
-
 ## Resolving `current_filter()`, `doing_action` and `doing_filter()`
 
 When WordPress is not performing an hook, `current_filter()` returns `false`.
@@ -252,9 +227,9 @@ Let's assume a class like the following:
 
 ```php
 class MyClass {
-  
+
     function getValues() {
-      
+
         $title   = apply_filters('my_class_title', '');
         $content = apply_filters('my_class_content', '');
 
@@ -294,7 +269,7 @@ Assuming a class like the following:
 
 ```php
 class MyClass {
-  
+
     function doStuff() {
         do_action( 'trigger_an_hook' );
     }
@@ -307,23 +282,24 @@ It is possible to write a test like this:
 use Brain\Monkey\Actions;
 
 class MyClassTest extends MyTestCase {
-  
+
     function testDoStuff() {
-      
+
         // 'an_hook' action is done below in the "whenHappen" callback
         Actions\expectDone( 'an_hook' )->once()->whenHappen(function() {
-          
+
            self::assertTrue( doing_action('an_hook') );
-          
+
            // doing_action() also resolves the "parent" hook like it was WordPress!
            self::assertTrue( doing_action('trigger_an_hook') );
         });
-      
+
         Actions\expectDone('trigger_an_hook')->once()->whenHappen(function() {
            if( current_filter() === 'trigger_an_hook' ) {
-             	do_action('an_hook');
+                 do_action('an_hook');
            }
         });
     }
 }
 ```
+

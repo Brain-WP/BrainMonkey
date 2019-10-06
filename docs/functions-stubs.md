@@ -1,9 +1,4 @@
-<!--
-currentMenu: "functionsstubs"
-currentSection: "PHP Functions"
-title: "Bulk patching with stubs()"
--->
-# Bulk patching with stubs()
+# Bulk patching with stubs\(\)
 
 `when()` and its related functions are quite simple and straightforward.
 
@@ -15,8 +10,7 @@ For this reason, version 2.1 introduced a new API function to define multiple fu
 
 `Functions\stubs()` accepts an array of functions to be defined.
 
-The first way to use it is to pass function names as array item _keys_ and the wanted return values
-as array _values_:
+The first way to use it is to pass function names as array item _keys_ and the wanted return values as array _values_:
 
 ```php
 Functions\stubs(
@@ -29,11 +23,8 @@ Functions\stubs(
 
 There are two special cases:
 
-- when the array item value is a `callable`, the function given as array item key is _aliased_ to
-  the given callback instead of returning the callback itself;
-  
-- when the array item value is `null`, the function given as array item key will return the first
-  argument received, just like `when( $function_name )->justReturnArg()` was used for it
+* when the array item value is a `callable`, the function given as array item key is _aliased_ to the given callback instead of returning the callback itself;
+* when the array item value is `null`, the function given as array item key will return the first argument received, just like `when( $function_name )->justReturnArg()` was used for it
 
 ```php
 Functions\stubs(
@@ -47,11 +38,9 @@ Functions\stubs(
 );
 ```
 
-Another way to use `stubs`, useful to stub many function with same return value, is to pass
-to a non-associative array of function names as first argument, and the wanted return
-value for all of them as second argument.
+Another way to use `stubs`, useful to stub many function with same return value, is to pass to a non-associative array of function names as first argument, and the wanted return value for all of them as second argument.
 
-For example, the snippet below will create a stub that returns `true` for all the given functions: 
+For example, the snippet below will create a stub that returns `true` for all the given functions:
 
 ```php
 Functions\stubs(
@@ -65,10 +54,7 @@ Functions\stubs(
 );
 ```
 
-Please note that the default value for the second argument, being it optional, is `null`, and because
-using `null` as value means _"return first received argument"_ it is possible to stub many functions
-that have to return first received argument, by passing their names as first argument to `stubs()`
-(and no second argument), like this:
+Please note that the default value for the second argument, being it optional, is `null`, and because using `null` as value means _"return first received argument"_ it is possible to stub many functions that have to return first received argument, by passing their names as first argument to `stubs()` \(and no second argument\), like this:
 
 ```php
 Functions\stubs(
@@ -83,7 +69,7 @@ Functions\stubs(
 );
 ```
 
-(Even if there's a simpler way to stub escaping and translation WP functions, more on this below).
+\(Even if there's a simpler way to stub escaping and translation WP functions, more on this below\).
 
 It worth noting that the two ways of using `stubs()` can be mixed together, for example like this:
 
@@ -93,7 +79,7 @@ Functions\stubs(
         // will both return 1st argument received, because `stubs` 2nd param defaults to `null`
         'esc_attr',
         'esc_html',
-        
+
         // will all return what is given as array item value
         'is_user_logged_in'   => true,
         'current_user_can'    => false,
@@ -102,70 +88,59 @@ Functions\stubs(
 );
 ```
 
-
-
 ## Pre-defined stubs for escaping functions
 
 To stub WordPress escaping functions is a very common usage for `Functions\stubs`.
 
 This is why, since version 2.3, Brain Monkey introduced a new API function:
 
-- **`Functions\stubEscapeFunctions()`**
+* **`Functions\stubEscapeFunctions()`**
 
 When called, it will create a stub for each of the following functions:
 
-- `esc_js()`
-- `esc_sql()`
-- `esc_attr()`
-- `esc_html()`
-- `esc_textarea()`
-- `esc_url()`
-- `esc_url_raw()`
+* `esc_js()`
+* `esc_sql()`
+* `esc_attr()`
+* `esc_html()`
+* `esc_textarea()`
+* `esc_url()`
+* `esc_url_raw()`
 
-By calling `Functions\stubEscapeFunctions()`, for _all_ of the functions listed above a stub will
-be created that will do some very basic escaping on the received first argument before returning it.
+By calling `Functions\stubEscapeFunctions()`, for _all_ of the functions listed above a stub will be created that will do some very basic escaping on the received first argument before returning it.
 
-It will *not* be the exact same escape mechanism that WordPress would apply, but "similar enough"
-for unit tests purpose and could still be helpful to discover some bugs.
-
+It will _not_ be the exact same escape mechanism that WordPress would apply, but "similar enough" for unit tests purpose and could still be helpful to discover some bugs.
 
 ## Pre-defined stubs for translation functions
 
-Another common usage for `Functions\stubs`, since its introduction, has been to stub translation
-functions.
+Another common usage for `Functions\stubs`, since its introduction, has been to stub translation functions.
 
 Since version 2.3, this has became much easier thanks to the introduction of a new API function:
 
-- **`Functions\stubTranslationFunctions()`**
+* **`Functions\stubTranslationFunctions()`**
 
 When called, it will create a stub for _all_ the following functions:
 
-- `__()`        
-- `_x()`       
-- `translate()` 
-- `esc_html__()`
-- `esc_html_x()`
-- `esc_attr__()` 
-- `esc_attr_x()` 
-- `esc_html_e()` 
-- `esc_attr_e()` 
+* `__()`        
+* `_x()`       
+* `translate()` 
+* `esc_html__()`
+* `esc_html_x()`
+* `esc_attr__()` 
+* `esc_attr_x()` 
+* `esc_html_e()` 
+* `esc_attr_e()` 
 
-The created stub will not attempt any translation, but will return (or echo) the first received argument.
+The created stub will not attempt any translation, but will return \(or echo\) the first received argument.
 
-Only for functions that both translate and escape (`esc_html__()`, `esc_html_x()`...) the same
-escaping mechanism used by the pre-defined escaping functions stubs (see above) is applied before
-returning first received argument.
+Only for functions that both translate and escape \(`esc_html__()`, `esc_html_x()`...\) the same escaping mechanism used by the pre-defined escaping functions stubs \(see above\) is applied before returning first received argument.
 
-Please note how `Functions\stubTranslationFunctions()` creates stubs for functions that _echo_
-translated text, something not easily doable with `Functions\stubs()` alone.
-
+Please note how `Functions\stubTranslationFunctions()` creates stubs for functions that _echo_ translated text, something not easily doable with `Functions\stubs()` alone.
 
 ## Gotcha for `Functions\stubs`
 
 ### Functions that returns null
 
-When using `stubs()`, passing `null` as the "value" of the function to stub, the return value of the
-stub will **not** be `null`, but the first received value.
+When using `stubs()`, passing `null` as the "value" of the function to stub, the return value of the stub will **not** be `null`, but the first received value.
 
 To use `stubs()` to stub functions that return `null` it is possible to do something like this:
 
@@ -177,11 +152,9 @@ It works because `__return_null` is a WP function that Brain Monkey also defines
 
 ### Functions that returns callbacks
 
-When using `stubs`, passing a `callable` as the "value" of the function to stub, the created stub 
-will be an _alias_ of the given callable, will **not** return it.
+When using `stubs`, passing a `callable` as the "value" of the function to stub, the created stub will be an _alias_ of the given callable, will **not** return it.
 
-If one want to use `stubs` to stub a function that returns a callable, a way to do it would be
-something like this:
+If one want to use `stubs` to stub a function that returns a callable, a way to do it would be something like this:
 
 ```php
 Functions\stubs(
@@ -194,7 +167,8 @@ Functions\stubs(
 ```
 
 but it is probably simpler to use the "usual" `when` + `justReturn`:
- 
+
 ```php
 when('function_that_returns_a_callback')->justReturn('the_expected_returned_callback')
 ```
+
