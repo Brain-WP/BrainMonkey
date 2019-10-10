@@ -13,6 +13,7 @@ namespace Brain\Monkey\Tests\Unit\Api;
 use Brain\Monkey\Functions;
 use Brain\Monkey\Tests\UnitTestCase;
 use Mockery\Exception\InvalidCountException;
+use PHPUnit\Framework\Error\Error as PHPUnit_Error;
 
 /**
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
@@ -148,7 +149,7 @@ class FunctionsTest extends UnitTestCase
 
     public function testUndefinedFunctionTriggerErrorRightAfterDefinition()
     {
-        $this->expectException(\PHPUnit_Framework_Error::class);
+        $this->expectException(PHPUnit_Error::class);
         Functions\when('since_i_am_not_defined_i_will_trigger_error');
         $this->expectExceptionMessageRegExp('/since_i_am_not_defined_i_will_trigger_error.+not defined/');
         /** @noinspection PhpUndefinedFunctionInspection */
@@ -168,7 +169,7 @@ class FunctionsTest extends UnitTestCase
      */
     public function testSurvivedFunctionStillTriggerError()
     {
-        $this->expectException(\PHPUnit_Framework_Error::class);
+        $this->expectException(PHPUnit_Error::class);
         $this->expectExceptionMessageRegExp('/since_i_am_not_defined_i_will_trigger_error.+not defined/');
         /** @noinspection PhpUndefinedFunctionInspection */
         since_i_am_not_defined_i_will_trigger_error();
@@ -189,7 +190,7 @@ class FunctionsTest extends UnitTestCase
      */
     public function testSurvivedFunctionStillTriggerErrorAfterBeingMocked()
     {
-        $this->expectException(\PHPUnit_Framework_Error::class);
+        $this->expectException(PHPUnit_Error::class);
         $this->expectExceptionMessageRegExp('/since_i_am_not_defined_i_will_trigger_error.+not defined/');
         /** @noinspection PhpUndefinedFunctionInspection */
         since_i_am_not_defined_i_will_trigger_error();

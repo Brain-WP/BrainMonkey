@@ -11,13 +11,14 @@
 namespace Brain\Monkey\Tests;
 
 use Brain\Monkey;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @package BrainMonkey
  * @license http://opensource.org/licenses/MIT MIT
  */
-class UnitTestCase extends \PHPUnit_Framework_TestCase
+class UnitTestCase extends TestCase
 {
     private $expect_mockery_exception = null;
 
