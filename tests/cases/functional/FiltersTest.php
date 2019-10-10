@@ -11,13 +11,14 @@
 namespace Brain\Monkey\Tests\Functional;
 
 use Brain\Monkey;
+use Brain\Monkey\Tests\FunctionalTestCase;
 
 /**
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @license http://opensource.org/licenses/MIT MIT
  * @package BrainMonkey
  */
-class FiltersTest extends Monkey\Tests\FunctionalTestCase
+class FiltersTest extends FunctionalTestCase
 {
     public function testExpectAdded()
     {

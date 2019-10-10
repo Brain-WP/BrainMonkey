@@ -12,6 +12,7 @@ namespace Brain\Monkey\Tests\Unit\Api;
 
 use Brain\Monkey;
 use Brain\Monkey\Actions;
+use Brain\Monkey\Tests\UnitTestCase;
 use Mockery\Exception\InvalidCountException;
 
 /**
@@ -19,7 +20,7 @@ use Mockery\Exception\InvalidCountException;
  * @license http://opensource.org/licenses/MIT MIT
  * @package BrainMonkey
  */
-class AddActionTest extends Monkey\Tests\UnitTestCase
+class AddActionTest extends UnitTestCase
 {
     public function testAddNull()
     {
