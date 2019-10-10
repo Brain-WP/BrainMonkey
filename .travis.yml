@@ -8,8 +8,10 @@ php:
   - 7.3
 
 before_script:
-  - travis_retry composer self-update
-  - travis_retry composer update --no-interaction --prefer-source  --classmap-authoritative
+  # Speed up build time by disabling Xdebug.
+  - phpenv config-rm xdebug.ini || echo 'No xdebug config.'
+
+  - travis_retry composer install --no-interaction --prefer-source  --classmap-authoritative
 
 script:
-  - vendor/bin/phpunit
+  - vendor/bin/phpunit --no-coverage
