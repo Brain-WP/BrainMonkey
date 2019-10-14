@@ -32,7 +32,9 @@
         "antecedent/patchwork": "^2.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^5.7.9 || ^6.0 || ^7.0"
+        "phpunit/phpunit": "^5.7.9 || ^6.0 || ^7.0",
+        "jakub-onderka/php-parallel-lint": "^1.0",
+        "jakub-onderka/php-console-highlighter": "^0.4"
     },
     "autoload": {
         "psr-4": {
@@ -62,5 +64,10 @@
             "dev-version/1": "1.x-dev",
             "dev-master": "2.0.x-dev"
         }
+    },
+    "scripts" : {
+        "lint": [
+            "@php ./vendor/jakub-onderka/php-parallel-lint/parallel-lint . -e php --exclude vendor --exclude .git"
+        ]
     }
 }

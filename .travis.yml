@@ -12,6 +12,7 @@ before_script:
   - travis_retry composer update --no-interaction --prefer-source  --classmap-authoritative
 
 script:
+  - composer lint
   - vendor/bin/phpunit --coverage-clover=coverage.xml
 
 after_success:
