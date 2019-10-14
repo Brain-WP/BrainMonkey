@@ -9,7 +9,6 @@ php:
   - "7.4snapshot"
 
 before_script:
-  - travis_retry composer self-update
   - travis_retry composer update --no-interaction --prefer-source  --classmap-authoritative
 
 script:
