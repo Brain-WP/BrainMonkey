@@ -121,6 +121,6 @@ final class ClosureStringForm
 
         $name = $static ? 'static function (' : 'function (';
 
-        return $name.implode($arguments, ', ').')';
+        return $name.implode(', ', $arguments).')';
     }
 }
