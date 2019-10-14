@@ -11,13 +11,14 @@
 namespace Brain\Monkey\Tests;
 
 use Brain\Monkey;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @package BrainMonkey
  * @license http://opensource.org/licenses/MIT MIT
  */
-class FunctionalTestCase extends \PHPUnit_Framework_TestCase
+class FunctionalTestCase extends TestCase
 {
     protected function setUp()
     {
