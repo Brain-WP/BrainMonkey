@@ -10,7 +10,7 @@
 
 * [Setup for functions testing](functions-testing-tools/functions-setup.md)
 * [Patching functions with when\(\)](functions-testing-tools/functions-when.md)
-* [Bulk patching with stubs\(\)](functions-testing-tools/functions-stubs.md)
+* [Bulk patching with stubs\(\)](functions-testing-tools/function-stubs.md)
 * [Testing functions with expect\(\)](functions-testing-tools/functions-expect.md)
 
 ## WordPress-specific tools
