@@ -1,4 +1,4 @@
-# WordPress Testing Tools
+# WordPress testing tools
 
 The sole ability to mocking functions is a great help on testing WordPress code.
 

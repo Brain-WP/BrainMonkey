@@ -1,4 +1,4 @@
-# Testing PHP Functions: Setup Brain Monkey
+# Setup for functions testing
 
 ## Testing framework agnostic
 

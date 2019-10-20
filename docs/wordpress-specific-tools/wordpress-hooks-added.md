@@ -1,4 +1,4 @@
-# Testing Added Hooks
+# Test added hooks
 
 With Brain Monkey there are two ways to test some hook have been added, and with which arguments.
 

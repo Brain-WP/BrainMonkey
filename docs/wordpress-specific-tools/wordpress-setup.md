@@ -1,4 +1,4 @@
-# Setup Brain Monkey for WordPress Tests
+# Setup for WordPress testing
 
 ## Testing framework agnostic
 

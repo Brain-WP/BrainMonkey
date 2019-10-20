@@ -1,4 +1,4 @@
-# Migrating From v1 To v2
+# Migration from v1
 
 ## \[Updated\] Patchwork Version
 

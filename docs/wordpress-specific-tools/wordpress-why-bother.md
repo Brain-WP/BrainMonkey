@@ -1,4 +1,4 @@
-# Brain Monkey for WordPress: Why Bother
+# Why bother
 
 Just to be clear, Brain Monkey is useful for testing code wrote _for_ WordPress \(plugin, themes\) not WordPress core.
 

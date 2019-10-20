@@ -1,4 +1,4 @@
-# What and why
+# Introduction
 
 ## What's Brain Monkey
 
