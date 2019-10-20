@@ -8,6 +8,22 @@ php:
   - 7.3
   - "7.4snapshot"
 
+stages:
+  - name: analyze
+  - name: test
+
+jobs:
+  fast_finish: true
+  include:
+    #### CODE ANALYSIS ####
+    # Separate stage for code analysis tools which give the same results cross-version,
+    # so only need to run on one PHP version per build.
+    - stage: analyze
+      php: 7.3
+      script:
+        - composer phpcompat
+      after_success: skip
+
 before_script:
   - travis_retry composer update --no-interaction --prefer-source  --classmap-authoritative
 
