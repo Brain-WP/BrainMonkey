@@ -164,7 +164,7 @@ class Expectation
     }
 
     /**
-     * @return \Mockery\Expectation|\Mockery\CompositeExpectation
+     * @return \Mockery\Expectation|\Mockery\ExpectationInterface
      */
     public function mockeryExpectation()
     {

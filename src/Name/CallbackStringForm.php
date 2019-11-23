@@ -57,7 +57,7 @@ final class CallbackStringForm
     }
 
     /**
-     * @param $callback
+     * @param mixed $callback
      * @return string
      */
     private function parseCallback($callback)
@@ -105,7 +105,7 @@ final class CallbackStringForm
 
     /**
      * @param string $callback
-     * @return bool|string
+     * @return string
      */
     private function parseString($callback)
     {

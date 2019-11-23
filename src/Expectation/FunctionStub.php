@@ -185,8 +185,8 @@ PHP;
     }
 
     /**
-     * @param  int $arg_num
-     * @return bool
+     * @param  mixed $arg_num
+     * @return int
      */
     private function assertValidArgNum($arg_num)
     {
@@ -210,7 +210,7 @@ PHP;
     }
 
     /**
-     * @param        $value
+     * @param mixed  $value
      * @param string $coming
      */
     private function assertPrintable($value, $coming = '')

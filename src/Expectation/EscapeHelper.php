@@ -21,7 +21,7 @@ class EscapeHelper
 {
 
     /**
-     * @param $text
+     * @param string $text
      * @return string
      */
     public static function esc($text)

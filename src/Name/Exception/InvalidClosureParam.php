@@ -24,7 +24,7 @@ class InvalidClosureParam extends Exception
     const CODE_MULTIPLE_VARIADIC = 3;
 
     /**
-     * @param $name
+     * @param string $name
      * @return static
      */
     public static function forInvalidName($name)
@@ -36,8 +36,8 @@ class InvalidClosureParam extends Exception
     }
 
     /**
-     * @param $type
-     * @param $name
+     * @param string $type
+     * @param string $name
      * @return static
      */
     public static function forInvalidType($type, $name)
@@ -49,7 +49,7 @@ class InvalidClosureParam extends Exception
     }
 
     /**
-     * @param $name
+     * @param string $name
      * @return static
      */
     public static function forMultipleVariadic($name)

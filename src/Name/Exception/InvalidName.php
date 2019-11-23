@@ -33,7 +33,7 @@ class InvalidName extends Exception
     }
 
     /**
-     * @param $class
+     * @param string $class
      * @return \Brain\Monkey\Name\Exception\InvalidName
      */
     public static function forClass($class)
@@ -42,7 +42,7 @@ class InvalidName extends Exception
     }
 
     /**
-     * @param $function
+     * @param string $function
      * @return \Brain\Monkey\Name\Exception\InvalidName
      */
     public static function forMethod($function)
@@ -51,7 +51,7 @@ class InvalidName extends Exception
     }
 
     /**
-     * @param string $thing
+     * @param mixed $thing
      * @param int $code
      * @return static
      */

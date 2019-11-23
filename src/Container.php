@@ -19,7 +19,7 @@ final class Container
 {
 
     /**
-     * @var Container
+     * @var self|null
      */
     private static $instance;
 
@@ -31,11 +31,11 @@ final class Container
     /**
      * Static instance lookup.
      *
-     * @return static
+     * @return self
      */
     public static function instance()
     {
-        if (!self::$instance) {
+        if (! self::$instance instanceof self) {
             require_once dirname(__DIR__).'/inc/patchwork-loader.php';
             self::$instance = new static();
         }
