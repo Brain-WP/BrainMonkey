@@ -136,7 +136,7 @@ PHP;
      */
     public function returnArg($arg_num = 1)
     {
-        $arg_num = $this->assertValidArgNum($arg_num);
+        $arg_num = $this->assertValidArgNum($arg_num, 'returnArg');
 
         $fqn = $this->function_name->fullyQualifiedName();
 
@@ -161,7 +161,7 @@ PHP;
      */
     public function echoArg($arg_num = 1)
     {
-        $arg_num = $this->assertValidArgNum($arg_num);
+        $arg_num = $this->assertValidArgNum($arg_num, 'echoArg');
 
         $fqn = $this->function_name->fullyQualifiedName();
 
@@ -185,14 +185,15 @@ PHP;
     }
 
     /**
-     * @param  int $arg_num
+     * @param  mixed  $arg_num
+     * @param  string $method
      * @return bool
      */
-    private function assertValidArgNum($arg_num)
+    private function assertValidArgNum($arg_num, $method)
     {
         if ( ! is_int($arg_num) || $arg_num <= 0) {
             throw new Exception\InvalidArgumentForStub(
-                sprintf('`%s::returnArg()` first parameter must be a positiver integer.', __CLASS__)
+                sprintf('`%s::%s()` first parameter must be a positiver integer.', __CLASS__, $method)
             );
         }
 

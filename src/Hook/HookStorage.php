@@ -122,8 +122,8 @@ final class HookStorage
     }
 
     /**
-     * @param $type
-     * @param $hook
+     * @param string $type
+     * @param string $hook
      * @return int
      */
     public function isHookDone($type, $hook)
@@ -211,7 +211,7 @@ final class HookStorage
             throw Exception\InvalidHookArgument::forEmptyArguments($key, $type);
         }
 
-        if ( ! count($args) > 3) {
+        if (count($args) > 3) {
             throw Exception\InvalidAddedHookArgument::forWrongArgumentsCount($type);
         }
 

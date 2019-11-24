@@ -65,6 +65,13 @@ class HookStorageTest extends UnitTestCase
         $storage->pushToAdded(HookStorage::FILTERS, 'init', []);
     }
 
+    public function testPushToAddedThrowsIfTooManyArgs()
+    {
+        $storage = new HookStorage();
+        $this->expectException(InvalidHookArgument::class);
+        $storage->pushToAdded(HookStorage::FILTERS, 'init', ['x', 1, 10, 11]);
+    }
+
     public function testPushToAddedAndIsHookAdded()
     {
         $storage = new HookStorage();

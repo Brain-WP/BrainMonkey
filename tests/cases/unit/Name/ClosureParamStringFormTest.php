@@ -39,7 +39,7 @@ class ClosureParamStringFormTest extends UnitTestCase
     public function testFromStringThrowsForBadType()
     {
         $this->expectException(InvalidClosureParam::class);
-        $this->expectExceptionCode(InvalidClosureParam::CODE_INVALID_NAME);
+        $this->expectExceptionCode(InvalidClosureParam::CODE_INVALID_TYPE);
         ClosureParamStringForm::fromString('F-oo $foo');
     }
 

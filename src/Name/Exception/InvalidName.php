@@ -33,7 +33,7 @@ class InvalidName extends Exception
     }
 
     /**
-     * @param $class
+     * @param string $class
      * @return \Brain\Monkey\Name\Exception\InvalidName
      */
     public static function forClass($class)
@@ -42,7 +42,7 @@ class InvalidName extends Exception
     }
 
     /**
-     * @param $function
+     * @param string $function
      * @return \Brain\Monkey\Name\Exception\InvalidName
      */
     public static function forMethod($function)
@@ -51,7 +51,7 @@ class InvalidName extends Exception
     }
 
     /**
-     * @param string $thing
+     * @param mixed $thing
      * @param int $code
      * @return static
      */
@@ -70,11 +70,15 @@ class InvalidName extends Exception
                 break;
         }
 
-        $name = "'{$thing}'";
-        if ( ! is_string($thing)) {
-            $name = is_object($thing)
-                ? 'An instance of '.get_class($thing)
-                : 'A variable of type '.gettype($thing);
+        switch (true) {
+            case is_string($thing):
+                $name = "'{$thing}'";
+                break;
+            case is_object($thing):
+                $name = 'An instance of '.get_class($thing);
+                break;
+            default:
+                $name = 'A variable of type '.gettype($thing);
         }
 
         return new static(sprintf('%s is not a valid %s name.', $name, $type), $code);
