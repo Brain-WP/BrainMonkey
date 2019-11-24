@@ -1,22 +1,16 @@
-<!--
-currentMenu: "functionswhen"
-currentSection: "PHP Functions"
-title: "Patching functions with when()"
--->
-# Patching functions with when()
+# Patching functions with when\(\)
 
 The first way Brain Monkey offers to monkey patch a function is `Functions\when()`.
 
 This function has to be used to **set a behavior** for functions.
 
-`when()` and 5 related methods are used to define functions (if not defined yet) and:
+`when()` and 5 related methods are used to define functions \(if not defined yet\) and:
 
- - make them return a specific value
- - make them return one of the received arguments
- - make them echo a specific value
- - make them echo one of the received arguments
- - make them behave just like another callback
-
+* make them return a specific value
+* make them return one of the received arguments
+* make them echo a specific value
+* make them echo one of the received arguments
+* make them behave just like another callback
 
 For the sake of readability, in all the code samples below I'll assume that an `use` statement is in place:
 
@@ -26,15 +20,11 @@ use Brain\Monkey\Functions;
 
 Don't forget to add it in your code as well, or use the fully qualified class name.
 
-Also be sure to read the *PHP Functions / Setup* section that explain how setup Brain Monkey for usage in tests.
-
-
-
+Also be sure to read the _PHP Functions / Setup_ section that explain how setup Brain Monkey for usage in tests.
 
 ## `justReturn()`
 
-By using `when()` in combination with `justReturn()` you can make a (maybe) undefined function *just return* a given value:
-
+By using `when()` in combination with `justReturn()` you can make a \(maybe\) undefined function _just return_ a given value:
 
 ```php
 Functions\when('a_undefined_function')->justReturn('Cool!');
@@ -42,10 +32,7 @@ Functions\when('a_undefined_function')->justReturn('Cool!');
 echo a_undefined_function(); // echoes "Cool!"
 ```
 
-Without passing a value to `justReturn()` the target function will return nothing (`null`).
-
-
-
+Without passing a value to `justReturn()` the target function will return nothing \(`null`\).
 
 ## `returnArg()`
 
@@ -70,8 +57,6 @@ Functions\when('needs_the_third')->returnArg(3);
 echo needs_the_third('A', 'B');
 ```
 
-
-
 ## `justEcho()`
 
 Similar to `justReturn()`, it makes the mocked function echo some value instead of returning it.
@@ -81,8 +66,6 @@ Functions\when('a_undefined_function')->justEcho('Cool!');
 
 a_undefined_function(); // echoes "Cool!"
 ```
-
-
 
 ## `echoArg()`
 
@@ -96,12 +79,9 @@ echo_the_first('A', 'B', 'C'); // echoes "A"
 echo_the_second('A', 'B', 'C'); // echoes "B"
 ```
 
-
-
 ## `alias()`
 
-The last of the when-related methods allows to make a function behave just like another callback.
-The replacing function can be anything that can be run: a core function or a custom one, a class method, a closure...
+The last of the when-related methods allows to make a function behave just like another callback. The replacing function can be anything that can be run: a core function or a custom one, a class method, a closure...
 
 ```php
 Functions\when('duplicate')->alias(function($value) {
@@ -113,3 +93,4 @@ Functions\when('bigger')->alias('strtoupper');
 echo duplicate(1); // echoes "Was 1, now is 2"
 echo bigger('was lower'); // echoes "WAS LOWER"
 ```
+

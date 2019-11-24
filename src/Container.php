@@ -19,7 +19,7 @@ final class Container
 {
 
     /**
-     * @var Container
+     * @var Container|null
      */
     private static $instance;
 
@@ -31,7 +31,7 @@ final class Container
     /**
      * Static instance lookup.
      *
-     * @return static
+     * @return Container
      */
     public static function instance()
     {

@@ -57,7 +57,7 @@ final class CallbackStringForm
     }
 
     /**
-     * @param $callback
+     * @param mixed $callback
      * @return string
      */
     private function parseCallback($callback)
@@ -105,7 +105,7 @@ final class CallbackStringForm
 
     /**
      * @param string $callback
-     * @return bool|string
+     * @return string
      */
     private function parseString($callback)
     {
@@ -122,16 +122,23 @@ final class CallbackStringForm
             }
         }
 
+        $is_static_method = substr_count($callback, '::') === 1;
+        $is_normalized_form = substr($callback, -2) === '()';
+
+        // Callback is a static method passed as string, like "Foo\Bar::some_method"
+        if ($is_static_method && !$is_normalized_form) {
+            return $this->parseCallback(explode('::', $callback));
+        }
+
         // If this is not a string in normalized form, we just check is a valid function name
-        if (substr($callback, -2) !== '()') {
+        if (!$is_normalized_form) {
             return (new FunctionName($callback))->fullyQualifiedName();
         }
 
         // remove parenthesis
-        $callback = substr($callback, 0, -2);
+        $callback = preg_replace('~\(\)$~', '', $callback);
 
         $is_dynamic_method = substr_count($callback, '->') === 1;
-        $is_static_method = substr_count($callback, '::') === 1;
 
         // If this is a normalized form of a static or dynamic method let's check that both class
         // and method names are fine

@@ -11,13 +11,14 @@
 namespace Brain\Monkey\Tests\Functional;
 
 use Brain\Monkey;
+use Brain\Monkey\Tests\FunctionalTestCase;
 
 /**
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @license http://opensource.org/licenses/MIT MIT
  * @package BrainMonkey
  */
-class FunctionsTest extends Monkey\Tests\FunctionalTestCase
+class FunctionsTest extends FunctionalTestCase
 {
     public function testWhen()
     {

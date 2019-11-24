@@ -1,13 +1,8 @@
-<!--
-currentMenu: "functionsexpect"
-currentSection: "PHP Functions"
-title: "Testing functions with expect()"
--->
-# Testing functions with expect()
+# Testing functions with expect\(\)
 
-Often, in tests, what we need is not only to enforce a function returned value (what `Functions\when()` allows to do), but to test function behavior based on **expectations**.
+Often, in tests, what we need is not only to enforce a function returned value \(what `Functions\when()` allows to do\), but to test function behavior based on **expectations**.
 
-Mockery has a very powerful, and human readable Domain Specific Language (DSL) that allows to set expectations on how object methods should behave, e.g. validate arguments they should receive, how many times they are called, and so on.
+Mockery has a very powerful, and human readable Domain Specific Language \(DSL\) that allows to set expectations on how object methods should behave, e.g. validate arguments they should receive, how many times they are called, and so on.
 
 Brain Monkey brings that power to function testing. The entry-point is the `Functions\expect()` function.
 
@@ -15,10 +10,7 @@ It receives a function name and returns a Mockery expectation object with all it
 
 Below there are just several examples, for the full story about Mockery expectations see its [documentation](http://docs.mockery.io/en/latest/reference/index.html).
 
-Only note that in functions testing the `shouldReceive` Mockery method makes **no sense**, so don't use it (an exception will be thrown if you do that).
-
-
-
+Only note that in functions testing the `shouldReceive` Mockery method makes **no sense**, so don't use it \(an exception will be thrown if you do that\).
 
 ## Expectations on times a function is called
 
@@ -43,8 +35,6 @@ Functions\expect('i_have_max_and_min')->between(2, 4);
 There is no need to explain how it works: Mockery DSL reads like plain English.
 
 Of course, expectation on the times a function should run can be combined with arguments expectation.
-
-
 
 ## Expectations on received arguments
 
@@ -97,12 +87,9 @@ Functions\expect('function_name')
     ->with(Mockery::hasKey('foo'), Mockery::contains('bar', 'baz'));
 ```
 
-
-
 ## Forcing behavior
 
-Excluding `shouldReceive`, all the Mockery expectation methods can be used with Brain Monkey, including
-`andReturn` or `andReturnUsing` used to enforce a function to return specific values during tests.
+Excluding `shouldReceive`, all the Mockery expectation methods can be used with Brain Monkey, including `andReturn` or `andReturnUsing` used to enforce a function to return specific values during tests.
 
 In fact, `Functions\when()` do same thing for simple cases when no expectations are required.
 
@@ -143,3 +130,4 @@ Functions\expect('function_name')
   ->once()
   ->andThrow('RuntimeException'); // Both exception names and object are supported
 ```
+

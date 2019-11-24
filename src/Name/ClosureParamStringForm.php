@@ -73,8 +73,13 @@ class ClosureParamStringForm
     public static function fromReflectionParameter(\ReflectionParameter $parameter)
     {
         $type = '';
-        if (PHP_MAJOR_VERSION >= 7) {
-            $type = $parameter->hasType() ? ltrim($parameter->getType(), '\\') : '';
+        if (PHP_MAJOR_VERSION >= 7 && $parameter->hasType()) {
+            $type = $parameter->getType();
+            if ($type instanceof \ReflectionNamedType) {
+                $type = $type->getName();
+            }
+
+            $type = ltrim($type, '\\');
         }
 
         return new static($parameter->getName(), $type, $parameter->isVariadic());

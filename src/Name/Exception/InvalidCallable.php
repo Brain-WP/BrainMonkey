@@ -19,7 +19,7 @@ class InvalidCallable extends Exception
 {
 
     /**
-     * @param $callback
+     * @param mixed $callback
      * @return \Brain\Monkey\Name\Exception\InvalidCallable|\Brain\Monkey\Name\Exception\NotInvokableObjectAsCallback
      */
     public static function forCallable($callback)

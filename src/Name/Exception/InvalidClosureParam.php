@@ -24,7 +24,7 @@ class InvalidClosureParam extends Exception
     const CODE_MULTIPLE_VARIADIC = 3;
 
     /**
-     * @param $name
+     * @param string $name
      * @return static
      */
     public static function forInvalidName($name)
@@ -36,20 +36,20 @@ class InvalidClosureParam extends Exception
     }
 
     /**
-     * @param $type
-     * @param $name
+     * @param string $type
+     * @param string $name
      * @return static
      */
     public static function forInvalidType($type, $name)
     {
         return new static(
             sprintf('%s is not a valid function argument type for argument %s.', $type, $name),
-            self::CODE_INVALID_NAME
+            self::CODE_INVALID_TYPE
         );
     }
 
     /**
-     * @param $name
+     * @param string $name
      * @return static
      */
     public static function forMultipleVariadic($name)
@@ -59,7 +59,7 @@ class InvalidClosureParam extends Exception
                 '%s is a variadic argument for a function that already has a variadic argument.',
                 $name
             ),
-            self::CODE_INVALID_NAME
+            self::CODE_MULTIPLE_VARIADIC
         );
     }
 
