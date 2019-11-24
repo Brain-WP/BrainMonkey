@@ -100,4 +100,41 @@ class FiltersTest extends FunctionalTestCase
 
         static::assertSame('HELLO WORLD', $hello);
     }
+
+    public function testExpectAppliedThenDoneDeprecated()
+    {
+        /** @var callable|null $on_my_hook */
+        $on_my_hook = null;
+
+        Monkey\Filters\expectAdded('my_hook')
+            ->with(\Mockery::type('callable'), 1, 2)
+            ->once()
+            ->whenHappen(
+                static function (callable $callback) use (&$on_my_hook) {
+                    $on_my_hook = $callback;
+                }
+            );
+
+        Monkey\Filters\expectApplied('my_hook')
+            ->once()
+            ->with(\Mockery::type('string'), \Mockery::type('string'))
+            ->andReturnUsing(
+                static function ($a, $b) use (&$on_my_hook) {
+                    return $on_my_hook($a, $b);
+                }
+            );
+
+        add_filter(
+            'my_hook',
+            function ($a, $b) {
+                return strtoupper("{$a} {$b}");
+            },
+            1,
+            2
+        );
+
+        $hello = apply_filters_deprecated('my_hook', array('Hello', 'World'), 'x.x.x', 'Replacement');
+
+        static::assertSame('HELLO WORLD', $hello);
+    }
 }

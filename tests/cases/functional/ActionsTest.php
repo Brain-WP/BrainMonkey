@@ -103,4 +103,38 @@ class ActionsTest extends FunctionalTestCase
 
         do_action('my_hook', 'Hello', 'World');
     }
+
+    public function testExpectAppliedThenDoneDeprecated()
+    {
+        $this->expectOutputString('Hello World');
+
+        /** @var callable|null $on_my_hook */
+        $on_my_hook = null;
+
+        Monkey\Actions\expectAdded('my_hook')
+            ->with(\Mockery::type('callable'), \Mockery::type('int'), 2)
+            ->whenHappen(
+                static function (callable $callback) use (&$on_my_hook) {
+                    $on_my_hook = $callback;
+                }
+            );
+
+        Monkey\Actions\expectDone('my_hook')
+            ->whenHappen(
+                static function (...$args) use (&$on_my_hook) {
+                    $on_my_hook(...$args);
+                }
+            );
+
+        add_action(
+            'my_hook',
+            function ($a, $b) {
+                echo "{$a} {$b}";
+            },
+            1,
+            2
+        );
+
+        do_action_deprecated('my_hook', array('Hello', 'World'), 'x.x.x.', 'Replacement');
+    }
 }
