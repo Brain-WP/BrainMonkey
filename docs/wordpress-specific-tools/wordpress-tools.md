@@ -18,7 +18,7 @@ Following functions are defined by Brain Monkey when it is loaded for tests:
 * `remove_action()`
 * `do_action()`
 * `do_action_ref_array()`
-* `do_action_deprecated()`
+* `do_action_deprecated()`  (since 2.4)
 * `did_action()`
 * `doing_action()`
 * `has_action()`
@@ -26,7 +26,7 @@ Following functions are defined by Brain Monkey when it is loaded for tests:
 * `remove_filter()`
 * `apply_filters()`
 * `apply_filters_ref_array()`
-* `apply_filters_deprecated()`
+* `apply_filters_deprecated()` \(since 2.4\)
 * `has_filter()`
 * `current_filter()`
 
