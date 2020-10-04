@@ -20,13 +20,19 @@ use PHPUnit\Framework\TestCase;
  */
 class FunctionalTestCase extends TestCase
 {
-    protected function setUp()
+    /**
+     * @before
+     */
+    protected function setUpFixtures()
     {
         parent::setUp();
         Monkey\setUp();
     }
 
-    protected function tearDown()
+    /**
+     * @after
+     */
+    protected function tearDownFixtures()
     {
         Monkey\tearDown();
         parent::tearDown();

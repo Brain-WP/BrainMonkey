@@ -22,7 +22,10 @@ class UnitTestCase extends TestCase
 {
     private $expect_mockery_exception = null;
 
-    protected function setUp()
+    /**
+     * @before
+     */
+    protected function setUpFixtures()
     {
         $this->expect_mockery_exception = null;
         $libPath = explode('/tests/src/', str_replace('\\', '/', __FILE__))[0];
@@ -31,7 +34,10 @@ class UnitTestCase extends TestCase
         require_once "{$libPath}/inc/wp-hook-functions.php";
     }
 
-    protected function tearDown()
+    /**
+     * @after
+     */
+    protected function tearDownFixtures()
     {
         if ( ! $this->expect_mockery_exception) {
             Monkey\tearDown();
