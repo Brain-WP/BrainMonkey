@@ -13,7 +13,6 @@ namespace Brain\Monkey\Tests\Unit\Api;
 use Brain\Monkey\Functions;
 use Brain\Monkey\Tests\UnitTestCase;
 use Mockery\Exception\InvalidCountException;
-use PHPUnit\Framework\Error\Error as PHPUnit_Error;
 
 /**
  * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
@@ -149,9 +148,9 @@ class FunctionsTest extends UnitTestCase
 
     public function testUndefinedFunctionTriggerErrorRightAfterDefinition()
     {
-        $this->expectErrorExceptionHelper();
+        $this->expectErrorException();
         Functions\when('since_i_am_not_defined_i_will_trigger_error');
-        $this->expectExceptionMsgRegexHelper('/since_i_am_not_defined_i_will_trigger_error.+not defined/');
+        $this->expectExceptionMsgRegex('/since_i_am_not_defined_i_will_trigger_error.+not defined/');
         /** @noinspection PhpUndefinedFunctionInspection */
         since_i_am_not_defined_i_will_trigger_error();
     }
@@ -169,8 +168,8 @@ class FunctionsTest extends UnitTestCase
      */
     public function testSurvivedFunctionStillTriggerError()
     {
-        $this->expectErrorExceptionHelper();
-        $this->expectExceptionMsgRegexHelper('/since_i_am_not_defined_i_will_trigger_error.+not defined/');
+        $this->expectErrorException();
+        $this->expectExceptionMsgRegex('/since_i_am_not_defined_i_will_trigger_error.+not defined/');
         /** @noinspection PhpUndefinedFunctionInspection */
         since_i_am_not_defined_i_will_trigger_error();
     }
@@ -190,8 +189,8 @@ class FunctionsTest extends UnitTestCase
      */
     public function testSurvivedFunctionStillTriggerErrorAfterBeingMocked()
     {
-        $this->expectErrorExceptionHelper();
-        $this->expectExceptionMsgRegexHelper('/since_i_am_not_defined_i_will_trigger_error.+not defined/');
+        $this->expectErrorException();
+        $this->expectExceptionMsgRegex('/since_i_am_not_defined_i_will_trigger_error.+not defined/');
         /** @noinspection PhpUndefinedFunctionInspection */
         since_i_am_not_defined_i_will_trigger_error();
     }
@@ -373,29 +372,5 @@ class FunctionsTest extends UnitTestCase
 
         static::assertSame("hello, \\'world\\'", esc_sql("hello, 'world'"));
         static::assertSame('<b>hello world</b>', esc_sql('<b>hello world</b>'));
-    }
-
-    protected function expectExceptionMsgRegexHelper($msgRegex)
-    {
-        if (method_exists($this, 'expectExceptionMessageMatches')) {
-            // PHPUnit 8.4+.
-            $this->expectExceptionMessageMatches($msgRegex);
-            return;
-        }
-
-        // PHPUnit < 8.4.
-        $this->expectExceptionMessageRegExp($msgRegex);
-    }
-
-    protected function expectErrorExceptionHelper()
-    {
-        if (method_exists($this, 'expectError')) {
-            // PHPUnit 8.4+.
-            $this->expectError();
-            return;
-        }
-
-        // PHPUnit < 8.4.
-        $this->expectException(PHPUnit_Error::class);
     }
 }

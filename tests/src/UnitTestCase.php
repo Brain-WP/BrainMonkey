@@ -11,6 +11,7 @@
 namespace Brain\Monkey\Tests;
 
 use Brain\Monkey;
+use PHPUnit\Framework\Error\Error as PHPUnit_Error;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -46,6 +47,60 @@ class UnitTestCase extends TestCase
         }
 
         $this->tearDownMakingSureExpectedExceptionIsThrown();
+    }
+
+    /**
+     * PHPUnit cross-version support.
+     *
+     * @param string $needle
+     * @param string $haystack
+     * @param string $message
+     * @return void
+     */
+    public static function assertStringContains($needle, $haystack, $message = '') {
+
+        if (method_exists(TestCase::class, 'assertStringContainsString')) {
+            // PHPUnit 7.5+.
+            TestCase::assertStringContainsString($needle, $haystack, $message);
+
+            return;
+        }
+
+        // PHPUnit < 7.5.
+        static::assertContains($needle, $haystack, $message);
+    }
+
+    /**
+     * PHPUnit cross-version support.
+     */
+    protected function expectErrorException()
+    {
+        if (method_exists($this, 'expectError')) {
+            // PHPUnit 8.4+.
+            $this->expectError();
+            return;
+        }
+
+        // PHPUnit < 8.4.
+        $this->expectException(PHPUnit_Error::class);
+    }
+
+    /**
+     * PHPUnit cross-version support.
+     *
+     * @param string $msgRegex
+     * @return void
+     */
+    protected function expectExceptionMsgRegex($msgRegex)
+    {
+        if (method_exists($this, 'expectExceptionMessageMatches')) {
+            // PHPUnit 8.4+.
+            $this->expectExceptionMessageMatches($msgRegex);
+            return;
+        }
+
+        // PHPUnit < 8.4.
+        $this->expectExceptionMessageRegExp($msgRegex);
     }
 
     /**

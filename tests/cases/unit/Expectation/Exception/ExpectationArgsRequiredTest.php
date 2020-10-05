@@ -29,14 +29,7 @@ class ExpectationArgsRequiredTest extends UnitTestCase
             new ExpectationTarget($type, 'foo')
         )->getMessage();
 
-        if ( method_exists( static::class, 'assertStringContainsString' ) ) {
-            // PHPUnit 7.5+.
-            static::assertStringContainsString($message_part, $message);
-            return;
-        }
-
-        // PHPUnit < 7.5.
-        static::assertContains($message_part, $message);
+        static::assertStringContains($message_part, $message);
     }
 
     public function expectationTargets()
