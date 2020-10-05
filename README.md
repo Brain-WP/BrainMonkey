@@ -2,7 +2,7 @@
 
 ## Brain Monkey
 
-[![Travis CI status](https://travis-ci.org/Brain-WP/BrainMonkey.svg?branch=master)](https://travis-ci.org/Brain-WP/BrainMonkey)
+[![PHP Quality Assurance](https://github.com/Brain-WP/BrainMonkey/workflows/PHP%20Quality%20Assurance/badge.svg)](https://github.com/Brain-WP/BrainMonkey/actions?query=workflow%3A%22PHP+Quality+Assurance%22)
 [![codecov](https://codecov.io/gh/Brain-WP/BrainMonkey/branch/master/graph/badge.svg)](https://codecov.io/gh/Brain-WP/BrainMonkey)
 
 Brain Monkey is a tests utility for PHP.
