@@ -27,11 +27,11 @@ jobs:
               run: composer phpcompat
 
             - name: Run unit tests (>= 7.3)
-              if: ${{ contains(['7.3', '7.4', '8.0'], matrix.php-versions) }}
+              if: ${{ matrix.php-versions >= 7.3 }}
               run: ./vendor/bin/phpunit --coverage-clover=coverage.xml --migrate-configuration
 
             - name: Run unit tests (< 7.3)
-              if: ${{ contains(['5.6', '7.0', '7.1', '7.2'], matrix.php-versions) }}
+              if: ${{ matrix.php-versions < 7.3 }}
               run: ./vendor/bin/phpunit --coverage-clover=coverage.xml
 
             - name: Update codecov.io
