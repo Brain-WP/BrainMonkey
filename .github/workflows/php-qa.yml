@@ -1,0 +1,36 @@
+name: PHP Quality Assurance
+on: [push]
+jobs:
+    qa:
+        runs-on: ubuntu-latest
+        if: "!contains(github.event.head_commit.message, 'ci skip')"
+        strategy:
+            fail-fast: true
+            matrix:
+                php-versions: ['7.4', '7.3', '7.2', '7.1', '7.0', '5.6', '8.0']
+        steps:
+            - uses: actions/checkout@v2
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                php-version: ${{ matrix.php-versions }}
+
+            - name: Check syntax error in sources
+              run: find ./src/ ./tests/ -type f -name '*.php' -print0 | xargs -0 -L 1 -P 4 -- php -l
+
+            - name: Install dependencies
+              run: composer install -q -n -a --no-progress --prefer-dist
+
+            - name: Check cross-version PHP compatibility
+              if: ${{ matrix.php-versions == '7.4' }} # results is same across versions, do it once
+              run: composer phpcompat
+
+            - name: Run unit tests
+              run:  ./vendor/bin/phpunit --coverage-clover=coverage.xml
+
+            - name: Update codecov.io
+              uses: codecov/codecov-action@v1
+              if: ${{ matrix.php-versions == '7.4' }} # upload coverage once is enough
+              with:
+                file: ./coverage.xml
