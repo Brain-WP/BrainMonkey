@@ -7,7 +7,7 @@ jobs:
         strategy:
             fail-fast: true
             matrix:
-                php-versions: ['7.4', '7.3', '7.2', '7.1', '7.0', '5.6', '8.0']
+                php-versions: ['5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0']
         steps:
             - uses: actions/checkout@v2
 
@@ -27,7 +27,7 @@ jobs:
               run: composer phpcompat
 
             - name: Run unit tests
-              run:  ./vendor/bin/phpunit --coverage-clover=coverage.xml
+              run:  ./vendor/bin/phpunit --migrate-configuration --coverage-clover=coverage.xml
 
             - name: Update codecov.io
               uses: codecov/codecov-action@v1
