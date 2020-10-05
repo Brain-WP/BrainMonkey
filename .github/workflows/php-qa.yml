@@ -7,7 +7,7 @@ jobs:
         strategy:
             fail-fast: true
             matrix:
-                php-versions: ['7.4', '7.3', '7.2', '7.1', '7.0', '5.6', '8.0']
+                php-versions: ['5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0']
         steps:
             - uses: actions/checkout@v2
 
@@ -26,8 +26,13 @@ jobs:
               if: ${{ matrix.php-versions == '7.4' }} # results is same across versions, do it once
               run: composer phpcompat
 
-            - name: Run unit tests
-              run:  ./vendor/bin/phpunit --coverage-clover=coverage.xml
+            - name: Run unit tests (>= 7.3)
+              if: ${{ contains(['7.3', '7.4', '8.0'], matrix.php-versions) }}
+              run: ./vendor/bin/phpunit --coverage-clover=coverage.xml --migrate-configuration
+
+            - name: Run unit tests (< 7.3)
+              if: ${{ contains(['5.6', '7.0', '7.1', '7.2'], matrix.php-versions) }}
+              run: ./vendor/bin/phpunit --coverage-clover=coverage.xml
 
             - name: Update codecov.io
               uses: codecov/codecov-action@v1
