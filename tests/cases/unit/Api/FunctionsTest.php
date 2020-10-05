@@ -149,9 +149,9 @@ class FunctionsTest extends UnitTestCase
 
     public function testUndefinedFunctionTriggerErrorRightAfterDefinition()
     {
-        $this->expectException(PHPUnit_Error::class);
+        $this->expectErrorExceptionHelper();
         Functions\when('since_i_am_not_defined_i_will_trigger_error');
-        $this->expectExceptionMessageRegExp('/since_i_am_not_defined_i_will_trigger_error.+not defined/');
+        $this->expectExceptionMsgRegexHelper('/since_i_am_not_defined_i_will_trigger_error.+not defined/');
         /** @noinspection PhpUndefinedFunctionInspection */
         since_i_am_not_defined_i_will_trigger_error();
     }
@@ -169,8 +169,8 @@ class FunctionsTest extends UnitTestCase
      */
     public function testSurvivedFunctionStillTriggerError()
     {
-        $this->expectException(PHPUnit_Error::class);
-        $this->expectExceptionMessageRegExp('/since_i_am_not_defined_i_will_trigger_error.+not defined/');
+        $this->expectErrorExceptionHelper();
+        $this->expectExceptionMsgRegexHelper('/since_i_am_not_defined_i_will_trigger_error.+not defined/');
         /** @noinspection PhpUndefinedFunctionInspection */
         since_i_am_not_defined_i_will_trigger_error();
     }
@@ -190,8 +190,8 @@ class FunctionsTest extends UnitTestCase
      */
     public function testSurvivedFunctionStillTriggerErrorAfterBeingMocked()
     {
-        $this->expectException(PHPUnit_Error::class);
-        $this->expectExceptionMessageRegExp('/since_i_am_not_defined_i_will_trigger_error.+not defined/');
+        $this->expectErrorExceptionHelper();
+        $this->expectExceptionMsgRegexHelper('/since_i_am_not_defined_i_will_trigger_error.+not defined/');
         /** @noinspection PhpUndefinedFunctionInspection */
         since_i_am_not_defined_i_will_trigger_error();
     }
@@ -373,5 +373,29 @@ class FunctionsTest extends UnitTestCase
 
         static::assertSame("hello, \\'world\\'", esc_sql("hello, 'world'"));
         static::assertSame('<b>hello world</b>', esc_sql('<b>hello world</b>'));
+    }
+
+    protected function expectExceptionMsgRegexHelper($msgRegex)
+    {
+        if (method_exists($this, 'expectExceptionMessageMatches')) {
+            // PHPUnit 8.4+.
+            $this->expectExceptionMessageMatches($msgRegex);
+            return;
+        }
+
+        // PHPUnit < 8.4.
+        $this->expectExceptionMessageRegExp($msgRegex);
+    }
+
+    protected function expectErrorExceptionHelper()
+    {
+        if (method_exists($this, 'expectError')) {
+            // PHPUnit 8.4+.
+            $this->expectError();
+            return;
+        }
+
+        // PHPUnit < 8.4.
+        $this->expectException(PHPUnit_Error::class);
     }
 }
