@@ -149,7 +149,7 @@ class FunctionsTest extends UnitTestCase
 
     public function testUndefinedFunctionTriggerErrorRightAfterDefinition()
     {
-        $this->expectException(PHPUnit_Error::class);
+        $this->expectErrorExceptionHelper();
         Functions\when('since_i_am_not_defined_i_will_trigger_error');
         $this->expectExceptionMsgRegexHelper('/since_i_am_not_defined_i_will_trigger_error.+not defined/');
         /** @noinspection PhpUndefinedFunctionInspection */
@@ -169,7 +169,7 @@ class FunctionsTest extends UnitTestCase
      */
     public function testSurvivedFunctionStillTriggerError()
     {
-        $this->expectException(PHPUnit_Error::class);
+        $this->expectErrorExceptionHelper();
         $this->expectExceptionMsgRegexHelper('/since_i_am_not_defined_i_will_trigger_error.+not defined/');
         /** @noinspection PhpUndefinedFunctionInspection */
         since_i_am_not_defined_i_will_trigger_error();
@@ -190,7 +190,7 @@ class FunctionsTest extends UnitTestCase
      */
     public function testSurvivedFunctionStillTriggerErrorAfterBeingMocked()
     {
-        $this->expectException(PHPUnit_Error::class);
+        $this->expectErrorExceptionHelper();
         $this->expectExceptionMsgRegexHelper('/since_i_am_not_defined_i_will_trigger_error.+not defined/');
         /** @noinspection PhpUndefinedFunctionInspection */
         since_i_am_not_defined_i_will_trigger_error();
@@ -385,5 +385,17 @@ class FunctionsTest extends UnitTestCase
 
         // PHPUnit < 8.4.
         $this->expectExceptionMessageRegExp($msgRegex);
+    }
+
+    protected function expectErrorExceptionHelper()
+    {
+        if (method_exists($this, 'expectError')) {
+            // PHPUnit 8.4+.
+            $this->expectError();
+            return;
+        }
+
+        // PHPUnit < 8.4.
+        $this->expectException(PHPUnit_Error::class);
     }
 }
