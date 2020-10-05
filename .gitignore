@@ -4,3 +4,4 @@ vendor/
 website/
 couscous-theme/
 couscous.*
+/.phpunit.result.cache
