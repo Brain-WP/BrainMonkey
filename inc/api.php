@@ -225,9 +225,14 @@ namespace Brain\Monkey\Actions {
      */
     function has($action, $callback = null)
     {
-        return Container::instance()
-                        ->hookStorage()
-                        ->isHookAdded(Hook\HookStorage::ACTIONS, $action, $callback);
+        $type = Hook\HookStorage::ACTIONS;
+        $hookStorage = Container::instance()->hookStorage();
+
+        if ($callback === null) {
+            return $hookStorage->isHookAdded($type, $action);
+        }
+
+        return $hookStorage->hookPriority($type, $action, $callback);
     }
 
     /**
@@ -325,9 +330,14 @@ namespace Brain\Monkey\Filters {
      */
     function has($filter, $callback = null)
     {
-        return Container::instance()
-                        ->hookStorage()
-                        ->isHookAdded(Hook\HookStorage::FILTERS, $filter, $callback);
+        $type = Hook\HookStorage::FILTERS;
+        $hookStorage = Container::instance()->hookStorage();
+
+        if ($callback === null) {
+            return $hookStorage->isHookAdded($type, $filter);
+        }
+
+        return $hookStorage->hookPriority($type, $filter, $callback);
     }
 
     /**

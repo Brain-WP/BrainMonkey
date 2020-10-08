@@ -37,13 +37,13 @@ class AddFiltersTest extends UnitTestCase
         });
         add_filter('the_title', [$this, __FUNCTION__], 20);
 
-        static::assertTrue(has_filter('the_title', 'strtolower'));
-        static::assertTrue(has_filter('the_title', 'function(array $title)'));
-        static::assertTrue(has_filter('the_title', __CLASS__.'->'.__FUNCTION__.'()', 20));
+        static::assertEquals(30, has_filter('the_title', 'strtolower'));
+        static::assertEquals(10, has_filter('the_title', 'function(array $title)'));
+        static::assertEquals(20, has_filter('the_title', __CLASS__.'->'.__FUNCTION__.'()'));
 
-        static::assertFalse(has_filter('the_content', 'strtolower', 30, 1));
+        static::assertFalse(has_filter('the_content', 'strtolower'));
         static::assertFalse(has_filter('foo', 'function()'));
-        static::assertFalse(has_filter('bar', __CLASS__.'->'.__FUNCTION__.'()', 20));
+        static::assertFalse(has_filter('bar', __CLASS__.'->'.__FUNCTION__.'()'));
     }
 
     public function testHasWithoutCallback()
@@ -104,7 +104,7 @@ class AddFiltersTest extends UnitTestCase
 
         add_filter('the_title', '__return_empty_string', 20);
 
-        static::assertTrue(has_filter('the_title', '__return_empty_string'));
+        static::assertEquals(20, has_filter('the_title', '__return_empty_string'));
 
         remove_filter('the_title', '__return_empty_string', 20);
 
