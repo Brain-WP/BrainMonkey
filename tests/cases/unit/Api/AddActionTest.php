@@ -40,9 +40,9 @@ class AddActionTest extends UnitTestCase
         add_action('init', function ( $x, ...$y ) { return true; });
         add_action('init', [new \ArrayObject(), 'getArrayCopy'], 5);
 
-        static::assertTrue(has_action('init', 'strtolower'));
-        static::assertTrue(has_action('init', 'function( $x, ...$y )'));
-        static::assertTrue(has_action('init', 'ArrayObject->getArrayCopy()'));
+        static::assertSame(30, has_action('init', 'strtolower'));
+        static::assertSame(10, has_action('init', 'function( $x, ...$y )'));
+        static::assertSame(5, has_action('init', 'ArrayObject->getArrayCopy()'));
 
         static::assertFalse(has_action('pre_get_posts', 'strtolower'));
         static::assertFalse(has_action('foo', 'function()'));
@@ -75,8 +75,8 @@ class AddActionTest extends UnitTestCase
             return 'baz';
         });
 
-        static::assertTrue(has_action('init', 'strtolower'));
-        static::assertTrue(has_action('init', 'strtoupper'));
+        static::assertSame(30, has_action('init', 'strtolower'));
+        static::assertSame(20, has_action('init', 'strtoupper'));
     }
 
     public function testAddedSameActionDifferentArguments()
@@ -101,7 +101,7 @@ class AddActionTest extends UnitTestCase
 
         add_action('init', [$this, __FUNCTION__], 20);
 
-        static::assertTrue(has_action('init', [$this, __FUNCTION__]));
+        static::assertSame(20, has_action('init', [$this, __FUNCTION__]));
 
         remove_action('init', [$this, __FUNCTION__], 20);
 

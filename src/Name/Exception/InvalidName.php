@@ -52,7 +52,7 @@ class InvalidName extends Exception
 
     /**
      * @param mixed $thing
-     * @param int $code
+     * @param int   $code
      * @return static
      */
     private static function createFor($thing, $code)

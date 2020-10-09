@@ -178,22 +178,23 @@ PHP;
 
             $this->assertPrintable($arg, "passed as argument {$arg_num} to {$fqn}");
 
-            echo (string) $arg;
+            echo (string)$arg;
         });
 
         $this->assertRedefined($fqn);
     }
 
     /**
-     * @param  mixed  $arg_num
-     * @param  string $method
+     * @param mixed  $arg_num
+     * @param string $method
      * @return bool
      */
     private function assertValidArgNum($arg_num, $method)
     {
         if ( ! is_int($arg_num) || $arg_num <= 0) {
             throw new Exception\InvalidArgumentForStub(
-                sprintf('`%s::%s()` first parameter must be a positiver integer.', __CLASS__, $method)
+                sprintf('`%s::%s()` first parameter must be a positiver integer.', __CLASS__,
+                    $method)
             );
         }
 

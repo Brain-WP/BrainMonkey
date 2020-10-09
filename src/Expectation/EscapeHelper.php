@@ -45,7 +45,7 @@ class EscapeHelper
      */
     public static function escUrlRaw($url)
     {
-        if (!parse_url($url, PHP_URL_SCHEME)) {
+        if ( ! parse_url($url, PHP_URL_SCHEME)) {
             $url = "http://{$url}";
         }
 

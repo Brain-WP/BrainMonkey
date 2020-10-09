@@ -94,7 +94,7 @@ class HookExpectationExecutor
 
     /**
      * @param string $action
-     * @param array $args
+     * @param array  $args
      * @return mixed
      */
     public function executeRemoveAction($action, array $args)
@@ -104,7 +104,7 @@ class HookExpectationExecutor
 
     /**
      * @param string $filter
-     * @param array $args
+     * @param array  $args
      * @return mixed
      */
     public function executeRemoveFilter($filter, array $args)

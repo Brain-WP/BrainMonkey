@@ -37,9 +37,9 @@ class AddFiltersTest extends UnitTestCase
         });
         add_filter('the_title', [$this, __FUNCTION__], 20);
 
-        static::assertEquals(30, has_filter('the_title', 'strtolower'));
-        static::assertEquals(10, has_filter('the_title', 'function(array $title)'));
-        static::assertEquals(20, has_filter('the_title', __CLASS__.'->'.__FUNCTION__.'()'));
+        static::assertSame(30, has_filter('the_title', 'strtolower'));
+        static::assertSame(10, has_filter('the_title', 'function(array $title)'));
+        static::assertSame(20, has_filter('the_title', __CLASS__.'->'.__FUNCTION__.'()'));
 
         static::assertFalse(has_filter('the_content', 'strtolower'));
         static::assertFalse(has_filter('foo', 'function()'));
@@ -104,7 +104,7 @@ class AddFiltersTest extends UnitTestCase
 
         add_filter('the_title', '__return_empty_string', 20);
 
-        static::assertEquals(20, has_filter('the_title', '__return_empty_string'));
+        static::assertSame(20, has_filter('the_title', '__return_empty_string'));
 
         remove_filter('the_title', '__return_empty_string', 20);
 

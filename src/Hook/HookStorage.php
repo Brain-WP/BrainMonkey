@@ -139,18 +139,18 @@ final class HookStorage
      */
     public function hookPriority($type, $hook, $function)
     {
-        if (!isset($this->storage[self::ADDED][$type][$hook])) {
+        if ( ! isset($this->storage[self::ADDED][$type][$hook])) {
             return false;
         }
 
         $all = $this->storage[self::ADDED][$type][$hook];
-        $callbackStringForm = \is_string($function) ? new CallbackStringForm($function) : $function;
 
         /**
          * @var CallbackStringForm $callback
+         * @var int                $priority
          */
         foreach ($all as $key => list($callback, $priority)) {
-            if ($callback->equals($callbackStringForm)) {
+            if ($callback->equals(new CallbackStringForm($function))) {
                 return $priority;
             }
         }
@@ -162,7 +162,7 @@ final class HookStorage
      * @param string $key
      * @param string $type
      * @param string $hook
-     * @param array $args
+     * @param array  $args
      * @return static
      */
     private function pushToStorage($key, $type, $hook, array $args)

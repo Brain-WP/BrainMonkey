@@ -76,7 +76,7 @@ final class FunctionName
      * Checks the name of a function and throw an exception if is not valid.
      * When name is valid returns an array of the name itself and its namespace parts.
      *
-     * @param  mixed $function_name
+     * @param mixed $function_name
      * @return string[]
      */
     private function parseName($function_name)

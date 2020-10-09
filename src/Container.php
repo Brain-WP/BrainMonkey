@@ -35,7 +35,7 @@ final class Container
      */
     public static function instance()
     {
-        if (!self::$instance) {
+        if ( ! self::$instance) {
             require_once dirname(__DIR__).'/inc/patchwork-loader.php';
             self::$instance = new static();
         }

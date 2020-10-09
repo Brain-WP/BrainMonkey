@@ -145,9 +145,9 @@ class ApplyFiltersTest extends UnitTestCase
         $yes = apply_filters('foo', 'Yes?');
         $maybe = apply_filters('foo', 'Maybe?');
 
-        static::assertEquals('No!', $no);
-        static::assertEquals('Yes!', $yes);
-        static::assertEquals('Maybe!', $maybe);
+        static::assertSame('No!', $no);
+        static::assertSame('Yes!', $yes);
+        static::assertSame('Maybe!', $maybe);
     }
 
     public function testApplySameFilterDifferentArgumentsWithCatchAll()
@@ -160,9 +160,9 @@ class ApplyFiltersTest extends UnitTestCase
         $yes = apply_filters('foo', 'Yes?');
         $maybe = apply_filters('foo', 'Maybe?');
 
-        static::assertEquals('No!', $no);
-        static::assertEquals('Yes!', $yes);
-        static::assertEquals('Maybe?', $maybe);
+        static::assertSame('No!', $no);
+        static::assertSame('Yes!', $yes);
+        static::assertSame('Maybe?', $maybe);
     }
 
     public function testAddExpectationWithDifferentArgsDoesNotBreakApplyFilters()

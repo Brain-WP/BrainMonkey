@@ -105,7 +105,7 @@ class Expectation
     ) {
         $this->expectation = $expectation;
         $this->target = $target;
-        $this->return_expectations = $return_expectations ?: new \ArrayObject();
+        $this->return_expectations = $return_expectations ? : new \ArrayObject();
     }
 
     /**
@@ -122,8 +122,8 @@ class Expectation
     /**
      * Delegate method to wrapped expectation, after some checks.
      *
-     * @param  string $name
-     * @param  array  $arguments
+     * @param string $name
+     * @param array  $arguments
      * @return static
      */
     public function __call($name, array $arguments = [])
@@ -252,7 +252,7 @@ class Expectation
      * For expectation types that allows return expectation (functions, applied filters) this method
      * becomes just an alias for Mockery `andReturnUsing()`.
      *
-     * @param  callable $callback
+     * @param callable $callback
      * @return static
      */
     public function whenHappen(callable $callback)

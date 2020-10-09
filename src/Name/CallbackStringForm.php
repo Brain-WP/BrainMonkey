@@ -126,12 +126,12 @@ final class CallbackStringForm
         $is_normalized_form = substr($callback, -2) === '()';
 
         // Callback is a static method passed as string, like "Foo\Bar::some_method"
-        if ($is_static_method && !$is_normalized_form) {
+        if ($is_static_method && ! $is_normalized_form) {
             return $this->parseCallback(explode('::', $callback));
         }
 
         // If this is not a string in normalized form, we just check is a valid function name
-        if (!$is_normalized_form) {
+        if ( ! $is_normalized_form) {
             return (new FunctionName($callback))->fullyQualifiedName();
         }
 
