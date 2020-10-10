@@ -140,8 +140,8 @@ could be tested with in Brain Monkey v1 with:
 ```php
 // Brain Monkey v1:
 test();
-self::assertTrue(has_action('example_one', 'A\Name\Space\SomeClass->aMethod()')); // pass
-self::assertTrue(has_action('example_two', 'function()')); // pass
+self::assertNotFalse(has_action('example_one', 'A\Name\Space\SomeClass->aMethod()')); // pass
+self::assertNotFalse(has_action('example_two', 'function()')); // pass
 ```
 
 The syntax for string representation of callbacks including objects is unchanged in Brain Monkey v2, however, **the syntax for closures string representation has been changed to allow more fine grained control**.
@@ -151,9 +151,9 @@ In fact, in Brain Monkey v1 _all_ the closures were represented as the string `"
 ```php
 // Brain Monkey v2:
 test();
-self::assertTrue(has_action('example_one', 'A\Name\Space\SomeClass->aMethod()')); // pass
-self::assertTrue(has_action('example_two', 'function()')); // fail!
-self::assertTrue(has_action('example_two', 'function(array $foo)')); // pass!
+self::assertNotFalse(has_action('example_one', 'A\Name\Space\SomeClass->aMethod()')); // pass
+self::assertNotFalse(has_action('example_two', 'function()')); // fail!
+self::assertNotFalse(has_action('example_two', 'function(array $foo)')); // pass!
 ```
 
 The closure string representation _does_ take into account:

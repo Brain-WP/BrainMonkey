@@ -39,8 +39,8 @@ class MyClassTest extends MyTestCase {
   public function testAddHooksActuallyAddsHooks() {
 
         ( new MyClass() )->addHooks();
-        self::assertTrue( has_action('init', [ MyClass::class, 'init' ]) );
-        self::assertTrue( has_filter('the_title', [ MyClass::class, 'the_title' ] ) );
+        self::assertNotFalse( has_action('init', [ MyClass::class, 'init' ]) );
+        self::assertNotFalse( has_filter('the_title', [ MyClass::class, 'the_title' ] ) );
     }
 }
 ```
@@ -80,7 +80,7 @@ class MyClassTest extends MyTestCase
         $class = new \Some\Name\Space\MyClass\MyClass();
         $class->addHooks();
 
-        self::assertTrue( has_action('init', 'Some\Name\Space\MyClass->init()', 20) );
+        self::assertSame( 20, has_action( 'init', 'Some\Name\Space\MyClass->init()' ) );
     }
 }
 ```
@@ -126,7 +126,7 @@ class MyClassTest extends MyTestCase
         $class = new \Some\Name\Space\MyClass();
         $class->addHooks();
 
-        self::assertTrue( has_filter('the_title', 'function ($title)' ) );
+        self::assertNotFalse( has_filter('the_title', 'function ($title)' ) );
     }
 }
 ```
