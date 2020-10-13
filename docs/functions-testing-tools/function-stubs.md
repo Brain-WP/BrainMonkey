@@ -120,9 +120,11 @@ Since version 2.3, this has became much easier thanks to the introduction of a n
 
 When called, it will create a stub for _all_ the following functions:
 
-* `__()`        
-* `_x()`       
-* `translate()` 
+* `__()`
+* `_e()`
+* `_ex()`
+* `_x()`
+* `translate()`
 * `esc_html__()`
 * `esc_html_x()`
 * `esc_attr__()` 
