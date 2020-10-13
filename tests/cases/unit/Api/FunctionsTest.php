@@ -321,10 +321,12 @@ class FunctionsTest extends UnitTestCase
         Functions\stubTranslationFunctions();
 
         static::assertSame('Foo', __('Foo', 'my-txt-domain'));
-        static::assertSame('Foo!', _x('Foo!', 'context',  'my-txt-domain'));
+        static::assertSame('Foo!', _x('Foo!', 'context', 'my-txt-domain'));
+        static::assertSame('one', _n('one', 'more', 1, 'my-txt-domain'));
+        static::assertSame('more', _nx('one', 'more', 2, 'context', 'my-txt-domain'));
         static::assertSame('Bar!', esc_html__('Bar!', 'my-txt-domain'));
         static::assertSame('Baz!', esc_attr__('Baz!', 'my-txt-domain'));
-        static::assertSame('Foo bar', esc_attr_x('Foo bar', 'context',  'my-txt-domain'));
+        static::assertSame('Foo bar', esc_attr_x('Foo bar', 'context', 'my-txt-domain'));
     }
 
     public function testStubsTranslationsEcho()
