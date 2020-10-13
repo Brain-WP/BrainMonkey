@@ -27,6 +27,7 @@ Following functions are defined by Brain Monkey when it is loaded for tests:
 * `apply_filters()`
 * `apply_filters_ref_array()`
 * `apply_filters_deprecated()` \(since 2.4\)
+* `doing_filter()`
 * `has_filter()`
 * `current_filter()`
 
@@ -35,6 +36,7 @@ Following functions are defined by Brain Monkey when it is loaded for tests:
 * `__return_true()`
 * `__return_false()`
 * `__return_null()`
+* `__return_zero()`
 * `__return_empty_array()`
 * `__return_empty_string()`
 * `trailingslashit()`
@@ -71,7 +73,7 @@ This works as long as there's no code that actually adds filters to `"the_title"
 
 If in the code under test there's something that adds filters \(i.e. calls `add_filter`\), the _Brain Monkey version_ of `apply_filters` will still return the value unchanged, but will allow to test that `apply_filters` has been called, how many times, with which callbacks and arguments are used.
 
-More generally, in the regards of WP hook API, Brain Monkey allow to:
+More generally, with regards to the WP hook API, Brain Monkey allows to:
 
 * test if an action or a filter has been added, how many times that happen and with which arguments
 * test if an action or a filter has been fired, how many times that happen and with which arguments
