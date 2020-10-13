@@ -105,6 +105,7 @@ When called, it will create a stub for each of the following functions:
 * `esc_textarea()`
 * `esc_url()`
 * `esc_url_raw()`
+* `esc_xml()` \(since 2.6\)
 
 By calling `Functions\stubEscapeFunctions()`, for _all_ of the functions listed above a stub will be created that will do some very basic escaping on the received first argument before returning it.
 

@@ -178,6 +178,7 @@ namespace Brain\Monkey\Functions {
                 'esc_textarea' => [EscapeHelper::class, 'esc'],
                 'esc_url'      => [EscapeHelper::class, 'escUrl'],
                 'esc_url_raw'  => [EscapeHelper::class, 'escUrlRaw'],
+                'esc_xml'      => [EscapeHelper::class, 'escXml'],
             ]
         );
     }
