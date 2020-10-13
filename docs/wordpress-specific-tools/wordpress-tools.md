@@ -41,8 +41,19 @@ Following functions are defined by Brain Monkey when it is loaded for tests:
 * `__return_empty_string()`
 * `trailingslashit()`
 * `untrailingslashit()`
+* `user_trailingslashit()` \(since 2.6\)
 * `absint()` \(since 2.3\)
+* `wp_json_encode()` \(since 2.6\)
 * `is_wp_error()` \(since 2.3\)
+
+**Translation function:**
+
+Since Brain Monkey 2.3, stubs for the standard WordPress translations functions are available via `Functions\stubEscapeFunctions()`.
+See: [Pre-defined stubs for translation functions](https://giuseppe-mazzapica.gitbook.io/brain-monkey/functions-testing-tools/function-stubs#pre-defined-stubs-for-translation-functions)
+
+**Escaping functions:**
+Since Brain Monkey 2.3, stubs for the standard WordPress escaping functions are available via `Functions\stubTranslationFunctions()`.
+See: [Pre-defined stubs for escaping functions](https://giuseppe-mazzapica.gitbook.io/brain-monkey/functions-testing-tools/function-stubs#pre-defined-stubs-for-escaping-functions)
 
 If your code uses any of these functions, and very likely it does, you don't need to define \(or mock\) them to avoid fatal errors during tests.
 

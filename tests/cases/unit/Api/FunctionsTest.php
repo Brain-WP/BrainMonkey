@@ -321,10 +321,12 @@ class FunctionsTest extends UnitTestCase
         Functions\stubTranslationFunctions();
 
         static::assertSame('Foo', __('Foo', 'my-txt-domain'));
-        static::assertSame('Foo!', _x('Foo!', 'context',  'my-txt-domain'));
+        static::assertSame('Foo!', _x('Foo!', 'context', 'my-txt-domain'));
+        static::assertSame('one', _n('one', 'more', 1, 'my-txt-domain'));
+        static::assertSame('more', _nx('one', 'more', 2, 'context', 'my-txt-domain'));
         static::assertSame('Bar!', esc_html__('Bar!', 'my-txt-domain'));
         static::assertSame('Baz!', esc_attr__('Baz!', 'my-txt-domain'));
-        static::assertSame('Foo bar', esc_attr_x('Foo bar', 'context',  'my-txt-domain'));
+        static::assertSame('Foo bar', esc_attr_x('Foo bar', 'context', 'my-txt-domain'));
     }
 
     public function testStubsTranslationsEcho()
@@ -372,5 +374,61 @@ class FunctionsTest extends UnitTestCase
 
         static::assertSame("hello, \\'world\\'", esc_sql("hello, 'world'"));
         static::assertSame('<b>hello world</b>', esc_sql('<b>hello world</b>'));
+    }
+
+    /**
+     * @dataProvider dataStubsEscapeXml
+     */
+    public function testStubsEscapeXml($input, $expected)
+    {
+        Functions\stubEscapeFunctions();
+
+        static::assertSame($expected, esc_xml($input));
+    }
+
+    public function dataStubsEscapeXml()
+    {
+        return [
+            [
+                'The quick brown fox.',
+                'The quick brown fox.',
+            ],
+            [
+                'http://localhost/trunk/wp-login.php?action=logout&_wpnonce=cd57d75985',
+                'http://localhost/trunk/wp-login.php?action=logout&amp;_wpnonce=cd57d75985',
+            ],
+            [
+                '&#038; &#x00A3; &#x22; &amp;',
+                '&amp; £ " &amp;', // Note: this is different from WP native!
+            ],
+            [
+                'this &amp; is a &hellip; followed by &rsaquo; and more and a &nonexistent; entity',
+                'this &amp; is a … followed by › and more and a &amp;nonexistent; entity',
+            ],
+            [
+                "This is\na<![CDATA[test of\nthe <emergency>]]>\nbroadcast system",
+                "This is\na<![CDATA[test of\nthe <emergency>]]>\nbroadcast system",
+            ],
+            [
+                'This is &hellip; a <![CDATA[test of the <emergency>]]> broadcast <system />',
+                'This is … a <![CDATA[test of the <emergency>]]> broadcast &lt;system /&gt;',
+            ],
+            [
+                '<![CDATA[test of the <emergency>]]> This is &hellip; a broadcast <system />',
+                '<![CDATA[test of the <emergency>]]> This is … a broadcast &lt;system /&gt;',
+            ],
+            [
+                'This is &hellip; a broadcast <system /><![CDATA[test of the <emergency>]]>',
+                'This is … a broadcast &lt;system /&gt;<![CDATA[test of the <emergency>]]>',
+            ],
+            [
+                'This is &hellip; a <![CDATA[test of the <emergency>]]> &broadcast; <![CDATA[<system />]]>',
+                'This is … a <![CDATA[test of the <emergency>]]> &amp;broadcast; <![CDATA[<system />]]>',
+            ],
+            [
+                '<![CDATA[<&]]>]]>',
+                '<![CDATA[<&]]>]]&gt;',
+            ],
+        ];
     }
 }

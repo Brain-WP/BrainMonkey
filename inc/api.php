@@ -143,6 +143,12 @@ namespace Brain\Monkey\Functions {
                 '__',
                 '_x',
                 'translate',
+                '_n'         => static function($single, $plural, $number) {
+                    return ($number === 1) ? $single : $plural;
+                },
+                '_nx'        => static function($single, $plural, $number) {
+                    return ($number === 1) ? $single : $plural;
+                },
                 'esc_html__' => [EscapeHelper::class, 'esc'],
                 'esc_html_x' => [EscapeHelper::class, 'esc'],
                 'esc_attr__' => [EscapeHelper::class, 'esc'],
@@ -172,6 +178,7 @@ namespace Brain\Monkey\Functions {
                 'esc_textarea' => [EscapeHelper::class, 'esc'],
                 'esc_url'      => [EscapeHelper::class, 'escUrl'],
                 'esc_url_raw'  => [EscapeHelper::class, 'escUrlRaw'],
+                'esc_xml'      => [EscapeHelper::class, 'escXml'],
             ]
         );
     }

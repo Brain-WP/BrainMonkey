@@ -105,6 +105,7 @@ When called, it will create a stub for each of the following functions:
 * `esc_textarea()`
 * `esc_url()`
 * `esc_url_raw()`
+* `esc_xml()` \(since 2.6\)
 
 By calling `Functions\stubEscapeFunctions()`, for _all_ of the functions listed above a stub will be created that will do some very basic escaping on the received first argument before returning it.
 
@@ -124,6 +125,8 @@ When called, it will create a stub for _all_ the following functions:
 * `_e()`
 * `_ex()`
 * `_x()`
+* `_n()` \(since 2.6\)
+* `_nx()` \(since 2.6\)
 * `translate()`
 * `esc_html__()`
 * `esc_html_x()`

@@ -73,10 +73,24 @@ if ( ! function_exists('trailingslashit')) {
     }
 }
 
+if ( ! function_exists('user_trailingslashit')) {
+    function user_trailingslashit($string)
+    {
+        return trailingslashit($string);
+    }
+}
+
 if ( ! function_exists('absint')) {
     function absint($number)
     {
         return abs((int)$number);
+    }
+}
+
+if ( ! function_exists('wp_json_encode')) {
+    function wp_json_encode($data, $options = 0, $depth = 512)
+    {
+        return json_encode($data, $options, $depth);
     }
 }
 
