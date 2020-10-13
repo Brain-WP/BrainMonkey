@@ -73,6 +73,13 @@ if ( ! function_exists('trailingslashit')) {
     }
 }
 
+if ( ! function_exists('user_trailingslashit')) {
+    function user_trailingslashit($string)
+    {
+        return trailingslashit($string);
+    }
+}
+
 if ( ! function_exists('absint')) {
     function absint($number)
     {

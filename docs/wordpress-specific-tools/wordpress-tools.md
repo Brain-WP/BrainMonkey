@@ -41,6 +41,7 @@ Following functions are defined by Brain Monkey when it is loaded for tests:
 * `__return_empty_string()`
 * `trailingslashit()`
 * `untrailingslashit()`
+* `user_trailingslashit()` \(since 2.6\)
 * `absint()` \(since 2.3\)
 * `is_wp_error()` \(since 2.3\)
 
