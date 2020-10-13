@@ -87,6 +87,13 @@ if ( ! function_exists('absint')) {
     }
 }
 
+if ( ! function_exists('wp_json_encode')) {
+    function wp_json_encode($data, $options = 0, $depth = 512)
+    {
+        return json_encode($data, $options, $depth);
+    }
+}
+
 if ( ! function_exists('is_wp_error')) {
     function is_wp_error($thing)
     {

@@ -43,6 +43,7 @@ Following functions are defined by Brain Monkey when it is loaded for tests:
 * `untrailingslashit()`
 * `user_trailingslashit()` \(since 2.6\)
 * `absint()` \(since 2.3\)
+* `wp_json_encode()` \(since 2.6\)
 * `is_wp_error()` \(since 2.3\)
 
 If your code uses any of these functions, and very likely it does, you don't need to define \(or mock\) them to avoid fatal errors during tests.
