@@ -48,14 +48,16 @@ Following functions are defined by Brain Monkey when it is loaded for tests:
 * `wp_validate_boolean()` \(since 2.7\)
 * `wp_slash()` \(since 2.7\)
 
-**Translation function:**
+**Translation functions:**
 
 Since Brain Monkey 2.3, stubs for the standard WordPress translations functions are available via `Functions\stubEscapeFunctions()`.
-See: [Pre-defined stubs for translation functions](https://giuseppe-mazzapica.gitbook.io/brain-monkey/functions-testing-tools/function-stubs#pre-defined-stubs-for-translation-functions)
+
+See the [Pre-defined stubs for translation functions](https://giuseppe-mazzapica.gitbook.io/brain-monkey/functions-testing-tools/function-stubs#pre-defined-stubs-for-translation-functions) section for details.
 
 **Escaping functions:**
 Since Brain Monkey 2.3, stubs for the standard WordPress escaping functions are available via `Functions\stubTranslationFunctions()`.
-See: [Pre-defined stubs for escaping functions](https://giuseppe-mazzapica.gitbook.io/brain-monkey/functions-testing-tools/function-stubs#pre-defined-stubs-for-escaping-functions)
+
+See the [Pre-defined stubs for escaping functions](https://giuseppe-mazzapica.gitbook.io/brain-monkey/functions-testing-tools/function-stubs#pre-defined-stubs-for-escaping-functions) section for details.
 
 If your code uses any of these functions, and very likely it does, you don't need to define \(or mock\) them to avoid fatal errors during tests.
 
