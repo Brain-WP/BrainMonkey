@@ -60,4 +60,40 @@ class EscapeHelper
     {
         return str_replace(['&amp;', "'"], ['&#038;', '&#039;'], static::escUrlRaw($url));
     }
+
+    /**
+     * @param string $text
+     * @return string
+     */
+    public static function escXml($text)
+    {
+        $text        = html_entity_decode($text, ENT_QUOTES | ENT_XML1 | ENT_XHTML, 'UTF-8'); // Undo existing entities.
+        $cdata_regex = '\<\!\[CDATA\[.*?\]\]\>';
+        $regex       = "
+            `
+                (?=.*?{$cdata_regex})                 # lookahead that will match anything followed by a CDATA Section
+                (?<non_cdata_followed_by_cdata>(.*?)) # the 'anything' matched by the lookahead
+                (?<cdata>({$cdata_regex}))            # the CDATA Section matched by the lookahead
+            |                                         # alternative
+                (?<non_cdata>(.*))                    # non-CDATA Section
+            `sx";
+
+        return (string) preg_replace_callback(
+            $regex,
+            static function($matches) {
+                if ( ! $matches[0]) {
+                    return '';
+                }
+
+                if ( ! empty($matches['non_cdata'])) {
+                    // Escape HTML entities in the non-CDATA Section.
+                    return htmlspecialchars($matches['non_cdata'], ENT_XML1, 'UTF-8', false);
+                }
+
+                // Return the CDATA Section unchanged, escape HTML entities in the rest.
+                return htmlspecialchars($matches['non_cdata_followed_by_cdata'], ENT_XML1, 'UTF-8', false) . $matches['cdata'];
+            },
+            $text
+        );
+    }
 }
