@@ -333,7 +333,7 @@ namespace Brain\Monkey\Filters {
      *
      * @param string $filter
      * @param null   $callback
-     * @return bool
+     * @return false|int Return hook priority or false if hook was not added.
      */
     function has($filter, $callback = null)
     {
