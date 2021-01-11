@@ -333,7 +333,9 @@ namespace Brain\Monkey\Filters {
      *
      * @param string $filter
      * @param null   $callback
-     * @return false|int Return hook priority or false if hook was not added.
+     * @return bool|int If callback is omitted, returns boolean for whether the hook has anything registered.
+     *                  When checking a specific callback, the priority of that hook is returned,
+     *                  or false if the callback is not attached.
      */
     function has($filter, $callback = null)
     {
