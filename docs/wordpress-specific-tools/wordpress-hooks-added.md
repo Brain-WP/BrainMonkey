@@ -250,6 +250,7 @@ To know more, read [Mockery documentation](http://docs.mockery.io/en/latest/), a
 
 * expectations must be set _before_ the code to be tested runs: they are called "expectations" for a reason;
 * argument validation done using `with()`, validates hook arguments, not function arguments, it means what is passed to `add_action()` or `add_filter()` **excluding** hook name itself.
+* If you are errors related to `Call to undefined function add_action()` it could have to do with how you are loading your plugin file in the bootstrap.php file. See [some tips for procedural/OOP setup](https://github.com/Brain-WP/BrainMonkey/issues/90#issuecomment-745148097).
 
 ## Don't set expectations on return values for added hooks
 
