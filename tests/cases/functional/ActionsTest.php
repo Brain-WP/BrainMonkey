@@ -57,6 +57,20 @@ class ActionsTest extends FunctionalTestCase
         do_action('my_hook', 'Hello', 'World');
     }
 
+    public function testHas()
+    {
+        add_action(
+            'init',
+            function (Foo\Bar ...$bar) {},
+            1,
+            2
+        );
+
+        Monkey\Actions\has('init', function (Foo\Bar ...$bar) {}, 1, 2);
+
+        Monkey\Actions\has('init', 'function (Foo\\Bar ...$bar)', 1, 2);
+    }
+
     public function testRemove()
     {
         Monkey\Actions\expectRemoved('my_hook')
