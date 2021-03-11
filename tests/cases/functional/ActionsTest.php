@@ -61,14 +61,14 @@ class ActionsTest extends FunctionalTestCase
     {
         add_action(
             'init',
-            function (Foo\Bar ...$bar) {},
+            function (\Foo\Bar ...$bar) {},
             1,
             2
         );
 
-        Monkey\Actions\has('init', function (Foo\Bar ...$bar) {}, 1, 2);
-
-        Monkey\Actions\has('init', 'function (Foo\\Bar ...$bar)', 1, 2);
+        static::assertNotFalse(Monkey\Actions\has('init', function (\Foo\Bar ...$bar) {}, 1, 2));
+        static::assertNotFalse(Monkey\Actions\has('init', 'function (Foo\Bar ...$bar)', 1, 2));
+        static::assertNotFalse(Monkey\Actions\has('init', 'function (Foo\\Bar ...$bar)', 1, 2));
     }
 
     public function testRemove()
