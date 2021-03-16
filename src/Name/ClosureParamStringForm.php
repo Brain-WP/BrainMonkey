@@ -21,7 +21,7 @@ use Brain\Monkey\Name\Exception\InvalidClosureParam;
 class ClosureParamStringForm
 {
 
-    const VALID_PARAM_PATTERN = '/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/';
+    const VALID_PARAM_PATTERN = '/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*(\\\\[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)*$/';
 
     private $param_name;
     /**
