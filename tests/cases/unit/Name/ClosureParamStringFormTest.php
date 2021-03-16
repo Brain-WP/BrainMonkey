@@ -159,36 +159,20 @@ class ClosureParamStringFormTest extends UnitTestCase
             return;
         }
 
-        $param_a = \Mockery::mock(\ReflectionParameter::class);
+        $param = \Mockery::mock(\ReflectionParameter::class);
         /** @noinspection PhpMethodParametersCountMismatchInspection */
-        $param_a->shouldReceive('hasType')->never();
+        $param->shouldReceive('hasType')->never();
         /** @noinspection PhpMethodParametersCountMismatchInspection */
-        $param_a->shouldReceive('getType')->never();
+        $param->shouldReceive('getType')->never();
         /** @noinspection PhpMethodParametersCountMismatchInspection */
-        $param_a->shouldReceive('getName')->andReturn('foo');
+        $param->shouldReceive('getName')->andReturn('foo');
         /** @noinspection PhpMethodParametersCountMismatchInspection */
-        $param_a->shouldReceive('isVariadic')->andReturn(true);
+        $param->shouldReceive('isVariadic')->andReturn(true);
 
         /** @noinspection PhpParamsInspection */
         static::assertSame(
             '...$foo',
-            (string)ClosureParamStringForm::fromReflectionParameter($param_a)
-        );
- 
-        $param_b = \Mockery::mock(\ReflectionParameter::class);
-        /** @noinspection PhpMethodParametersCountMismatchInspection */
-        $param_b->shouldReceive('hasType')->andReturn(true);
-        /** @noinspection PhpMethodParametersCountMismatchInspection */
-        $param_b->shouldReceive('getType')->andReturn('Foo\\Bar');
-        /** @noinspection PhpMethodParametersCountMismatchInspection */
-        $param_b->shouldReceive('getName')->andReturn('bar');
-        /** @noinspection PhpMethodParametersCountMismatchInspection */
-        $param_b->shouldReceive('isVariadic')->andReturn(true);
-
-        /** @noinspection PhpParamsInspection */
-        static::assertSame(
-            'Foo\\Bar ...$bar',
-            (string)ClosureParamStringForm::fromReflectionParameter($param_b)
+            (string)ClosureParamStringForm::fromReflectionParameter($param)
         );
     }
 }
