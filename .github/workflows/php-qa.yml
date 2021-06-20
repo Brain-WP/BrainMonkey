@@ -8,6 +8,13 @@ jobs:
             fail-fast: true
             matrix:
                 php-versions: ['5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0']
+                experimental: [false]
+
+                include:
+                    # Experimental builds. These are allowed to fail.
+                    - php-versions: '8.1'
+                      experimental: true
+        continue-on-error: ${{ matrix.experimental }}
         steps:
             - uses: actions/checkout@v2
 
@@ -19,8 +26,13 @@ jobs:
             - name: Check syntax error in sources
               run: find ./src/ ./tests/ -type f -name '*.php' -print0 | xargs -0 -L 1 -P 4 -- php -l
 
-            - name: Install dependencies
+            - name: Install dependencies - normal
+              if: ${{ matrix.php-versions != '8.1' }}
               run: composer install -q -n -a --no-progress --prefer-dist
+
+            - name: Install dependencies - ignore-platform-reqs
+              if: ${{ matrix.php-versions == '8.1' }}
+              run: composer install -q -n -a --no-progress --prefer-dist --ignore-platform-reqs
 
             - name: Check cross-version PHP compatibility
               if: ${{ matrix.php-versions == '7.4' }} # results is same across versions, do it once
