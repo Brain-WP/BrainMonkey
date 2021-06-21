@@ -22,6 +22,7 @@ jobs:
               uses: shivammathur/setup-php@v2
               with:
                 php-version: ${{ matrix.php-versions }}
+                ini-values: error_reporting=E_ALL, display_errors=On
 
             - name: Check syntax error in sources
               run: find ./src/ ./tests/ -type f -name '*.php' -print0 | xargs -0 -L 1 -P 4 -- php -l
