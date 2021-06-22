@@ -55,14 +55,8 @@ class ClosureStringFormTest extends UnitTestCase
         static::assertSame('function ($foo, $bar)', (string)$string_form);
     }
 
-    public function testArgsTypeHints7()
+    public function testArgsTypeHints()
     {
-        if (PHP_MAJOR_VERSION < 7) {
-            $this->markTestSkipped('Skipping PHP 7 test.');
-
-            return;
-        }
-
         $callback = function (\ArrayObject $foo, array $bar, \stdClass... $classes) {
 
         };
@@ -75,34 +69,8 @@ class ClosureStringFormTest extends UnitTestCase
         );
     }
 
-    public function testArgsTypeHints5()
+    public function testStaticArgsTypeHints()
     {
-        if (PHP_MAJOR_VERSION >= 7) {
-            $this->markTestSkipped('Skipping PHP 5.6 test.');
-
-            return;
-        }
-
-        $callback = function (\ArrayObject $foo, array $bar, \stdClass... $classes) {
-
-        };
-
-        $string_form = new ClosureStringForm($callback);
-
-        static::assertSame(
-            'function ($foo, $bar, ...$classes)',
-            (string)$string_form
-        );
-    }
-
-    public function testStaticArgsTypeHints7()
-    {
-        if (PHP_MAJOR_VERSION < 7) {
-            $this->markTestSkipped('Skipping PHP 7 test.');
-
-            return;
-        }
-
         $callback = static function (\ArrayObject $foo, array $bar, \stdClass... $classes) {
 
         };
@@ -111,26 +79,6 @@ class ClosureStringFormTest extends UnitTestCase
 
         static::assertSame(
             'static function (ArrayObject $foo, array $bar, stdClass ...$classes)',
-            (string)$string_form
-        );
-    }
-
-    public function testStaticArgsTypeHints5()
-    {
-        if (PHP_MAJOR_VERSION >= 7) {
-            $this->markTestSkipped('Skipping PHP 5.6 test.');
-
-            return;
-        }
-
-        $callback = static function (\ArrayObject $foo, array $bar, \stdClass... $classes) {
-
-        };
-
-        $string_form = new ClosureStringForm($callback);
-
-        static::assertSame(
-            'static function ($foo, $bar, ...$classes)',
             (string)$string_form
         );
     }
@@ -156,34 +104,12 @@ class ClosureStringFormTest extends UnitTestCase
         static::assertSame('static function ()', ClosureStringForm::normalizeString($closure_d));
     }
 
-    public function testParseStringWithArgs7()
+    public function testParseStringWithArgs()
     {
-        if (PHP_MAJOR_VERSION < 7) {
-            $this->markTestSkipped('Skipping PHP 7 test.');
-
-            return;
-        }
-
         $closure = ' static function( \ArrayObject $foo,array $bar,stdClass ...$classes ) ';
 
         static::assertSame(
             'static function (ArrayObject $foo, array $bar, stdClass ...$classes)',
-            ClosureStringForm::normalizeString($closure)
-        );
-    }
-
-    public function testParseStringWithArgs5()
-    {
-        if (PHP_MAJOR_VERSION >= 7) {
-            $this->markTestSkipped('Skipping PHP 5.6 test.');
-
-            return;
-        }
-
-        $closure = ' static function( \ArrayObject $foo,array $bar,stdClass ...$classes ) ';
-
-        static::assertSame(
-            'static function ($foo, $bar, ...$classes)',
             ClosureStringForm::normalizeString($closure)
         );
     }

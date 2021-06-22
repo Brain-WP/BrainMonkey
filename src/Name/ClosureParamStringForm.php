@@ -21,7 +21,11 @@ use Brain\Monkey\Name\Exception\InvalidClosureParam;
 class ClosureParamStringForm
 {
 
-    const VALID_PARAM_PATTERN = '/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*(\\\\[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)*$/';
+    const PARAM_SUBPATTERN = '[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*(\\\\[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)*';
+
+    const VALID_PARAM_PATTERN = '/^' . self::PARAM_SUBPATTERN . '$/';
+
+    const REFLECTION_PARAM_PATTERN = '/\[\s\<\w+?>\s(' . self::PARAM_SUBPATTERN . ')/s';
 
     private $param_name;
     /**
@@ -73,13 +77,22 @@ class ClosureParamStringForm
     public static function fromReflectionParameter(\ReflectionParameter $parameter)
     {
         $type = '';
-        if (PHP_MAJOR_VERSION >= 7 && $parameter->hasType()) {
-            $type = $parameter->getType();
-            if ($type instanceof \ReflectionNamedType) {
-                $type = $type->getName();
-            }
+        if (PHP_MAJOR_VERSION >= 7) {
+            if ($parameter->hasType()) {
+                $type = $parameter->getType();
+                if ($type instanceof \ReflectionNamedType) {
+                    // PHP >= 7.1.
+                    $type = $type->getName();
+                }
 
-            $type = ltrim($type, '\\');
+                // In PHP 7.0 the ReflectionType::__toString() method will retrieve the type.
+                $type = ltrim($type, '\\');
+            }
+        } else {
+            preg_match(self::REFLECTION_PARAM_PATTERN, $parameter->__toString(), $matches);
+            if (isset($matches[1])) {
+                $type = $matches[1];
+            }
         }
 
         return new static($parameter->getName(), $type, $parameter->isVariadic());
@@ -95,8 +108,6 @@ class ClosureParamStringForm
         if ( ! is_string($param_name) || ! $param_name) {
             throw InvalidClosureParam::forInvalidName($param_name);
         }
-
-        (PHP_MAJOR_VERSION < 7) and $type_name = '';
 
         $this->param_name = $param_name;
         $this->type_name = $type_name;
