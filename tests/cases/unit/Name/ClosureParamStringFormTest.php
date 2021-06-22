@@ -55,14 +55,8 @@ class ClosureParamStringFormTest extends UnitTestCase
         static::assertFalse(ClosureParamStringForm::fromString(' $foo ')->isVariadic());
     }
 
-    public function testFromStringToString7()
+    public function testFromStringToString()
     {
-        if (PHP_MAJOR_VERSION < 7) {
-            $this->markTestSkipped('Skipping PHP 7 test.');
-
-            return;
-        }
-
         $param_a = ClosureParamStringForm::fromString('Foo $foo');
         $param_b = ClosureParamStringForm::fromString('...$foo');
         $param_c = ClosureParamStringForm::fromString(' ... $foo');
@@ -79,33 +73,6 @@ class ClosureParamStringFormTest extends UnitTestCase
         static::assertSame('Foo ...$foo', (string)$param_e);
         static::assertSame('Foo\Bar ...$bar', (string)$param_f);
         static::assertSame('Foo\Bar ...$bar', (string)$param_g);
-        static::assertSame('$foo', (string)$param_h);
-    }
-
-    public function testFromStringToString5()
-    {
-        if (PHP_MAJOR_VERSION >= 7) {
-            $this->markTestSkipped('Skipping PHP 5.6 test.');
-
-            return;
-        }
-
-        $param_a = ClosureParamStringForm::fromString('Foo $foo');
-        $param_b = ClosureParamStringForm::fromString('...$foo');
-        $param_c = ClosureParamStringForm::fromString(' ... $foo');
-        $param_d = ClosureParamStringForm::fromString('Foo ...$foo');
-        $param_e = ClosureParamStringForm::fromString(' Foo ... $foo ');
-        $param_f = ClosureParamStringForm::fromString('Foo\Bar ...$bar');
-        $param_g = ClosureParamStringForm::fromString(' Foo\Bar ... $bar ');
-        $param_h = ClosureParamStringForm::fromString(' $foo ');
-
-        static::assertSame('$foo', (string)$param_a);
-        static::assertSame('...$foo', (string)$param_b);
-        static::assertSame('...$foo', (string)$param_c);
-        static::assertSame('...$foo', (string)$param_d);
-        static::assertSame('...$foo', (string)$param_e);
-        static::assertSame('...$bar', (string)$param_f);
-        static::assertSame('...$bar', (string)$param_g);
         static::assertSame('$foo', (string)$param_h);
     }
 
@@ -159,20 +126,36 @@ class ClosureParamStringFormTest extends UnitTestCase
             return;
         }
 
-        $param = \Mockery::mock(\ReflectionParameter::class);
+        $param_a = \Mockery::mock(\ReflectionParameter::class);
         /** @noinspection PhpMethodParametersCountMismatchInspection */
-        $param->shouldReceive('hasType')->never();
+        $param_a->shouldReceive('hasType')->never();
         /** @noinspection PhpMethodParametersCountMismatchInspection */
-        $param->shouldReceive('getType')->never();
+        $param_a->shouldReceive('__toString')->andReturn('Parameter #0 [ <optional> array ...$foo ]');
         /** @noinspection PhpMethodParametersCountMismatchInspection */
-        $param->shouldReceive('getName')->andReturn('foo');
+        $param_a->shouldReceive('getName')->andReturn('foo');
         /** @noinspection PhpMethodParametersCountMismatchInspection */
-        $param->shouldReceive('isVariadic')->andReturn(true);
+        $param_a->shouldReceive('isVariadic')->andReturn(true);
 
         /** @noinspection PhpParamsInspection */
         static::assertSame(
-            '...$foo',
-            (string)ClosureParamStringForm::fromReflectionParameter($param)
+            'array ...$foo',
+            (string)ClosureParamStringForm::fromReflectionParameter($param_a)
+        );
+
+        $param_b = \Mockery::mock(\ReflectionParameter::class);
+        /** @noinspection PhpMethodParametersCountMismatchInspection */
+        $param_b->shouldReceive('hasType')->andReturn(true);
+        /** @noinspection PhpMethodParametersCountMismatchInspection */
+        $param_b->shouldReceive('__toString')->andReturn('Parameter #0 [ <optional> Foo\\Bar ...$bar ]');
+        /** @noinspection PhpMethodParametersCountMismatchInspection */
+        $param_b->shouldReceive('getName')->andReturn('bar');
+        /** @noinspection PhpMethodParametersCountMismatchInspection */
+        $param_b->shouldReceive('isVariadic')->andReturn(true);
+
+        /** @noinspection PhpParamsInspection */
+        static::assertSame(
+            'Foo\\Bar ...$bar',
+            (string)ClosureParamStringForm::fromReflectionParameter($param_b)
         );
     }
 }
