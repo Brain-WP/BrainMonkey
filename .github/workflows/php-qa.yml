@@ -39,12 +39,11 @@ jobs:
               if: ${{ matrix.php-versions == '7.4' }} # results is same across versions, do it once
               run: composer phpcompat
 
-            - name: Run unit tests (>= 7.3)
+            - name: Migrate test configuration (>= 7.3)
               if: ${{ matrix.php-versions >= 7.3 }}
-              run: ./vendor/bin/phpunit --coverage-clover=coverage.xml --migrate-configuration
+              run: ./vendor/bin/phpunit --migrate-configuration
 
-            - name: Run unit tests (< 7.3)
-              if: ${{ matrix.php-versions < 7.3 }}
+            - name: Run unit tests
               run: ./vendor/bin/phpunit --coverage-clover=coverage.xml
 
             - name: Update codecov.io
