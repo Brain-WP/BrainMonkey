@@ -59,7 +59,7 @@ class FunctionsTest extends FunctionalTestCase
         Monkey\Functions\when('is_wp_error')->alias('ctype_alpha');
 
         static::assertTrue(is_wp_error('xyz'));
-        static::assertFalse(is_wp_error(123));
+        static::assertFalse(is_wp_error('123'));
     }
 
     public function testReDefinePredefinedStubsWithExpect()
