@@ -87,8 +87,21 @@ class ClosureParamStringFormTest extends UnitTestCase
         $param_a = \Mockery::mock(\ReflectionParameter::class);
         /** @noinspection PhpMethodParametersCountMismatchInspection */
         $param_a->shouldReceive('hasType')->andReturn(true);
-        /** @noinspection PhpMethodParametersCountMismatchInspection */
-        $param_a->shouldReceive('getType')->andReturn('array');
+        if (PHP_VERSION_ID < 70100) {
+            // phpcs:ignore PHPCompatibility.Classes.NewClasses.reflectiontypeFound
+            $type_a = \Mockery::mock(\ReflectionType::class);
+            /** @noinspection PhpMethodParametersCountMismatchInspection */
+            $param_a->shouldReceive('getType')->andReturn($type_a);
+            /** @noinspection PhpMethodParametersCountMismatchInspection */
+            $type_a->shouldReceive('__toString')->andReturn('array');
+        } else {
+            // phpcs:ignore PHPCompatibility.Classes.NewClasses.reflectionnamedtypeFound
+            $type_a = \Mockery::mock(\ReflectionNamedType::class);
+            /** @noinspection PhpMethodParametersCountMismatchInspection */
+            $param_a->shouldReceive('getType')->andReturn($type_a);
+            /** @noinspection PhpMethodParametersCountMismatchInspection */
+            $type_a->shouldReceive('getName')->andReturn('array');
+        }
         /** @noinspection PhpMethodParametersCountMismatchInspection */
         $param_a->shouldReceive('getName')->andReturn('foo');
         /** @noinspection PhpMethodParametersCountMismatchInspection */
@@ -103,8 +116,21 @@ class ClosureParamStringFormTest extends UnitTestCase
         $param_b = \Mockery::mock(\ReflectionParameter::class);
         /** @noinspection PhpMethodParametersCountMismatchInspection */
         $param_b->shouldReceive('hasType')->andReturn(true);
-        /** @noinspection PhpMethodParametersCountMismatchInspection */
-        $param_b->shouldReceive('getType')->andReturn('Foo\\Bar');
+        if (PHP_VERSION_ID < 70100) {
+            // phpcs:ignore PHPCompatibility.Classes.NewClasses.reflectiontypeFound
+            $type_b = \Mockery::mock(\ReflectionType::class);
+            /** @noinspection PhpMethodParametersCountMismatchInspection */
+            $param_b->shouldReceive('getType')->andReturn($type_b);
+            /** @noinspection PhpMethodParametersCountMismatchInspection */
+            $type_b->shouldReceive('__toString')->andReturn('Foo\\Bar');
+        } else {
+            // phpcs:ignore PHPCompatibility.Classes.NewClasses.reflectionnamedtypeFound
+            $type_b = \Mockery::mock(\ReflectionNamedType::class);
+            /** @noinspection PhpMethodParametersCountMismatchInspection */
+            $param_b->shouldReceive('getType')->andReturn($type_b);
+            /** @noinspection PhpMethodParametersCountMismatchInspection */
+            $type_b->shouldReceive('getName')->andReturn('Foo\\Bar');
+        }
         /** @noinspection PhpMethodParametersCountMismatchInspection */
         $param_b->shouldReceive('getName')->andReturn('bar');
         /** @noinspection PhpMethodParametersCountMismatchInspection */
