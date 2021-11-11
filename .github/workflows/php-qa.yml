@@ -19,6 +19,7 @@ jobs:
               with:
                 php-version: ${{ matrix.php-versions }}
                 ini-values: zend.assertions=1, error_reporting=-1, display_errors=On
+                coverage: ${{ ( matrix.php-versions == '7.4' && 'xdebug' ) || 'none' }}
                 tools: parallel-lint
 
             - name: Check syntax error in sources
@@ -42,7 +43,12 @@ jobs:
               if: ${{ matrix.php-versions >= 7.3 }}
               run: ./vendor/bin/phpunit --migrate-configuration
 
-            - name: Run unit tests
+            - name: Run unit tests (without code coverage)
+              if: ${{ matrix.php-versions != '7.4' }}
+              run: ./vendor/bin/phpunit
+
+            - name: Run unit tests with code coverage
+              if: ${{ matrix.php-versions == '7.4' }}
               run: ./vendor/bin/phpunit --coverage-clover=coverage.xml
 
             - name: Update codecov.io
