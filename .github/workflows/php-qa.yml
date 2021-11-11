@@ -26,11 +26,13 @@ jobs:
 
             - name: Install dependencies - normal
               if: ${{ matrix.php-versions != '8.2' }}
-              run: composer install -q -n -a --no-progress --prefer-dist
+              uses: "ramsey/composer-install@v1"
 
             - name: Install dependencies - ignore-platform-reqs
               if: ${{ matrix.php-versions == '8.2' }}
-              run: composer install -q -n -a --no-progress --prefer-dist --ignore-platform-reqs
+              uses: "ramsey/composer-install@v1"
+              with:
+                composer-options: "--ignore-platform-reqs"
 
             - name: Check cross-version PHP compatibility
               if: ${{ matrix.php-versions == '7.4' }} # results is same across versions, do it once
