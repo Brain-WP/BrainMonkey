@@ -7,7 +7,12 @@ jobs:
         strategy:
             fail-fast: true
             matrix:
-                php-versions: ['5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2']
+                php-versions: ['5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1']
+                dependency-versions: ['lowest', 'highest']
+
+                include:
+                - php-versions: '8.2'
+                  dependency-versions: 'highest'
 
         continue-on-error: ${{ matrix.php-versions == '8.2' }}
 
@@ -23,36 +28,40 @@ jobs:
                 tools: parallel-lint
 
             - name: Check syntax error in sources
+              if: ${{ matrix.dependency-versions == 'highest' }}
               run: parallel-lint ./src/ ./tests/
 
             - name: Install dependencies - normal
               if: ${{ matrix.php-versions != '8.2' }}
               uses: "ramsey/composer-install@v1"
+              with:
+                dependency-versions: ${{ matrix.dependency-versions }}
 
             - name: Install dependencies - ignore-platform-reqs
               if: ${{ matrix.php-versions == '8.2' }}
               uses: "ramsey/composer-install@v1"
               with:
+                dependency-versions: ${{ matrix.dependency-versions }}
                 composer-options: "--ignore-platform-reqs"
 
             - name: Check cross-version PHP compatibility
-              if: ${{ matrix.php-versions == '7.4' }} # results is same across versions, do it once
+              if: ${{ matrix.php-versions == '7.4' && matrix.dependency-versions == 'highest' }} # results is same across versions, do it once
               run: composer phpcompat
 
             - name: Migrate test configuration (>= 7.3)
-              if: ${{ matrix.php-versions >= 7.3 }}
+              if: ${{ matrix.php-versions >= 7.3 && matrix.dependency-versions == 'highest' }}
               run: ./vendor/bin/phpunit --migrate-configuration
 
             - name: Run unit tests (without code coverage)
-              if: ${{ matrix.php-versions != '7.4' }}
+              if: ${{ matrix.php-versions != '7.4' || matrix.dependency-versions != 'highest' }}
               run: ./vendor/bin/phpunit
 
             - name: Run unit tests with code coverage
-              if: ${{ matrix.php-versions == '7.4' }}
+              if: ${{ matrix.php-versions == '7.4' && matrix.dependency-versions == 'highest' }}
               run: ./vendor/bin/phpunit --coverage-clover=coverage.xml
 
             - name: Update codecov.io
               uses: codecov/codecov-action@v1
-              if: ${{ matrix.php-versions == '7.4' }} # upload coverage once is enough
+              if: ${{ matrix.php-versions == '7.4' && matrix.dependency-versions == 'highest' }} # upload coverage once is enough
               with:
                 file: ./coverage.xml
