@@ -19,9 +19,10 @@ jobs:
               with:
                 php-version: ${{ matrix.php-versions }}
                 ini-values: zend.assertions=1, error_reporting=-1, display_errors=On
+                tools: parallel-lint
 
             - name: Check syntax error in sources
-              run: find ./src/ ./tests/ -type f -name '*.php' -print0 | xargs -0 -L 1 -P 4 -- php -l
+              run: parallel-lint ./src/ ./tests/
 
             - name: Install dependencies - normal
               if: ${{ matrix.php-versions != '8.2' }}
