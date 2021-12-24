@@ -43,13 +43,13 @@ jobs:
 
             - name: Install dependencies - normal
               if: ${{ matrix.php-versions != '8.2' }}
-              uses: "ramsey/composer-install@v1"
+              uses: "ramsey/composer-install@v2"
               with:
                 dependency-versions: ${{ matrix.dependency-versions }}
 
             - name: Install dependencies - ignore-platform-reqs
               if: ${{ matrix.php-versions == '8.2' }}
-              uses: "ramsey/composer-install@v1"
+              uses: "ramsey/composer-install@v2"
               with:
                 dependency-versions: ${{ matrix.dependency-versions }}
                 composer-options: "--ignore-platform-reqs"
