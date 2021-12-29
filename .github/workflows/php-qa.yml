@@ -29,13 +29,24 @@ jobs:
         steps:
             - uses: actions/checkout@v2
 
+            - name: Determine tools
+              id: get_tools
+              run: |
+                # For running against 'lowest' PHPUnit, as well as when running against PHP 5.6 (both highest and lowest),
+                # Composer < 2.2 is needed due to bug: https://github.com/composer/composer/issues/10387
+                if [[ ${{ matrix.dependency-versions }} == "lowest" || ${{ matrix.php-versions }} == '5.6' ]]; then
+                  echo '::set-output name=TOOLS::parallel-lint, composer:v2.1'
+                else
+                  echo '::set-output name=TOOLS::parallel-lint'
+                fi
+
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
                 php-version: ${{ matrix.php-versions }}
                 ini-values: zend.assertions=1, error_reporting=-1, display_errors=On
                 coverage: ${{ ( matrix.php-versions == '7.4' && 'xdebug' ) || 'none' }}
-                tools: parallel-lint
+                tools: ${{ steps.get_tools.outputs.TOOLS }}
 
             - name: Check syntax error in sources
               if: ${{ matrix.dependency-versions == 'highest' }}
@@ -64,6 +75,7 @@ jobs:
 
             - name: Run unit tests (without code coverage)
               if: ${{ matrix.php-versions != '7.4' || matrix.dependency-versions != 'highest' }}
+              timeout-minutes: 15
               run: ./vendor/bin/phpunit
 
             - name: Run unit tests with code coverage
