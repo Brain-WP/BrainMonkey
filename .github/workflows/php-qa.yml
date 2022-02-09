@@ -90,6 +90,6 @@ jobs:
 
             -   name: Update codecov.io
                 uses: codecov/codecov-action@v2
-                if: ${{ (env.USE_COVERAGE == 'yes') && (github.ref == 'refs/heads/master') }}
+                if: ${{ env.USE_COVERAGE == 'yes' }}
                 with:
                     file: ./coverage.xml
