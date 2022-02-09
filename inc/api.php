@@ -1,11 +1,15 @@
-<?php # -*- coding: utf-8 -*-
+<?php
+
 /*
- * This file is part of the BrainMonkey package.
+ * This file is part of the Brain Monkey package.
  *
- * (c) Giuseppe Mazzapica
+ * (c) Giuseppe Mazzapica and contributors.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
+ *
+ * @license http://opensource.org/licenses/MIT MIT
+ * @package Brain\Monkey
  */
 
 // Ignore this. Just a safeguard in case of WordPress + Composer broken (really broken) setup.
@@ -24,9 +28,9 @@ namespace Brain\Monkey {
      */
     function setUp()
     {
-        require_once dirname(__DIR__).'/inc/patchwork-loader.php';
-        require_once dirname(__DIR__).'/inc/wp-hook-functions.php';
-        require_once dirname(__DIR__).'/inc/wp-helper-functions.php';
+        require_once dirname(__DIR__) . '/inc/patchwork-loader.php';
+        require_once dirname(__DIR__) . '/inc/wp-hook-functions.php';
+        require_once dirname(__DIR__) . '/inc/wp-helper-functions.php';
     }
 
     /**
@@ -53,14 +57,14 @@ namespace Brain\Monkey\Functions {
      * Factory method: receives the name of the function to mock and returns an instance of
      * FunctionStub.
      *
-     * @param string $function_name the name of the function to mock
+     * @param string $functionName the name of the function to mock
      * @return \Brain\Monkey\Expectation\FunctionStub
      */
-    function when($function_name)
+    function when($functionName)
     {
         return Container::instance()
-                        ->functionStubFactory()
-                        ->create(new FunctionName($function_name), FunctionStubFactory::SCOPE_STUB);
+            ->functionStubFactory()
+            ->create(new FunctionName($functionName), FunctionStubFactory::SCOPE_STUB);
     }
 
     /**
@@ -83,25 +87,24 @@ namespace Brain\Monkey\Functions {
      *   - when 2nd param is anything else the created stub will return it
      *
      *
-     * @param array      $functions
-     * @param mixed|null $default_return
+     * @param array $functions
+     * @param mixed|null $defaultReturn
      */
-    function stubs(array $functions, $default_return = null)
+    function stubs(array $functions, $defaultReturn = null)
     {
         foreach ($functions as $key => $value) {
-
-            list($function_name, $return_value) = is_numeric($key)
-                ? [$value, $default_return]
+            list($functionName, $returnValue) = is_numeric($key)
+                ? [$value, $defaultReturn]
                 : [$key, $value];
 
-            if (is_callable($return_value)) {
-                when($function_name)->alias($return_value);
+            if (is_callable($returnValue)) {
+                when($functionName)->alias($returnValue);
                 continue;
             }
 
-            $return_value === null
-                ? when($function_name)->returnArg()
-                : when($function_name)->justReturn($return_value);
+            $returnValue === null
+                ? when($functionName)->returnArg()
+                : when($functionName)->justReturn($returnValue);
         }
     }
 
@@ -111,21 +114,20 @@ namespace Brain\Monkey\Functions {
      * Returns a Mockery Expectation object, where is possible to set all the expectations, using
      * Mockery methods.
      *
-     * @param string $function_name
+     * @param string $functionName
      * @return \Brain\Monkey\Expectation\Expectation
      */
-    function expect($function_name)
+    function expect($functionName)
     {
-        $name = new FunctionName($function_name);
+        $name = new FunctionName($functionName);
         $expectation = Container::instance()
-                                ->expectationFactory()
-                                ->forFunctionExecuted($function_name);
+            ->expectationFactory()
+            ->forFunctionExecuted($functionName);
 
         $factory = Container::instance()->functionStubFactory();
-        if ( ! $factory->has($name)) {
+        if (!$factory->has($name)) {
             $factory->create($name, FunctionStubFactory::SCOPE_EXPECTATION)
-                    ->redefineUsingExpectation($expectation);
-
+                ->redefineUsingExpectation($expectation);
         }
 
         return $expectation;
@@ -143,10 +145,10 @@ namespace Brain\Monkey\Functions {
                 '__',
                 '_x',
                 'translate',
-                '_n'         => static function($single, $plural, $number) {
+                '_n' => static function ($single, $plural, $number) {
                     return ($number === 1) ? $single : $plural;
                 },
-                '_nx'        => static function($single, $plural, $number) {
+                '_nx' => static function ($single, $plural, $number) {
                     return ($number === 1) ? $single : $plural;
                 },
                 'esc_html__' => [EscapeHelper::class, 'esc'],
@@ -171,14 +173,14 @@ namespace Brain\Monkey\Functions {
     {
         stubs(
             [
-                'esc_js'       => [EscapeHelper::class, 'esc'],
-                'esc_sql'      => 'addslashes',
-                'esc_attr'     => [EscapeHelper::class, 'esc'],
-                'esc_html'     => [EscapeHelper::class, 'esc'],
+                'esc_js' => [EscapeHelper::class, 'esc'],
+                'esc_sql' => 'addslashes',
+                'esc_attr' => [EscapeHelper::class, 'esc'],
+                'esc_html' => [EscapeHelper::class, 'esc'],
                 'esc_textarea' => [EscapeHelper::class, 'esc'],
-                'esc_url'      => [EscapeHelper::class, 'escUrl'],
-                'esc_url_raw'  => [EscapeHelper::class, 'escUrlRaw'],
-                'esc_xml'      => [EscapeHelper::class, 'escXml'],
+                'esc_url' => [EscapeHelper::class, 'escUrl'],
+                'esc_url_raw' => [EscapeHelper::class, 'escUrlRaw'],
+                'esc_xml' => [EscapeHelper::class, 'escXml'],
             ]
         );
     }
@@ -201,8 +203,8 @@ namespace Brain\Monkey\Actions {
     function expectAdded($action)
     {
         return Container::instance()
-                        ->expectationFactory()
-                        ->forActionAdded($action);
+            ->expectationFactory()
+            ->forActionAdded($action);
     }
 
     /**
@@ -217,8 +219,8 @@ namespace Brain\Monkey\Actions {
     function expectDone($action)
     {
         return Container::instance()
-                        ->expectationFactory()
-                        ->forActionDone($action);
+            ->expectationFactory()
+            ->forActionDone($action);
     }
 
     /**
@@ -227,7 +229,7 @@ namespace Brain\Monkey\Actions {
      * Brain Monkey version of `has_action` will alias here.
      *
      * @param string $action
-     * @param null   $callback
+     * @param null $callback
      * @return bool
      */
     function has($action, $callback = null)
@@ -253,8 +255,8 @@ namespace Brain\Monkey\Actions {
     function did($action)
     {
         return Container::instance()
-                        ->hookStorage()
-                        ->isHookDone(Hook\HookStorage::ACTIONS, $action);
+            ->hookStorage()
+            ->isHookDone(Hook\HookStorage::ACTIONS, $action);
     }
 
     /**
@@ -268,8 +270,8 @@ namespace Brain\Monkey\Actions {
     function doing($action)
     {
         return Container::instance()
-                        ->hookRunningStack()
-                        ->has($action);
+            ->hookRunningStack()
+            ->has($action);
     }
 
     /**
@@ -284,8 +286,8 @@ namespace Brain\Monkey\Actions {
     function expectRemoved($action)
     {
         return Container::instance()
-                        ->expectationFactory()
-                        ->forActionRemoved($action);
+            ->expectationFactory()
+            ->forActionRemoved($action);
     }
 }
 
@@ -306,8 +308,8 @@ namespace Brain\Monkey\Filters {
     function expectAdded($filter)
     {
         return Container::instance()
-                        ->expectationFactory()
-                        ->forFilterAdded($filter);
+            ->expectationFactory()
+            ->forFilterAdded($filter);
     }
 
     /**
@@ -322,8 +324,8 @@ namespace Brain\Monkey\Filters {
     function expectApplied($filter)
     {
         return Container::instance()
-                        ->expectationFactory()
-                        ->forFilterApplied($filter);
+            ->expectationFactory()
+            ->forFilterApplied($filter);
     }
 
     /**
@@ -332,10 +334,10 @@ namespace Brain\Monkey\Filters {
      * Brain Monkey version of `has_filter` will alias here.
      *
      * @param string $filter
-     * @param null   $callback
-     * @return bool|int If callback is omitted, returns boolean for whether the hook has anything registered.
-     *                  When checking a specific callback, the priority of that hook is returned,
-     *                  or false if the callback is not attached.
+     * @param null $callback
+     * @return bool|int If callback is omitted, returns boolean for whether the hook has anything
+     *     registered. When checking a specific callback, the priority of that hook is returned, or
+     *     false if the callback is not attached.
      */
     function has($filter, $callback = null)
     {
@@ -360,8 +362,8 @@ namespace Brain\Monkey\Filters {
     function applied($filter)
     {
         return Container::instance()
-                        ->hookStorage()
-                        ->isHookDone(Hook\HookStorage::FILTERS, $filter);
+            ->hookStorage()
+            ->isHookDone(Hook\HookStorage::FILTERS, $filter);
     }
 
     /**
@@ -375,8 +377,8 @@ namespace Brain\Monkey\Filters {
     function doing($filter)
     {
         return Container::instance()
-                        ->hookRunningStack()
-                        ->has($filter);
+            ->hookRunningStack()
+            ->has($filter);
     }
 
     /**
@@ -391,8 +393,7 @@ namespace Brain\Monkey\Filters {
     function expectRemoved($filter)
     {
         return Container::instance()
-                        ->expectationFactory()
-                        ->forFilterRemoved($filter);
+            ->expectationFactory()
+            ->forFilterRemoved($filter);
     }
 }
-

@@ -1,8 +1,9 @@
 <?php
+
 /*
- * This file is part of the BrainMonkey package.
+ * This file is part of the Brain Monkey package.
  *
- * (c) Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ * (c) Giuseppe Mazzapica and contributors.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,29 +11,33 @@
 
 namespace Brain\Monkey\Tests\Unit\Expectation\Exception;
 
-
 use Brain\Monkey\Expectation\Exception\ExpectationArgsRequired;
 use Brain\Monkey\Expectation\ExpectationTarget;
 use Brain\Monkey\Tests\UnitTestCase;
 
+/**
+ * @package Brain\Monkey\Tests
+ * @license http://opensource.org/licenses/MIT MIT
+ */
 class ExpectationArgsRequiredTest extends UnitTestCase
 {
-
     /**
-     * @dataProvider expectationTargets
-     * @param string $type
-     * @param string $message_part
+     * @test
+     * @dataProvider provideExpectationTargets
      */
-    public function testBecauseOf($type, $message_part)
+    public function testBecauseOf($type, $messagePart)
     {
         $message = ExpectationArgsRequired::forExpectationType(
             new ExpectationTarget($type, 'foo')
         )->getMessage();
 
-        static::assertStringContains($message_part, $message);
+        static::assertStringContains($messagePart, $message);
     }
 
-    public function expectationTargets()
+    /**
+     * @return list<array{string, string}>
+     */
+    public function provideExpectationTargets()
     {
         return [
             [ExpectationTarget::TYPE_ACTION_ADDED, 'added action'],

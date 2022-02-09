@@ -1,8 +1,9 @@
 <?php
+
 /*
  * This file is part of the Brain Monkey package.
  *
- * (c) Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ * (c) Giuseppe Mazzapica and contributors.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,13 +16,14 @@ use Brain\Monkey\Tests\UnitTestCase;
 use Mockery\Exception\InvalidCountException;
 
 /**
- * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @license http://opensource.org/licenses/MIT MIT
- * @package BrainMonkey
+ * @package Brain\Monkey\Tests
  */
 class ApplyFiltersTest extends UnitTestCase
 {
-
+    /**
+     * @test
+     */
     public function testApplyNull()
     {
         apply_filters('the_title', 'foo', 'bar', 'baz');
@@ -30,6 +32,9 @@ class ApplyFiltersTest extends UnitTestCase
         static::assertTrue(true);
     }
 
+    /**
+     * @test
+     */
     public function testApplyReturnsFirstArg()
     {
         $foo = apply_filters('the_title', 'foo', 'bar', 'baz');
@@ -38,6 +43,9 @@ class ApplyFiltersTest extends UnitTestCase
         static::assertSame('foo', $fooRef);
     }
 
+    /**
+     * @test
+     */
     public function testApplyApplied()
     {
         apply_filters('foo.bar', 'foo');
@@ -51,6 +59,9 @@ class ApplyFiltersTest extends UnitTestCase
         static::assertSame(0, Filters\applied('not me'));
     }
 
+    /**
+     * @test
+     */
     public function testApplyWithExpectation()
     {
         Filters\expectApplied('foo')->twice()->with(\Mockery::anyOf('Yes!', 'No!'));
@@ -62,6 +73,9 @@ class ApplyFiltersTest extends UnitTestCase
         apply_filters('bar', 'foo', 'bar');
     }
 
+    /**
+     * @test
+     */
     public function testApplyWithExpectationAndReturn()
     {
         Filters\expectApplied('the_title')
@@ -74,9 +88,11 @@ class ApplyFiltersTest extends UnitTestCase
             ->andReturn('Foo!', 'Bar!');
 
         Filters\expectApplied('the_excerpt')
-            ->andReturnUsing(function ($var) {
-                return str_rot13($var);
-            });
+            ->andReturnUsing(
+                static function ($var) {
+                    return str_rot13($var);
+                }
+            );
 
         $title = apply_filters('the_title', 'foo');
         $contentOne = apply_filters('the_content', 'one');
@@ -89,28 +105,34 @@ class ApplyFiltersTest extends UnitTestCase
         static::assertSame('Monkey is great!', $excerpt);
     }
 
+    /**
+     * @test
+     */
     public function testApplyWithExpectationAndReturnCurrentFilter()
     {
-        $answer = function ($question) {
+        $answer = static function ($question) {
 
-            if (current_filter() !== 'can_I_ask') {
+            if (current_filter() !== 'can_i_ask') {
                 throw new \RuntimeException('Giuseppe, your code sucks!');
             }
 
             $answers = [
                 'How is Monkey?' => 'Great!',
-                'How is Milk?'   => 'Meh',
+                'How is Milk?' => 'Meh',
             ];
 
             return $answers[$question];
         };
 
-        Filters\expectApplied('can_I_ask')->twice()->andReturnUsing($answer);
+        Filters\expectApplied('can_i_ask')->twice()->andReturnUsing($answer);
 
-        static::assertSame('Great!', apply_filters('can_I_ask', 'How is Monkey?'));
-        static::assertSame('Meh', apply_filters('can_I_ask', 'How is Milk?'));
+        static::assertSame('Great!', apply_filters('can_i_ask', 'How is Monkey?'));
+        static::assertSame('Meh', apply_filters('can_i_ask', 'How is Milk?'));
     }
 
+    /**
+     * @test
+     */
     public function testApplySameFilterDifferentArguments()
     {
         $obj = new \stdClass();
@@ -135,6 +157,9 @@ class ApplyFiltersTest extends UnitTestCase
         apply_filters('double_filter', 'x', $obj, 'x');
     }
 
+    /**
+     * @test
+     */
     public function testApplySameFilterDifferentArgumentsWithoutCatchAll()
     {
         Filters\expectApplied('foo')->once()->with('No?')->andReturn('No!');
@@ -150,6 +175,9 @@ class ApplyFiltersTest extends UnitTestCase
         static::assertSame('Maybe!', $maybe);
     }
 
+    /**
+     * @test
+     */
     public function testApplySameFilterDifferentArgumentsWithCatchAll()
     {
         Filters\expectApplied('foo')->once()->with('No?')->andReturn('No!');
@@ -165,6 +193,9 @@ class ApplyFiltersTest extends UnitTestCase
         static::assertSame('Maybe?', $maybe);
     }
 
+    /**
+     * @test
+     */
     public function testAddExpectationWithDifferentArgsDoesNotBreakApplyFilters()
     {
         Filters\expectApplied('foo')->once()->with(1);
@@ -177,6 +208,9 @@ class ApplyFiltersTest extends UnitTestCase
         static::assertSame(2, $two);
     }
 
+    /**
+     * @test
+     */
     public function testAddExpectationWithSameArgsDoesNotBreakApplyFilters()
     {
         Filters\expectApplied('foo')->times(3);
@@ -190,6 +224,9 @@ class ApplyFiltersTest extends UnitTestCase
         static::assertSame(3, $three);
     }
 
+    /**
+     * @test
+     */
     public function testExpectByDefaultReturnFirstArg()
     {
         Filters\expectApplied('the_title');
@@ -199,6 +236,9 @@ class ApplyFiltersTest extends UnitTestCase
         static::assertSame('I am the title', $title);
     }
 
+    /**
+     * @test
+     */
     public function testAndAlsoExpectIt()
     {
         $obj = new \stdClass();
@@ -221,34 +261,40 @@ class ApplyFiltersTest extends UnitTestCase
         apply_filters('double_filter', 'x', $obj, 'x');
     }
 
+    /**
+     * @test
+     */
     public function testNestedFiltersAndDoingFilter()
     {
+        Filters\expectApplied('first_level')->once()->andReturnUsing(
+            static function ($arg) {
+                static::assertTrue(current_filter() === 'first_level');
+                static::assertTrue(doing_filter('first_level'));
+                static::assertFalse(doing_filter('second_level'));
 
-        Filters\expectApplied('first_level')->once()->andReturnUsing(function ($arg) {
+                return apply_filters('second_level', $arg);
+            }
+        );
 
-            static::assertTrue(current_filter() === 'first_level');
-            static::assertTrue(doing_filter('first_level'));
-            static::assertFalse(doing_filter('second_level'));
+        Filters\expectApplied('second_level')->once()->andReturnUsing(
+            static function ($arg) {
+                static::assertSame('How is Monkey?', $arg);
+                static::assertTrue(current_filter() === 'second_level');
+                static::assertTrue(doing_filter('first_level'));
+                static::assertTrue(doing_filter('second_level'));
 
-            return apply_filters('second_level', $arg);
-        });
-
-        Filters\expectApplied('second_level')->once()->andReturnUsing(function ($arg) {
-
-            static::assertSame('How is Monkey?', $arg);
-            static::assertTrue(current_filter() === 'second_level');
-            static::assertTrue(doing_filter('first_level'));
-            static::assertTrue(doing_filter('second_level'));
-
-            return 'Monkey is great!';
-        });
-
+                return 'Monkey is great!';
+            }
+        );
 
         static::assertSame('Monkey is great!', apply_filters('first_level', 'How is Monkey?'));
         static::assertFalse(doing_filter('first_level'));
         static::assertFalse(doing_filter('second_level'));
     }
 
+    /**
+     * @test
+     */
     public function testExpectWithNoArgsFailsIfNotApplied()
     {
         $this->expectMockeryException(InvalidCountException::class);

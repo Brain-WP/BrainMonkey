@@ -1,8 +1,9 @@
-<?php # -*- coding: utf-8 -*-
+<?php
+
 /*
- * This file is part of the BrainMonkey package.
+ * This file is part of the Brain Monkey package.
  *
- * (c) Giuseppe Mazzapica
+ * (c) Giuseppe Mazzapica and contributors.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,16 +14,14 @@ namespace Brain\Monkey\Hook\Exception;
 use Brain\Monkey\Hook\HookStorage;
 
 /**
- * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
- * @package BrainMonkey
+ * @package Brain\Monkey
  * @license http://opensource.org/licenses/MIT MIT
  */
 class InvalidAddedHookArgument extends InvalidHookArgument
 {
-
-    const CODE_WRONG_ARGS_COUNT      = 1;
-    const CODE_MISSING_CALLBACK      = 2;
-    const CODE_INVALID_PRIORITY      = 3;
+    const CODE_WRONG_ARGS_COUNT = 1;
+    const CODE_MISSING_CALLBACK = 2;
+    const CODE_INVALID_PRIORITY = 3;
     const CODE_INVALID_ACCEPTED_ARGS = 4;
 
     /**
@@ -33,8 +32,9 @@ class InvalidAddedHookArgument extends InvalidHookArgument
     {
         return new static(
             sprintf(
-                '"%s" must be called at with hook name and at maximum three other arguments: callback, priority, and accepted args num.',
-                $type === HookStorage::ACTIONS ? "add_action" : "add_filter"
+                '"%s" must be called at with hook name and at maximum three other arguments: '
+                . 'callback, priority, and accepted args num.',
+                ($type === HookStorage::ACTIONS) ? "add_action" : "add_filter"
             ),
             self::CODE_WRONG_ARGS_COUNT
         );

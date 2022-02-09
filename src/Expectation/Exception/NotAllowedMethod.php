@@ -1,8 +1,9 @@
-<?php # -*- coding: utf-8 -*-
+<?php
+
 /*
- * This file is part of the BrainMonkey package.
+ * This file is part of the Brain Monkey package.
  *
- * (c) Giuseppe Mazzapica
+ * (c) Giuseppe Mazzapica and contributors.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,28 +14,26 @@ namespace Brain\Monkey\Expectation\Exception;
 use Brain\Monkey\Expectation\ExpectationTarget;
 
 /**
- * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
- * @package BrainMonkey
+ * @package Brain\Monkey
  * @license http://opensource.org/licenses/MIT MIT
  */
 class NotAllowedMethod extends Exception
 {
-
-    const CODE_METHOD           = 1;
+    const CODE_METHOD = 1;
     const CODE_RETURNING_METHOD = 2;
-    const CODE_WHEN_HAPPEN      = 3;
-    const CODE_BY_DEFAULT       = 4;
+    const CODE_WHEN_HAPPEN = 3;
+    const CODE_BY_DEFAULT = 4;
 
     /**
-     * @param string $method_name
+     * @param string $methodName
      * @return static
      */
-    public static function forMethod($method_name)
+    public static function forMethod($methodName)
     {
         return new static(
             sprintf(
                 '%s method is not allowed for Brain Monkey expectation.',
-                $method_name
+                $methodName
             ),
             self::CODE_METHOD
         );
@@ -52,15 +51,16 @@ class NotAllowedMethod extends Exception
     }
 
     /**
-     * @param string $method_name
+     * @param string $methodName
      * @return static
      */
-    public static function forReturningMethod($method_name)
+    public static function forReturningMethod($methodName)
     {
         return new static(
             sprintf(
-                'Bad usage of "%s" method: returning expectation can only be used for functions or applied filters expectations.',
-                $method_name
+                'Bad usage of "%s" method: returning expectation can only be used for functions '
+                . 'or applied filters expectations.',
+                $methodName
             ),
             self::CODE_RETURNING_METHOD
         );
@@ -84,5 +84,4 @@ class NotAllowedMethod extends Exception
             self::CODE_WHEN_HAPPEN
         );
     }
-
 }

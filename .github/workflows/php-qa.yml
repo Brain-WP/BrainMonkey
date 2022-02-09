@@ -56,7 +56,7 @@ jobs:
 
             - name: Check cross-version PHP compatibility
               if: ${{ matrix.php-versions == '7.4' && matrix.dependency-versions == 'highest' }} # results is same across versions, do it once
-              run: composer phpcompat
+              run: ./vendor/bin/phpcs
 
             - name: Migrate test configuration (>= 7.3)
               if: ${{ matrix.php-versions >= 7.3 && matrix.dependency-versions == 'highest' }}

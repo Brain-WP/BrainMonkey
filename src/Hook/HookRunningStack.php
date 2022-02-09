@@ -1,8 +1,9 @@
-<?php # -*- coding: utf-8 -*-
+<?php
+
 /*
- * This file is part of the BrainMonkey package.
+ * This file is part of the Brain Monkey package.
  *
- * (c) Giuseppe Mazzapica
+ * (c) Giuseppe Mazzapica and contributors.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,29 +13,27 @@ namespace Brain\Monkey\Hook;
 
 /**
  * A simple stack data structure built around an array for hook names.
- * This allow to keep last hook being executed.
+ * This allows us to keep last hook being executed.
  *
  * It is used to `current_filter()`, `doing_action()`, and `doing_filter()`.
  *
- * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
- * @package BrainMonkey
+ * @package Brain\Monkey
  * @license http://opensource.org/licenses/MIT MIT
  */
 final class HookRunningStack
 {
-
     /**
      * @var array
      */
     private $stack = [];
 
     /**
-     * @param string $hook_name
+     * @param string $hookName
      * @return static
      */
-    public function push($hook_name)
+    public function push($hookName)
     {
-        $this->stack[] = $hook_name;
+        $this->stack[] = $hookName;
 
         return $this;
     }
@@ -44,7 +43,7 @@ final class HookRunningStack
      */
     public function last()
     {
-        if ( ! $this->stack) {
+        if (!$this->stack) {
             return '';
         }
 
@@ -52,16 +51,12 @@ final class HookRunningStack
     }
 
     /**
-     * @param string $hook_name
+     * @param string $hookName
      * @return bool
      */
-    public function has($hook_name = null)
+    public function has($hookName = null)
     {
-        if ( ! $this->stack) {
-            return false;
-        }
-
-        return $hook_name === null ? true : in_array($hook_name, $this->stack, true);
+        return $this->stack && (($hookName === null) || in_array($hookName, $this->stack, true));
     }
 
     /**

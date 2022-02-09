@@ -1,8 +1,9 @@
-<?php # -*- coding: utf-8 -*-
+<?php
+
 /*
- * This file is part of the BrainMonkey package.
+ * This file is part of the Brain Monkey package.
  *
- * (c) Giuseppe Mazzapica
+ * (c) Giuseppe Mazzapica and contributors.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,74 +16,88 @@ use Brain\Monkey\Name\Exception\InvalidCallable;
 use Brain\Monkey\Tests\UnitTestCase;
 
 /**
- * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
- * @package BrainMonkey
+ * @package Brain\Monkey\Tests
  * @license http://opensource.org/licenses/MIT MIT
  */
 class ClosureStringFormTest extends UnitTestCase
 {
-
+    /**
+     * @test
+     */
     public function testNoArg()
     {
         $callback = function () {
-
+            return $this;
         };
 
-        $string_form = new ClosureStringForm($callback);
+        $stringForm = new ClosureStringForm($callback);
 
-        static::assertSame('function ()', (string)$string_form);
+        static::assertSame('function ()', (string)$stringForm);
     }
 
+    /**
+     * @test
+     */
     public function testStaticNoArg()
     {
         $callback = static function () {
-
         };
 
-        $string_form = new ClosureStringForm($callback);
+        $stringForm = new ClosureStringForm($callback);
 
-        static::assertSame('static function ()', (string)$string_form);
+        static::assertSame('static function ()', (string)$stringForm);
     }
 
+    /**
+     * @test
+     */
     public function testArgsNoTypeHint()
     {
         $callback = function ($foo, $bar) {
-
+            return $this;
         };
 
-        $string_form = new ClosureStringForm($callback);
+        $stringForm = new ClosureStringForm($callback);
 
-        static::assertSame('function ($foo, $bar)', (string)$string_form);
+        static::assertSame('function ($foo, $bar)', (string)$stringForm);
     }
 
+    /**
+     * @test
+     */
     public function testArgsTypeHints()
     {
-        $callback = function (\ArrayObject $foo, array $bar, \stdClass... $classes) {
-
+        $callback = function (\ArrayObject $foo, array $bar, \stdClass ...$classes) {
+            return $this;
         };
 
-        $string_form = new ClosureStringForm($callback);
+        $stringForm = new ClosureStringForm($callback);
 
         static::assertSame(
             'function (ArrayObject $foo, array $bar, stdClass ...$classes)',
-            (string)$string_form
+            (string)$stringForm
         );
     }
 
+    /**
+     * @test
+     */
     public function testStaticArgsTypeHints()
     {
-        $callback = static function (\ArrayObject $foo, array $bar, \stdClass... $classes) {
-
+        $callback = static function (\ArrayObject $foo, array $bar, \stdClass ...$classes) {
         };
 
-        $string_form = new ClosureStringForm($callback);
+        $stringForm = new ClosureStringForm($callback);
 
         static::assertSame(
             'static function (ArrayObject $foo, array $bar, stdClass ...$classes)',
-            (string)$string_form
+            (string)$stringForm
         );
     }
 
+    /**
+     * @test
+     */
     public function testInvalidClosureStringThrows()
     {
         $closure = 'function()) {}';
@@ -91,19 +106,25 @@ class ClosureStringFormTest extends UnitTestCase
         ClosureStringForm::normalizeString($closure);
     }
 
+    /**
+     * @test
+     */
     public function testParseNoArgsString()
     {
-        $closure_a = 'function()';
-        $closure_b = 'function ()';
-        $closure_c = 'static function ()';
-        $closure_d = ' static function  ( ) ';
+        $closure1 = 'function()';
+        $closure2 = 'function ()';
+        $closure3 = 'static function ()';
+        $closure4 = ' static function  ( ) ';
 
-        static::assertSame('function ()', ClosureStringForm::normalizeString($closure_a));
-        static::assertSame('function ()', ClosureStringForm::normalizeString($closure_b));
-        static::assertSame('static function ()', ClosureStringForm::normalizeString($closure_c));
-        static::assertSame('static function ()', ClosureStringForm::normalizeString($closure_d));
+        static::assertSame('function ()', ClosureStringForm::normalizeString($closure1));
+        static::assertSame('function ()', ClosureStringForm::normalizeString($closure2));
+        static::assertSame('static function ()', ClosureStringForm::normalizeString($closure3));
+        static::assertSame('static function ()', ClosureStringForm::normalizeString($closure4));
     }
 
+    /**
+     * @test
+     */
     public function testParseStringWithArgs()
     {
         $closure = ' static function( \ArrayObject $foo,array $bar,stdClass ...$classes ) ';

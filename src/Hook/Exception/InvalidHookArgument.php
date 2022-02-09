@@ -1,8 +1,9 @@
-<?php # -*- coding: utf-8 -*-
+<?php
+
 /*
- * This file is part of the BrainMonkey package.
+ * This file is part of the Brain Monkey package.
  *
- * (c) Giuseppe Mazzapica
+ * (c) Giuseppe Mazzapica and contributors.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,13 +14,11 @@ namespace Brain\Monkey\Hook\Exception;
 use Brain\Monkey\Hook\HookStorage;
 
 /**
- * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
- * @package BrainMonkey
+ * @package Brain\Monkey
  * @license http://opensource.org/licenses/MIT MIT
  */
 class InvalidHookArgument extends Exception
 {
-
     /**
      * @param mixed $type
      * @return static
@@ -28,8 +27,9 @@ class InvalidHookArgument extends Exception
     {
         return new static(
             sprintf(
-                'HookStorage hook type must either HookStorage::ACTIONS or HookStorage::FILTERS, got %s.',
-                is_object($type) ? ' instance of '.get_class($type) : gettype($type)
+                'HookStorage hook type must either HookStorage::ACTIONS or '
+                . 'HookStorage::FILTERS, got %s.',
+                is_object($type) ? ' instance of ' . get_class($type) : gettype($type)
             )
         );
     }
@@ -43,7 +43,7 @@ class InvalidHookArgument extends Exception
         return new static(
             sprintf(
                 'Hook name must be in a string, got %s.',
-                is_object($type) ? ' instance of '.get_class($type) : gettype($type)
+                is_object($type) ? ' instance of ' . get_class($type) : gettype($type)
             )
         );
     }

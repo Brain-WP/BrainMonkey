@@ -1,8 +1,9 @@
-<?php # -*- coding: utf-8 -*-
+<?php
+
 /*
- * This file is part of the BrainMonkey package.
+ * This file is part of the Brain Monkey package.
  *
- * (c) Giuseppe Mazzapica
+ * (c) Giuseppe Mazzapica and contributors.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,22 +12,19 @@
 namespace Brain\Monkey\Expectation\Exception;
 
 /**
- * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
- * @package BrainMonkey
+ * @package Brain\Monkey
  * @license http://opensource.org/licenses/MIT MIT
  */
 class MissedPatchworkReplace extends Exception
 {
-
     /**
-     * @param string $function_name
+     * @param string $functionName
      * @return static
      */
-    public static function forFunction($function_name)
+    public static function forFunction($functionName)
     {
         return new static(
-            "Patchwork was not able to replace '{$function_name}', try to load Patchwork earlier."
+            "Patchwork was not able to replace '{$functionName}', try to load Patchwork earlier."
         );
     }
-
 }

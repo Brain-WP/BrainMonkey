@@ -1,8 +1,9 @@
-<?php # -*- coding: utf-8 -*-
+<?php
+
 /*
- * This file is part of the BrainMonkey package.
+ * This file is part of the Brain Monkey package.
  *
- * (c) Giuseppe Mazzapica
+ * (c) Giuseppe Mazzapica and contributors.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,13 +16,14 @@ use Brain\Monkey\Name\MethodName;
 use Brain\Monkey\Tests\UnitTestCase;
 
 /**
- * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
- * @package BrainMonkey
+ * @package Brain\Monkey\Tests
  * @license http://opensource.org/licenses/MIT MIT
  */
 class MethodNameTest extends UnitTestCase
 {
-
+    /**
+     * @test
+     */
     public function testConstructorThrowsIfBadName()
     {
         $this->expectException(InvalidName::class);
@@ -29,6 +31,9 @@ class MethodNameTest extends UnitTestCase
         new MethodName('fo-o');
     }
 
+    /**
+     * @test
+     */
     public function testConstructorThrowsIfNamespacedName()
     {
         $this->expectException(InvalidName::class);
@@ -36,6 +41,9 @@ class MethodNameTest extends UnitTestCase
         new MethodName('foo\bar');
     }
 
+    /**
+     * @test
+     */
     public function testName()
     {
         $method = new MethodName(__FUNCTION__);
@@ -43,9 +51,11 @@ class MethodNameTest extends UnitTestCase
         static::assertSame(__FUNCTION__, $method->name());
     }
 
+    /**
+     * @test
+     */
     public function testEquals()
     {
         static::assertTrue((new MethodName(__FUNCTION__))->equals(new MethodName(__FUNCTION__)));
     }
-
 }

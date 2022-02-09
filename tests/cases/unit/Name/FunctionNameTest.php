@@ -1,8 +1,9 @@
-<?php # -*- coding: utf-8 -*-
+<?php
+
 /*
- * This file is part of the BrainMonkey package.
+ * This file is part of the Brain Monkey package.
  *
- * (c) Giuseppe Mazzapica
+ * (c) Giuseppe Mazzapica and contributors.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,13 +16,14 @@ use Brain\Monkey\Name\FunctionName;
 use Brain\Monkey\Tests\UnitTestCase;
 
 /**
- * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
- * @package BrainMonkey
+ * @package Brain\Monkey\Tests
  * @license http://opensource.org/licenses/MIT MIT
  */
 class FunctionNameTest extends UnitTestCase
 {
-
+    /**
+     * @test
+     */
     public function testConstructorThrowsIfBadName()
     {
         $this->expectException(InvalidName::class);
@@ -29,40 +31,51 @@ class FunctionNameTest extends UnitTestCase
         new FunctionName('fo-o');
     }
 
+    /**
+     * @test
+     */
     public function testFullQualifiedName()
     {
-        $function_a = new FunctionName(__FUNCTION__);
-        $function_b = new FunctionName('\Foo\Bar\bazBaz');
+        $function1 = new FunctionName(__FUNCTION__);
+        $function2 = new FunctionName('\Foo\Bar\bazBaz');
 
-        static::assertSame(__FUNCTION__, $function_a->fullyQualifiedName());
-        static::assertSame('Foo\Bar\bazBaz', $function_b->fullyQualifiedName());
+        static::assertSame(__FUNCTION__, $function1->fullyQualifiedName());
+        static::assertSame('Foo\Bar\bazBaz', $function2->fullyQualifiedName());
     }
 
+    /**
+     * @test
+     */
     public function testShortName()
     {
-        $function_a = new FunctionName(__NAMESPACE__.'\\'.__FUNCTION__);
-        $function_b = new FunctionName('\Foo\Bar\bazBaz');
+        $function1 = new FunctionName(__NAMESPACE__ . '\\' . __FUNCTION__);
+        $function2 = new FunctionName('\Foo\Bar\bazBaz');
 
-        static::assertSame(__FUNCTION__, $function_a->shortName());
-        static::assertSame('bazBaz', $function_b->shortName());
+        static::assertSame(__FUNCTION__, $function1->shortName());
+        static::assertSame('bazBaz', $function2->shortName());
     }
 
+    /**
+     * @test
+     */
     public function testNamespace()
     {
-        $function_a = new FunctionName(__NAMESPACE__.'\\'.__FUNCTION__);
-        $function_b = new FunctionName('\Foo\Bar\bazBaz');
+        $function1 = new FunctionName(__NAMESPACE__ . '\\' . __FUNCTION__);
+        $function2 = new FunctionName('\Foo\Bar\bazBaz');
 
-        static::assertSame(__NAMESPACE__, $function_a->getNamespace());
-        static::assertSame('Foo\Bar', $function_b->getNamespace());
+        static::assertSame(__NAMESPACE__, $function1->getNamespace());
+        static::assertSame('Foo\Bar', $function2->getNamespace());
     }
 
+    /**
+     * @test
+     */
     public function testEquals()
     {
-        $function_a = new FunctionName(__NAMESPACE__.'\\'.__FUNCTION__);
-        $function_b = new FunctionName('\\Brain\\Monkey\\Tests\\Unit\\Name\\testEquals');
+        $function1 = new FunctionName(__NAMESPACE__ . '\\' . __FUNCTION__);
+        $function2 = new FunctionName('\\Brain\\Monkey\\Tests\\Unit\\Name\\testEquals');
 
-        static::assertTrue($function_a->equals($function_b));
-        static::assertTrue($function_b->equals($function_a));
+        static::assertTrue($function1->equals($function2));
+        static::assertTrue($function2->equals($function1));
     }
-
 }

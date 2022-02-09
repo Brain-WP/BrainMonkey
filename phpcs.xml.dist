@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<ruleset>
+
+    <file>./inc</file>
+    <file>./src</file>
+    <file>./tests</file>
+
+    <arg value="sp"/>
+    <config name="testVersion" value="5.6-"/>
+
+    <rule ref="Inpsyde">
+        <exclude name="Inpsyde.CodeQuality.ReturnTypeDeclaration" />
+        <exclude name="Inpsyde.CodeQuality.ArgumentTypeDeclaration" />
+        <exclude name="Inpsyde.CodeQuality.NoAccessors" />
+        <exclude name="NeutronStandard.StrictTypes.RequireStrictTypes" />
+        <exclude name="WordPress.PHP.DevelopmentFunctions" />
+        <exclude name="WordPress.Security.EscapeOutput" />
+        <exclude name="Squiz.PHP.Eval.Discouraged" />
+    </rule>
+
+    <rule ref="Inpsyde.CodeQuality.Psr4">
+        <properties>
+            <property
+                name="psr4"
+                type="array"
+                value="
+                    Brain\Monkey=>src,
+                    Brain\Monkey\Tests=>tests/src,
+                    Brain\Monkey\Tests\Functional=>tests/cases/functional,
+                    Brain\Monkey\Tests\Unit=>tests/cases/unit
+                    "/>
+        </properties>
+    </rule>
+
+</ruleset>
+

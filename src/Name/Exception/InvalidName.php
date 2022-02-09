@@ -1,8 +1,9 @@
-<?php # -*- coding: utf-8 -*-
+<?php
+
 /*
- * This file is part of the BrainMonkey package.
+ * This file is part of the Brain Monkey package.
  *
- * (c) Giuseppe Mazzapica
+ * (c) Giuseppe Mazzapica and contributors.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,18 +11,15 @@
 
 namespace Brain\Monkey\Name\Exception;
 
-
 /**
- * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
- * @package BrainMonkey
+ * @package Brain\Monkey
  * @license http://opensource.org/licenses/MIT MIT
  */
 class InvalidName extends Exception
 {
-
     const CODE_FOR_FUNCTION = 1;
-    const CODE_FOR_CLASS    = 2;
-    const CODE_FOR_METHOD   = 3;
+    const CODE_FOR_CLASS = 2;
+    const CODE_FOR_METHOD = 3;
 
     /**
      * @param string $function
@@ -52,7 +50,7 @@ class InvalidName extends Exception
 
     /**
      * @param mixed $thing
-     * @param int   $code
+     * @param int $code
      * @return static
      */
     private static function createFor($thing, $code)
@@ -75,13 +73,12 @@ class InvalidName extends Exception
                 $name = "'{$thing}'";
                 break;
             case is_object($thing):
-                $name = 'An instance of '.get_class($thing);
+                $name = 'An instance of ' . get_class($thing);
                 break;
             default:
-                $name = 'A variable of type '.gettype($thing);
+                $name = 'A variable of type ' . gettype($thing);
         }
 
         return new static(sprintf('%s is not a valid %s name.', $name, $type), $code);
     }
-
 }

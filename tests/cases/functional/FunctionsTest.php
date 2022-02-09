@@ -1,8 +1,9 @@
 <?php
+
 /*
  * This file is part of the Brain Monkey package.
  *
- * (c) Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ * (c) Giuseppe Mazzapica and contributors.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,12 +15,14 @@ use Brain\Monkey;
 use Brain\Monkey\Tests\FunctionalTestCase;
 
 /**
- * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @license http://opensource.org/licenses/MIT MIT
- * @package BrainMonkey
+ * @package Brain\Monkey\Tests
  */
 class FunctionsTest extends FunctionalTestCase
 {
+    /**
+     * @test
+     */
     public function testWhen()
     {
         Monkey\Functions\when('get_post')->justReturn(false);
@@ -28,6 +31,9 @@ class FunctionsTest extends FunctionalTestCase
         static::assertFalse(get_post(2));
     }
 
+    /**
+     * @test
+     */
     public function testExpect()
     {
         $post = \Mockery::mock(\WP_Post::class);
@@ -46,6 +52,9 @@ class FunctionsTest extends FunctionalTestCase
         static::assertSame($post, get_post(2));
     }
 
+    /**
+     * @test
+     */
     public function testPredefinedStubs()
     {
         $error = \Mockery::mock(\WP_Error::class);
@@ -54,6 +63,9 @@ class FunctionsTest extends FunctionalTestCase
         static::assertFalse(is_wp_error('x'));
     }
 
+    /**
+     * @test
+     */
     public function testReDefinePredefinedStubsWithWhen()
     {
         Monkey\Functions\when('is_wp_error')->alias('ctype_alpha');
@@ -62,13 +74,16 @@ class FunctionsTest extends FunctionalTestCase
         static::assertFalse(is_wp_error('123'));
     }
 
+    /**
+     * @test
+     */
     public function testReDefinePredefinedStubsWithExpect()
     {
         Monkey\Functions\expect('is_wp_error')
             ->atLeast()
             ->twice()
             ->andReturnUsing(
-                function ($thing) {
+                static function ($thing) {
                     return $thing !== 42;
                 }
             );

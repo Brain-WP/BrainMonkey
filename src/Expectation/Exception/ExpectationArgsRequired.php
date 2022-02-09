@@ -1,8 +1,9 @@
-<?php # -*- coding: utf-8 -*-
+<?php
+
 /*
- * This file is part of the BrainMonkey package.
+ * This file is part of the Brain Monkey package.
  *
- * (c) Giuseppe Mazzapica
+ * (c) Giuseppe Mazzapica and contributors.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,13 +14,11 @@ namespace Brain\Monkey\Expectation\Exception;
 use Brain\Monkey\Expectation\ExpectationTarget;
 
 /**
- * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
- * @package BrainMonkey
+ * @package Brain\Monkey
  * @license http://opensource.org/licenses/MIT MIT
  */
 class ExpectationArgsRequired extends Exception
 {
-
     /**
      * @param \Brain\Monkey\Expectation\ExpectationTarget $target
      * @return static
@@ -47,5 +46,4 @@ class ExpectationArgsRequired extends Exception
             "Can't use `withNoArgs()` for {$type} expectations: they require at least one argument."
         );
     }
-
 }

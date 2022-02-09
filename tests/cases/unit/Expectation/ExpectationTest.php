@@ -1,8 +1,9 @@
 <?php
+
 /*
- * This file is part of the BrainMonkey package.
+ * This file is part of the Brain Monkey package.
  *
- * (c) Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ * (c) Giuseppe Mazzapica and contributors.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,14 +18,20 @@ use Brain\Monkey\Expectation\ExpectationTarget;
 use Brain\Monkey\Tests\UnitTestCase;
 use Mockery\ExpectationInterface;
 
+/**
+ * @package Brain\Monkey\Tests
+ * @license http://opensource.org/licenses/MIT MIT
+ */
 class ExpectationTest extends UnitTestCase
 {
-
+    /**
+     * @test
+     */
     public function testNotAllowedMethodsThrowException()
     {
         /** @var \Mockery\ExpectationInterface $mockery */
         $mockery = \Mockery::mock(ExpectationInterface::class);
-        
+
         $target = new ExpectationTarget(ExpectationTarget::TYPE_FILTER_ADDED, 'foo');
 
         $expectation = new Expectation($mockery, $target);
@@ -35,6 +42,9 @@ class ExpectationTest extends UnitTestCase
         $expectation->shouldReceive('foo');
     }
 
+    /**
+     * @test
+     */
     public function testReturnExpectationThrowExceptionIfNotAllowed()
     {
         /** @var \Mockery\ExpectationInterface $mockery */
@@ -51,6 +61,9 @@ class ExpectationTest extends UnitTestCase
         $expectation->andReturn();
     }
 
+    /**
+     * @test
+     */
     public function testWithNoArgsThrowExceptionIfArgsRequired()
     {
         /** @var \Mockery\ExpectationInterface $mockery */
@@ -65,6 +78,9 @@ class ExpectationTest extends UnitTestCase
         $expectation->withNoArgs();
     }
 
+    /**
+     * @test
+     */
     public function testWhenHappenExpectationThrowExceptionIfNotAllowed()
     {
         /** @var \Mockery\ExpectationInterface $mockery */
@@ -80,6 +96,9 @@ class ExpectationTest extends UnitTestCase
         $expectation->whenHappen('__return_true');
     }
 
+    /**
+     * @test
+     */
     public function testAndReturnFirstArgThrowExceptionIfNotAllowed()
     {
         /** @var \Mockery\ExpectationInterface $mockery */

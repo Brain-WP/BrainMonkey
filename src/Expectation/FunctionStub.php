@@ -1,8 +1,9 @@
-<?php # -*- coding: utf-8 -*-
+<?php
+
 /*
- * This file is part of the BrainMonkey package.
+ * This file is part of the Brain Monkey package.
  *
- * (c) Giuseppe Mazzapica
+ * (c) Giuseppe Mazzapica and contributors.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,30 +13,27 @@ namespace Brain\Monkey\Expectation;
 
 use Brain\Monkey\Name\FunctionName;
 
-
 /**
- * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
- * @package BrainMonkey
+ * @package Brain\Monkey
  * @license http://opensource.org/licenses/MIT MIT
  */
 class FunctionStub
 {
-
     /**
      * @var \Brain\Monkey\Name\FunctionName
      */
-    private $function_name;
+    private $functionName;
 
     /**
-     * @param FunctionName $function_name
+     * @param FunctionName $functionName
      */
-    public function __construct(FunctionName $function_name)
+    public function __construct(FunctionName $functionName)
     {
-        $this->function_name = $function_name;
-        $name = $this->function_name->shortName();
-        $namespace = $this->function_name->getNamespace();
+        $this->functionName = $functionName;
+        $name = $this->functionName->shortName();
+        $namespace = $this->functionName->getNamespace();
 
-        if (function_exists($function_name->fullyQualifiedName())) {
+        if (function_exists($functionName->fullyQualifiedName())) {
             return;
         }
 
@@ -57,7 +55,7 @@ PHP;
      */
     public function name()
     {
-        return $this->function_name->fullyQualifiedName();
+        return $this->functionName->fullyQualifiedName();
     }
 
     /**
@@ -67,7 +65,7 @@ PHP;
      */
     public function alias(callable $callback)
     {
-        $fqn = $this->function_name->fullyQualifiedName();
+        $fqn = $this->functionName->fullyQualifiedName();
         \Patchwork\redefine($fqn, $callback);
         $this->assertRedefined($fqn);
     }
@@ -81,15 +79,16 @@ PHP;
      */
     public function redefineUsingExpectation(Expectation $expectation)
     {
-        $fqn = $this->function_name->fullyQualifiedName();
+        $fqn = $this->functionName->fullyQualifiedName();
 
-        $this->alias(function (...$args) use ($expectation, $fqn) {
+        $this->alias(
+            static function (...$args) use ($expectation, $fqn) {
+                $mock = $expectation->mockeryExpectation()->getMock();
+                $target = new ExpectationTarget(ExpectationTarget::TYPE_FUNCTION, $fqn);
 
-            $mock = $expectation->mockeryExpectation()->getMock();
-            $target = new ExpectationTarget(ExpectationTarget::TYPE_FUNCTION, $fqn);
-
-            return $mock->{$target->mockMethodName()}(...$args);
-        });
+                return $mock->{$target->mockMethodName()}(...$args);
+            }
+        );
     }
 
     /**
@@ -99,11 +98,14 @@ PHP;
      */
     public function justReturn($return = null)
     {
-        $fqn = ltrim($this->function_name->fullyQualifiedName(), '\\');
+        $fqn = ltrim($this->functionName->fullyQualifiedName(), '\\');
 
-        \Patchwork\redefine($fqn, function () use ($return) {
-            return $return;
-        });
+        \Patchwork\redefine(
+            $fqn,
+            static function () use ($return) {
+                return $return;
+            }
+        );
 
         $this->assertRedefined($fqn);
     }
@@ -116,13 +118,16 @@ PHP;
     public function justEcho($value = null)
     {
         is_null($value) and $value = '';
-        $fqn = ltrim($this->function_name->fullyQualifiedName(), '\\');
+        $fqn = ltrim($this->functionName->fullyQualifiedName(), '\\');
 
         $this->assertPrintable($value, 'provided to justEcho');
 
-        \Patchwork\redefine($fqn, function () use ($value) {
-            echo $value;
-        });
+        \Patchwork\redefine(
+            $fqn,
+            static function () use ($value) {
+                echo $value;
+            }
+        );
 
         $this->assertRedefined($fqn);
     }
@@ -132,24 +137,28 @@ PHP;
      * default. Redefined function will throw an exception if the function does not receive desired
      * argument.
      *
-     * @param int $arg_num The position (1-based) of the argument to return
+     * @param int $argNum The position (1-based) of the argument to return
      */
-    public function returnArg($arg_num = 1)
+    public function returnArg($argNum = 1)
     {
-        $arg_num = $this->assertValidArgNum($arg_num, 'returnArg');
+        $argNum = $this->assertValidArgNum($argNum, 'returnArg');
 
-        $fqn = $this->function_name->fullyQualifiedName();
+        $fqn = $this->functionName->fullyQualifiedName();
 
-        \Patchwork\redefine($fqn, function (...$args) use ($fqn, $arg_num) {
-            if ( ! array_key_exists($arg_num - 1, $args)) {
-                $count = count($args);
-                throw new Exception\InvalidArgumentForStub(
-                    "{$fqn} was called with {$count} params, can't return argument \"{$arg_num}\"."
-                );
+        \Patchwork\redefine(
+            $fqn,
+            static function (...$args) use ($fqn, $argNum) {
+                if (!array_key_exists($argNum - 1, $args)) {
+                    $count = count($args);
+                    throw new Exception\InvalidArgumentForStub(
+                        "{$fqn} was called with {$count} params, "
+                        . "can't return argument \"{$argNum}\"."
+                    );
+                }
+
+                return $args[$argNum - 1];
             }
-
-            return $args[$arg_num - 1];
-        });
+        );
         $this->assertRedefined($fqn);
     }
 
@@ -157,57 +166,63 @@ PHP;
      * Redefine target function making it echo one of the received arguments, the first by default.
      * Redefined function will throw an exception if the function does not receive desired argument.
      *
-     * @param int $arg_num The position (1-based) of the argument to echo
+     * @param int $argNum The position (1-based) of the argument to echo
      */
-    public function echoArg($arg_num = 1)
+    public function echoArg($argNum = 1)
     {
-        $arg_num = $this->assertValidArgNum($arg_num, 'echoArg');
+        $argNum = $this->assertValidArgNum($argNum, 'echoArg');
 
-        $fqn = $this->function_name->fullyQualifiedName();
+        $fqn = $this->functionName->fullyQualifiedName();
 
-        \Patchwork\redefine($fqn, function (...$args) use ($fqn, $arg_num) {
+        \Patchwork\redefine(
+            $fqn,
+            function (...$args) use ($fqn, $argNum) {
+                if (!array_key_exists($argNum - 1, $args)) {
+                    $count = count($args);
+                    throw new \RuntimeException(
+                        "{$fqn} was called with {$count} params, "
+                        . "can't return argument \"{$argNum}\"."
+                    );
+                }
 
-            if ( ! array_key_exists($arg_num - 1, $args)) {
-                $count = count($args);
-                throw new \RuntimeException(
-                    "{$fqn} was called with {$count} params, can't return argument \"{$arg_num}\"."
-                );
+                $arg = $args[$argNum - 1];
+
+                $this->assertPrintable($arg, "passed as argument {$argNum} to {$fqn}");
+
+                echo (string)$arg;
             }
-
-            $arg = $args[$arg_num - 1];
-
-            $this->assertPrintable($arg, "passed as argument {$arg_num} to {$fqn}");
-
-            echo (string)$arg;
-        });
+        );
 
         $this->assertRedefined($fqn);
     }
 
     /**
-     * @param mixed  $arg_num
+     * @param mixed $argNum
      * @param string $method
-     * @return bool
+     * @return int
      */
-    private function assertValidArgNum($arg_num, $method)
+    private function assertValidArgNum($argNum, $method)
     {
-        if ( ! is_int($arg_num) || $arg_num <= 0) {
+        if (!is_int($argNum) || $argNum <= 0) {
             throw new Exception\InvalidArgumentForStub(
-                sprintf('`%s::%s()` first parameter must be a positiver integer.', __CLASS__,
-                    $method)
+                sprintf(
+                    '`%s::%s()` first parameter must be a positiver integer.',
+                    __CLASS__,
+                    $method
+                )
             );
         }
 
-        return $arg_num;
+        return $argNum;
     }
 
     /**
-     * @param string $function_name
+     * @param string $functionName
      */
-    private function assertRedefined($function_name)
+    private function assertRedefined($functionName)
     {
-        if (\Patchwork\hasMissed($function_name)) {
-            throw Exception\MissedPatchworkReplace::forFunction($function_name);
+        if (\Patchwork\hasMissed($functionName)) {
+            throw Exception\MissedPatchworkReplace::forFunction($functionName);
         }
     }
 
@@ -226,15 +241,14 @@ PHP;
             && method_exists($value, '__toString')
             && is_callable([$value, '__toString']);
 
-        if ( ! $printable) {
+        if (!$printable) {
             throw new Exception\InvalidArgumentForStub(
                 sprintf(
                     "%s, %s, is not printable.",
-                    is_object($value) ? 'Instance of '.get_class($value) : gettype($value),
+                    is_object($value) ? 'Instance of ' . get_class($value) : gettype($value),
                     $coming
                 )
             );
         }
-
     }
 }

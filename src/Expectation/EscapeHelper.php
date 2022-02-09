@@ -1,8 +1,9 @@
 <?php
+
 /*
- * This file is part of the BrainMonkey package.
+ * This file is part of the Brain Monkey package.
  *
- * (c) Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ * (c) Giuseppe Mazzapica and contributors.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -16,10 +17,12 @@ namespace Brain\Monkey\Expectation;
  *
  * For edge cases consumers can either override the downstream functions that make use of this, or
  * tests in integration.
+ *
+ * @package Brain\Monkey
+ * @license http://opensource.org/licenses/MIT MIT
  */
 class EscapeHelper
 {
-
     /**
      * @param string $text
      * @return string
@@ -36,7 +39,6 @@ class EscapeHelper
     public static function escAndEcho($text)
     {
         print static::esc($text);
-
     }
 
     /**
@@ -45,7 +47,7 @@ class EscapeHelper
      */
     public static function escUrlRaw($url)
     {
-        if ( ! parse_url($url, PHP_URL_SCHEME)) {
+        if (!parse_url($url, PHP_URL_SCHEME)) {
             $url = "http://{$url}";
         }
 
@@ -67,31 +69,46 @@ class EscapeHelper
      */
     public static function escXml($text)
     {
-        $text        = html_entity_decode($text, ENT_QUOTES | ENT_XML1 | ENT_XHTML, 'UTF-8'); // Undo existing entities.
-        $cdata_regex = '\<\!\[CDATA\[.*?\]\]\>';
-        $regex       = "
+        $text = html_entity_decode(
+            $text,
+            ENT_QUOTES | ENT_XML1 | ENT_XHTML,
+            'UTF-8'
+        ); // Undo existing entities.
+
+        $cdataRegex = '\<\!\[CDATA\[.*?\]\]\>';
+
+        // phpcs:disable Inpsyde.CodeQuality.LineLength
+        $regex = "
             `
-                (?=.*?{$cdata_regex})                 # lookahead that will match anything followed by a CDATA Section
+                (?=.*?{$cdataRegex})                  # lookahead that will match anything followed by a CDATA Section
                 (?<non_cdata_followed_by_cdata>(.*?)) # the 'anything' matched by the lookahead
-                (?<cdata>({$cdata_regex}))            # the CDATA Section matched by the lookahead
+                (?<cdata>({$cdataRegex}))             # the CDATA Section matched by the lookahead
             |                                         # alternative
                 (?<non_cdata>(.*))                    # non-CDATA Section
             `sx";
+        // phpcs:enable Inpsyde.CodeQuality.LineLength
 
-        return (string) preg_replace_callback(
+        return (string)preg_replace_callback(
             $regex,
-            static function($matches) {
-                if ( ! $matches[0]) {
+            static function ($matches) {
+                if (!$matches[0]) {
                     return '';
                 }
 
-                if ( ! empty($matches['non_cdata'])) {
+                if (!empty($matches['non_cdata'])) {
                     // Escape HTML entities in the non-CDATA Section.
                     return htmlspecialchars($matches['non_cdata'], ENT_XML1, 'UTF-8', false);
                 }
 
                 // Return the CDATA Section unchanged, escape HTML entities in the rest.
-                return htmlspecialchars($matches['non_cdata_followed_by_cdata'], ENT_XML1, 'UTF-8', false) . $matches['cdata'];
+                $encoded = htmlspecialchars(
+                    $matches['non_cdata_followed_by_cdata'],
+                    ENT_XML1,
+                    'UTF-8',
+                    false
+                );
+
+                return $encoded . $matches['cdata'];
             },
             $text
         );

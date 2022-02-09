@@ -1,8 +1,9 @@
-<?php # -*- coding: utf-8 -*-
+<?php
+
 /*
- * This file is part of the BrainMonkey package.
+ * This file is part of the Brain Monkey package.
  *
- * (c) Giuseppe Mazzapica
+ * (c) Giuseppe Mazzapica and contributors.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,15 +15,15 @@ use Brain\Monkey\Hook\Exception\InvalidHookArgument;
 use Brain\Monkey\Hook\HookStorage;
 use Brain\Monkey\Tests\UnitTestCase;
 
-
 /**
- * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
- * @package BrainMonkey
+ * @package Brain\Monkey\Tests
  * @license http://opensource.org/licenses/MIT MIT
  */
 class HookStorageTest extends UnitTestCase
 {
-
+    /**
+     * @test
+     */
     public function testPushToAddedThrowsIfBadType()
     {
         $storage = new HookStorage();
@@ -30,6 +31,9 @@ class HookStorageTest extends UnitTestCase
         $storage->pushToAdded('meh', 'init', ['strtolower', 10, 1]);
     }
 
+    /**
+     * @test
+     */
     public function testPushToAddedThrowsIfBadHook()
     {
         $storage = new HookStorage();
@@ -37,6 +41,9 @@ class HookStorageTest extends UnitTestCase
         $storage->pushToAdded(HookStorage::FILTERS, 100, ['strtolower', 10, 1]);
     }
 
+    /**
+     * @test
+     */
     public function testPushToAddedThrowsIfBadCallback()
     {
         $storage = new HookStorage();
@@ -44,6 +51,9 @@ class HookStorageTest extends UnitTestCase
         $storage->pushToAdded(HookStorage::FILTERS, 'init', ['', 10, 1]);
     }
 
+    /**
+     * @test
+     */
     public function testPushToAddedThrowsIfBadPriority()
     {
         $storage = new HookStorage();
@@ -51,6 +61,9 @@ class HookStorageTest extends UnitTestCase
         $storage->pushToAdded(HookStorage::FILTERS, 'init', ['strtolower', 'x', 1]);
     }
 
+    /**
+     * @test
+     */
     public function testPushToAddedThrowsIfBadAcceptedArgs()
     {
         $storage = new HookStorage();
@@ -58,6 +71,9 @@ class HookStorageTest extends UnitTestCase
         $storage->pushToAdded(HookStorage::FILTERS, 'init', ['strtolower', 1, 'meh']);
     }
 
+    /**
+     * @test
+     */
     public function testPushToAddedThrowsIfEmptyArgs()
     {
         $storage = new HookStorage();
@@ -65,6 +81,9 @@ class HookStorageTest extends UnitTestCase
         $storage->pushToAdded(HookStorage::FILTERS, 'init', []);
     }
 
+    /**
+     * @test
+     */
     public function testPushToAddedThrowsIfTooManyArgs()
     {
         $storage = new HookStorage();
@@ -72,29 +91,35 @@ class HookStorageTest extends UnitTestCase
         $storage->pushToAdded(HookStorage::FILTERS, 'init', ['x', 1, 10, 11]);
     }
 
+    /**
+     * @test
+     */
     public function testPushToAddedAndIsHookAdded()
     {
         $storage = new HookStorage();
 
-        $cb = function ($title) {
+        $function = static function ($title) {
             return $title;
         };
 
-        $storage->pushToAdded(HookStorage::FILTERS, 'the_title', [$cb, 10, 1]);
+        $storage->pushToAdded(HookStorage::FILTERS, 'the_title', [$function, 10, 1]);
 
-        $is_no_cb = $storage->isHookAdded(HookStorage::FILTERS, 'the_title');
-        $is_with_cb = $storage->isHookAdded(HookStorage::FILTERS, 'the_title', $cb);
-        $is_with_test = $storage->isHookAdded(HookStorage::FILTERS, 'the_title', 'test');
+        $isWithoutFunction = $storage->isHookAdded(HookStorage::FILTERS, 'the_title');
+        $isWithCb = $storage->isHookAdded(HookStorage::FILTERS, 'the_title', $function);
+        $isWithTest = $storage->isHookAdded(HookStorage::FILTERS, 'the_title', 'test');
 
-        $storage->removeFromAdded(HookStorage::FILTERS, 'the_title', [$cb, 10]);
+        $storage->removeFromAdded(HookStorage::FILTERS, 'the_title', [$function, 10]);
 
-        static::assertTrue($is_no_cb);
-        static::assertTrue($is_with_cb);
-        static::assertFalse($is_with_test);
-        static::assertFalse($storage->isHookAdded(HookStorage::FILTERS, 'the_title', $cb));
+        static::assertTrue($isWithoutFunction);
+        static::assertTrue($isWithCb);
+        static::assertFalse($isWithTest);
+        static::assertFalse($storage->isHookAdded(HookStorage::FILTERS, 'the_title', $function));
         static::assertFalse($storage->isHookAdded(HookStorage::FILTERS, 'the_title'));
     }
 
+    /**
+     * @test
+     */
     public function testPushToDoneFilterDoNotAllowEmptyArgs()
     {
         $storage = new HookStorage();
@@ -102,6 +127,9 @@ class HookStorageTest extends UnitTestCase
         $storage->pushToDone(HookStorage::FILTERS, 'init', []);
     }
 
+    /**
+     * @test
+     */
     public function testPushToDoneActionAllowEmptyArgs()
     {
         $storage = new HookStorage();
@@ -109,6 +137,9 @@ class HookStorageTest extends UnitTestCase
         static::assertSame(1, $storage->isHookDone(HookStorage::ACTIONS, 'init'));
     }
 
+    /**
+     * @test
+     */
     public function testInStorage()
     {
         $storage = new HookStorage();

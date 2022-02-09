@@ -1,8 +1,9 @@
 <?php
+
 /*
- * This file is part of the BrainMonkey package.
+ * This file is part of the Brain Monkey package.
  *
- * (c) Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ * (c) Giuseppe Mazzapica and contributors.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -21,9 +22,8 @@ use Mockery\ExpectationInterface;
  * `getMock()` and `andReturnFirstArg()` to facilitate the creation of expectation for applied
  * filter hooks.
  *
- * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @license http://opensource.org/licenses/MIT MIT
- * @package BrainMonkey
+ * @package Brain\Monkey
  *
  * @method Expectation once()
  * @method Expectation twice()
@@ -43,25 +43,24 @@ use Mockery\ExpectationInterface;
  */
 class Expectation
 {
-
     const RETURNING_EXPECTATION_TYPES = [
         ExpectationTarget::TYPE_FILTER_APPLIED,
-        ExpectationTarget::TYPE_FUNCTION
+        ExpectationTarget::TYPE_FUNCTION,
     ];
 
     const ADDING_TYPES = [
         ExpectationTarget::TYPE_ACTION_ADDED,
-        ExpectationTarget::TYPE_FILTER_ADDED
+        ExpectationTarget::TYPE_FILTER_ADDED,
     ];
 
     const REMOVING_TYPES = [
         ExpectationTarget::TYPE_ACTION_REMOVED,
-        ExpectationTarget::TYPE_FILTER_REMOVED
+        ExpectationTarget::TYPE_FILTER_REMOVED,
     ];
 
     const NO_ARGS_EXPECTATION_TYPES = [
         ExpectationTarget::TYPE_ACTION_DONE,
-        ExpectationTarget::TYPE_FUNCTION
+        ExpectationTarget::TYPE_FUNCTION,
     ];
 
     const NOT_ALLOWED_METHODS = [
@@ -91,21 +90,22 @@ class Expectation
     /**
      * @var \ArrayAccess
      */
-    private $return_expectations;
+    private $returnExpectations;
 
     /**
-     * @param \Mockery\ExpectationInterface               $expectation
+     * @param \Mockery\ExpectationInterface $expectation
      * @param \Brain\Monkey\Expectation\ExpectationTarget $target
-     * @param \ArrayAccess                                $return_expectations
+     * @param \ArrayAccess $returnExpectations
      */
     public function __construct(
         ExpectationInterface $expectation,
         ExpectationTarget $target,
-        \ArrayAccess $return_expectations = null
+        \ArrayAccess $returnExpectations = null
     ) {
+
         $this->expectation = $expectation;
         $this->target = $target;
-        $this->return_expectations = $return_expectations ? : new \ArrayObject();
+        $this->returnExpectations = $returnExpectations ?: new \ArrayObject();
     }
 
     /**
@@ -123,7 +123,7 @@ class Expectation
      * Delegate method to wrapped expectation, after some checks.
      *
      * @param string $name
-     * @param array  $arguments
+     * @param array $arguments
      * @return static
      */
     public function __call($name, array $arguments = [])
@@ -132,16 +132,16 @@ class Expectation
             throw Exception\NotAllowedMethod::forMethod($name);
         }
 
-        $has_return = stristr($name, 'return');
-        $has_default = $name === 'byDefault';
+        $hasReturn = stristr($name, 'return');
+        $hasDefault = $name === 'byDefault';
 
-        if ($has_default && $this->target->type() !== ExpectationTarget::TYPE_FUNCTION) {
+        if ($hasDefault && $this->target->type() !== ExpectationTarget::TYPE_FUNCTION) {
             throw Exception\NotAllowedMethod::forByDefault();
         }
 
         if (
-            $has_return
-            && ! in_array($this->target->type(), self::RETURNING_EXPECTATION_TYPES, true)
+            $hasReturn
+            && !in_array($this->target->type(), self::RETURNING_EXPECTATION_TYPES, true)
         ) {
             throw Exception\NotAllowedMethod::forReturningMethod($name);
         }
@@ -155,16 +155,16 @@ class Expectation
 
         $this->expectation = $callback(...$arguments);
 
-        if ($has_return) {
+        if ($hasReturn) {
             $id = $this->target->identifier();
-            $this->return_expectations->offsetExists($id) or $this->return_expectations[$id] = 1;
+            $this->returnExpectations->offsetExists($id) or $this->returnExpectations[$id] = 1;
         }
 
         return $this;
     }
 
     /**
-     * @return \Mockery\Expectation|\Mockery\CompositeExpectation
+     * @return \Mockery\Expectation|\Mockery\ExpectationInterface
      */
     public function mockeryExpectation()
     {
@@ -182,7 +182,6 @@ class Expectation
     public function andAlsoExpectIt()
     {
         $method = $this->target->mockMethodName();
-        /** @noinspection PhpMethodParametersCountMismatchInspection */
         $this->expectation = $this->expectation->getMock()->shouldReceive($method);
 
         return $this;
@@ -196,7 +195,7 @@ class Expectation
      */
     public function withNoArgs()
     {
-        if ( ! in_array($this->target->type(), self::NO_ARGS_EXPECTATION_TYPES, true)) {
+        if (!in_array($this->target->type(), self::NO_ARGS_EXPECTATION_TYPES, true)) {
             throw Exception\ExpectationArgsRequired::forExpectationType($this->target);
         }
 
@@ -213,8 +212,9 @@ class Expectation
     {
         $argsNum = count($args);
 
-        if ( ! $argsNum &&
-            ! in_array($this->target->type(), self::NO_ARGS_EXPECTATION_TYPES, true)
+        if (
+            !$argsNum
+            && !in_array($this->target->type(), self::NO_ARGS_EXPECTATION_TYPES, true)
         ) {
             throw Exception\ExpectationArgsRequired::forExpectationType($this->target);
         }
@@ -271,13 +271,15 @@ class Expectation
      */
     public function andReturnFirstArg()
     {
-        if ( ! in_array($this->target->type(), self::RETURNING_EXPECTATION_TYPES, true)) {
+        if (!in_array($this->target->type(), self::RETURNING_EXPECTATION_TYPES, true)) {
             throw Exception\NotAllowedMethod::forReturningMethod('andReturnFirstParam');
         }
 
-        $this->expectation->andReturnUsing(function ($arg = null) {
-            return $arg;
-        });
+        $this->expectation->andReturnUsing(
+            static function ($arg = null) {
+                return $arg;
+            }
+        );
 
         return $this;
     }

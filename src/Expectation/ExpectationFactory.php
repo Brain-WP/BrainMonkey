@@ -1,8 +1,9 @@
-<?php # -*- coding: utf-8 -*-
+<?php
+
 /*
- * This file is part of the BrainMonkey package.
+ * This file is part of the Brain Monkey package.
  *
- * (c) Giuseppe Mazzapica
+ * (c) Giuseppe Mazzapica and contributors.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,13 +16,11 @@ namespace Brain\Monkey\Expectation;
  *
  * It is a collection of factory methods with explicit names, that internally do always same thing.
  *
- * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
- * @package BrainMonkey
+ * @package Brain\Monkey
  * @license http://opensource.org/licenses/MIT MIT
  */
 class ExpectationFactory
 {
-
     /**
      * @var \Brain\Monkey\Expectation\Expectation[]
      */
@@ -30,11 +29,13 @@ class ExpectationFactory
     /**
      * @var \ArrayObject
      */
-    private $return_expectations;
+    private $returnExpectations;
 
+    /**
+     */
     public function __construct()
     {
-        $this->return_expectations = new \ArrayObject();
+        $this->returnExpectations = new \ArrayObject();
     }
 
     /**
@@ -116,7 +117,7 @@ class ExpectationFactory
 
     /**
      * @param \Brain\Monkey\Expectation\ExpectationTarget $target
-     * @return \Mockery\MockInterface|mixed
+     * @return bool
      */
     public function hasMockFor(ExpectationTarget $target)
     {
@@ -125,20 +126,20 @@ class ExpectationFactory
 
     /**
      * @param \Brain\Monkey\Expectation\ExpectationTarget $target
-     * @return \Mockery\MockInterface|mixed
+     * @return bool
      */
     public function hasReturnExpectationFor(ExpectationTarget $target)
     {
-        if ( ! $this->hasMockFor($target)) {
+        if (!$this->hasMockFor($target)) {
             return false;
         }
 
-        return $this->return_expectations->offsetExists($target->identifier());
+        return $this->returnExpectations->offsetExists($target->identifier());
     }
 
     /**
      * @param \Brain\Monkey\Expectation\ExpectationTarget $target
-     * @return \Mockery\MockInterface|mixed
+     * @return \Mockery\LegacyMockInterface|\Mockery\MockInterface|null
      */
     public function mockFor(ExpectationTarget $target)
     {
@@ -150,7 +151,7 @@ class ExpectationFactory
     public function reset()
     {
         $this->expectations = [];
-        $this->return_expectations = new \ArrayObject();
+        $this->returnExpectations = new \ArrayObject();
     }
 
     /**
@@ -163,14 +164,16 @@ class ExpectationFactory
 
         /** @noinspection PhpMethodParametersCountMismatchInspection */
         $expectation = $this->mockFor($target)
-                            ->shouldReceive($target->mockMethodName())
-                            ->atLeast()
-                            ->once();
+            ->shouldReceive($target->mockMethodName())
+            ->atLeast()
+            ->once();
 
         if ($target->type() === ExpectationTarget::TYPE_FILTER_APPLIED) {
-            $expectation = $expectation->andReturnUsing(function ($arg) {
-                return $arg;
-            });
+            $expectation = $expectation->andReturnUsing(
+                static function ($arg) {
+                    return $arg;
+                }
+            );
         }
 
         $expectation = $expectation->byDefault();
@@ -178,10 +181,9 @@ class ExpectationFactory
         $this->expectations[$id] = new Expectation(
             $expectation,
             $target,
-            $this->return_expectations
+            $this->returnExpectations
         );
 
         return $this->expectations[$id];
     }
-
 }

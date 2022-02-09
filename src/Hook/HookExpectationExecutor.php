@@ -1,8 +1,9 @@
-<?php # -*- coding: utf-8 -*-
+<?php
+
 /*
- * This file is part of the BrainMonkey package.
+ * This file is part of the Brain Monkey package.
  *
- * (c) Giuseppe Mazzapica
+ * (c) Giuseppe Mazzapica and contributors.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,7 +11,6 @@
 
 namespace Brain\Monkey\Hook;
 
-use Brain\Monkey\Expectation\Expectation;
 use Brain\Monkey\Expectation\ExpectationTarget;
 use Brain\Monkey\Expectation\ExpectationFactory;
 
@@ -19,13 +19,11 @@ use Brain\Monkey\Expectation\ExpectationFactory;
  *
  * Expected methods that are not executed will cause tests to fail.
  *
- * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
- * @package BrainMonkey
+ * @package Brain\Monkey
  * @license http://opensource.org/licenses/MIT MIT
  */
 class HookExpectationExecutor
 {
-
     /**
      * @var \Brain\Monkey\Hook\HookRunningStack
      */
@@ -37,7 +35,7 @@ class HookExpectationExecutor
     private $factory;
 
     /**
-     * @param \Brain\Monkey\Hook\HookRunningStack          $stack
+     * @param \Brain\Monkey\Hook\HookRunningStack $stack
      * @param \Brain\Monkey\Expectation\ExpectationFactory $factory
      */
     public function __construct(HookRunningStack $stack, ExpectationFactory $factory)
@@ -48,7 +46,7 @@ class HookExpectationExecutor
 
     /**
      * @param string $action
-     * @param array  $args
+     * @param array $args
      */
     public function executeAddAction($action, array $args)
     {
@@ -57,7 +55,7 @@ class HookExpectationExecutor
 
     /**
      * @param string $action
-     * @param array  $args
+     * @param array $args
      */
     public function executeAddFilter($action, array $args)
     {
@@ -66,35 +64,34 @@ class HookExpectationExecutor
 
     /**
      * @param string $action
-     * @param array  $args
+     * @param array $args
      */
     public function executeDoAction($action, array $args = [])
     {
-        $is_running = $this->stack->has();
+        $isRunning = $this->stack->has();
         $this->stack->push($action);
         $this->execute(ExpectationTarget::TYPE_ACTION_DONE, $action, $args);
-        $is_running or $this->stack->reset();
+        $isRunning or $this->stack->reset();
     }
 
     /**
      * @param string $filter
-     * @param array  $args
+     * @param array $args
      * @return mixed|null
      */
     public function executeApplyFilters($filter, array $args)
     {
-
-        $is_running = $this->stack->has();
+        $isRunning = $this->stack->has();
         $this->stack->push($filter);
         $return = $this->execute(ExpectationTarget::TYPE_FILTER_APPLIED, $filter, $args);
-        $is_running or $this->stack->reset();
+        $isRunning or $this->stack->reset();
 
         return $return;
     }
 
     /**
      * @param string $action
-     * @param array  $args
+     * @param array $args
      * @return mixed
      */
     public function executeRemoveAction($action, array $args)
@@ -104,7 +101,7 @@ class HookExpectationExecutor
 
     /**
      * @param string $filter
-     * @param array  $args
+     * @param array $args
      * @return mixed
      */
     public function executeRemoveFilter($filter, array $args)
@@ -115,7 +112,7 @@ class HookExpectationExecutor
     /**
      * @param string $type
      * @param string $hook
-     * @param array  $args
+     * @param array $args
      * @return mixed
      */
     private function execute($type, $hook, array $args)
@@ -135,6 +132,5 @@ class HookExpectationExecutor
         }
 
         return null;
-
     }
 }

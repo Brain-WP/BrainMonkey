@@ -1,8 +1,9 @@
-<?php # -*- coding: utf-8 -*-
+<?php
+
 /*
- * This file is part of the BrainMonkey package.
+ * This file is part of the Brain Monkey package.
  *
- * (c) Giuseppe Mazzapica
+ * (c) Giuseppe Mazzapica and contributors.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,17 +11,14 @@
 
 namespace Brain\Monkey\Name\Exception;
 
-
 /**
- * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
- * @package BrainMonkey
+ * @package Brain\Monkey
  * @license http://opensource.org/licenses/MIT MIT
  */
 class InvalidClosureParam extends Exception
 {
-
-    const CODE_INVALID_NAME      = 1;
-    const CODE_INVALID_TYPE      = 2;
+    const CODE_INVALID_NAME = 1;
+    const CODE_INVALID_TYPE = 2;
     const CODE_MULTIPLE_VARIADIC = 3;
 
     /**
@@ -62,5 +60,4 @@ class InvalidClosureParam extends Exception
             self::CODE_MULTIPLE_VARIADIC
         );
     }
-
 }

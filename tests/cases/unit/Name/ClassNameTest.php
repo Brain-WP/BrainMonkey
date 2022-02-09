@@ -1,8 +1,9 @@
-<?php # -*- coding: utf-8 -*-
+<?php
+
 /*
- * This file is part of the BrainMonkey package.
+ * This file is part of the Brain Monkey package.
  *
- * (c) Giuseppe Mazzapica
+ * (c) Giuseppe Mazzapica and contributors.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,53 +16,65 @@ use Brain\Monkey\Name\Exception\InvalidName;
 use Brain\Monkey\Tests\UnitTestCase;
 
 /**
- * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
- * @package BrainMonkey
+ * @package Brain\Monkey\Tests
  * @license http://opensource.org/licenses/MIT MIT
  */
 class ClassNameTest extends UnitTestCase
 {
-
+    /**
+     * @test
+     */
     public function testConstructorThrowsIfBadName()
     {
         $this->expectException(InvalidName::class);
         new ClassName('Foo Bar');
     }
 
+    /**
+     * @test
+     */
     public function testFullQualifiedName()
     {
-        $class_a = new ClassName(__CLASS__);
-        $class_b = new ClassName('\Foo\Bar\Baz');
+        $class1 = new ClassName(__CLASS__);
+        $class2 = new ClassName('\Foo\Bar\Baz');
 
-        static::assertSame(__CLASS__, $class_a->fullyQualifiedName());
-        static::assertSame('Foo\Bar\Baz', $class_b->fullyQualifiedName());
+        static::assertSame(__CLASS__, $class1->fullyQualifiedName());
+        static::assertSame('Foo\Bar\Baz', $class2->fullyQualifiedName());
     }
 
+    /**
+     * @test
+     */
     public function testShortName()
     {
-        $class_a = new ClassName(__CLASS__);
-        $class_b = new ClassName('\Foo\Bar\Baz');
+        $class1 = new ClassName(__CLASS__);
+        $class2 = new ClassName('\Foo\Bar\Baz');
 
-        static::assertSame('ClassNameTest', $class_a->shortName());
-        static::assertSame('Baz', $class_b->shortName());
+        static::assertSame('ClassNameTest', $class1->shortName());
+        static::assertSame('Baz', $class2->shortName());
     }
 
+    /**
+     * @test
+     */
     public function testNamespace()
     {
-        $class_a = new ClassName(__CLASS__);
-        $class_b = new ClassName('\Foo\Bar\Baz');
+        $class1 = new ClassName(__CLASS__);
+        $class2 = new ClassName('\Foo\Bar\Baz');
 
-        static::assertSame(__NAMESPACE__, $class_a->getNamespace());
-        static::assertSame('Foo\Bar', $class_b->getNamespace());
+        static::assertSame(__NAMESPACE__, $class1->getNamespace());
+        static::assertSame('Foo\Bar', $class2->getNamespace());
     }
 
+    /**
+     * @test
+     */
     public function testEquals()
     {
-        $class_a = new ClassName(__CLASS__);
-        $class_b = new ClassName(ClassNameTest::class);
-        
-        static::assertTrue($class_a->equals($class_b));
-        static::assertTrue($class_b->equals($class_a));
-    }
+        $class1 = new ClassName(__CLASS__);
+        $class2 = new ClassName(ClassNameTest::class);
 
+        static::assertTrue($class1->equals($class2));
+        static::assertTrue($class2->equals($class1));
+    }
 }

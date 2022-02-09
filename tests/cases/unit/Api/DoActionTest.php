@@ -1,8 +1,9 @@
 <?php
+
 /*
  * This file is part of the Brain Monkey package.
  *
- * (c) Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ * (c) Giuseppe Mazzapica and contributors.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,19 +11,19 @@
 
 namespace Brain\Monkey\Tests\Unit\Api;
 
-use Brain\Monkey;
 use Brain\Monkey\Actions;
 use Brain\Monkey\Tests\UnitTestCase;
 use Mockery\Exception\InvalidCountException;
 
 /**
- * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
  * @license http://opensource.org/licenses/MIT MIT
- * @package BrainMonkey
+ * @package Brain\Monkey\Tests
  */
 class DoActionTest extends UnitTestCase
 {
-
+    /**
+     * @test
+     */
     public function testDoNull()
     {
         do_action('init', 'foo', 'bar', 'baz');
@@ -32,6 +33,9 @@ class DoActionTest extends UnitTestCase
         static::assertTrue(true);
     }
 
+    /**
+     * @test
+     */
     public function testDoReturnsNull()
     {
         $nullDo = do_action('init', 'foo', 'bar', 'baz');
@@ -41,6 +45,9 @@ class DoActionTest extends UnitTestCase
         static::assertNull($nullDoRef);
     }
 
+    /**
+     * @test
+     */
     public function testDoDid()
     {
         do_action('foo.bar');
@@ -54,6 +61,9 @@ class DoActionTest extends UnitTestCase
         static::assertSame(0, did_action('not me'));
     }
 
+    /**
+     * @test
+     */
     public function testDoWithExpectation()
     {
         Actions\expectDone('foo')->twice()->with(\Mockery::anyOf('Yes!', 'No!'));
@@ -65,23 +75,30 @@ class DoActionTest extends UnitTestCase
         do_action('bar', 'foo', 'bar');
     }
 
+    /**
+     * @test
+     */
     public function testDoWithExpectationWhenHappen()
     {
         $works = '';
         Actions\expectDone('foo')
             ->atLeast()
             ->once()
-            ->whenHappen(function ($yes) use (&$works) {
-                $works = $yes;
-            });
+            ->whenHappen(
+                static function ($yes) use (&$works) {
+                    $works = $yes;
+                }
+            );
 
         $sum = 0;
         Actions\expectDone('sum')
             ->times(3)
             ->with(\Mockery::type('int'))
-            ->whenHappen(function ($n) use (&$sum) {
-                $sum += $n;
-            });
+            ->whenHappen(
+                static function ($num) use (&$sum) {
+                    $sum += $num;
+                }
+            );
 
         do_action('foo', 'Yes!');
         do_action('sum', 1);
@@ -92,14 +109,16 @@ class DoActionTest extends UnitTestCase
         static::assertSame(10, $sum);
     }
 
+    /**
+     * @test
+     */
     public function testDoWithExpectationWhenHappenCurrentFilter()
     {
-        $callback = function () {
+        $callback = static function () {
             if (current_filter() !== 'what_you_say') {
                 throw new \RuntimeException('Giuseppe, your code sucks!');
-            } else {
-                echo 'Monkey is great!';
             }
+            echo 'Monkey is great!';
         };
 
         $this->expectOutputString('Monkey is great!');
@@ -107,26 +126,30 @@ class DoActionTest extends UnitTestCase
         Actions\expectDone('what_you_say')->once()->whenHappen($callback);
 
         do_action('what_you_say');
-
     }
 
+    /**
+     * @test
+     */
     public function testNestedDoWithExpectationWhenHappenDoingAction()
     {
+        Actions\expectDone('first_level')->once()->whenHappen(
+            static function () {
+                do_action('second_level', 'Catch me!');
+                do_action('second_level', 'Catch me!');
+            }
+        );
 
-        Actions\expectDone('first_level')->once()->whenHappen(function () {
-            do_action('second_level', 'Catch me!');
-            do_action('second_level', 'Catch me!');
-        });
-
-        Actions\expectDone('second_level')->twice()->whenHappen(function ($arg) {
-
-            static::assertSame('Catch me!', $arg);
-            static::assertTrue(current_filter() === 'second_level');
-            static::assertTrue(doing_action('first_level'));
-            static::assertTrue(doing_action('second_level'));
-            // Checking for output will ensure above assertions have ran.
-            echo 'Monkey is great!';
-        });
+        Actions\expectDone('second_level')->twice()->whenHappen(
+            static function ($arg) {
+                static::assertSame('Catch me!', $arg);
+                static::assertTrue(current_filter() === 'second_level');
+                static::assertTrue(doing_action('first_level'));
+                static::assertTrue(doing_action('second_level'));
+                // Checking for output will ensure above assertions has been executed.
+                echo 'Monkey is great!';
+            }
+        );
 
         $this->expectOutputString('Monkey is great!Monkey is great!');
 
@@ -136,6 +159,9 @@ class DoActionTest extends UnitTestCase
         static::assertFalse(doing_action('second_level'));
     }
 
+    /**
+     * @test
+     */
     public function testDoSameActionDifferentArguments()
     {
         Actions\expectDone('double_action')
@@ -151,6 +177,9 @@ class DoActionTest extends UnitTestCase
         do_action('double_action', 'arg_2');
     }
 
+    /**
+     * @test
+     */
     public function testAndAlsoExpectIt()
     {
         Actions\expectDone('double_action')
@@ -166,6 +195,9 @@ class DoActionTest extends UnitTestCase
         do_action('double_action', 'arg_2');
     }
 
+    /**
+     * @test
+     */
     public function testExpectWithNoArgsFailsIfNotDone()
     {
         $this->expectMockeryException(InvalidCountException::class);

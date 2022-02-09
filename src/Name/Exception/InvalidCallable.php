@@ -1,8 +1,9 @@
-<?php # -*- coding: utf-8 -*-
+<?php
+
 /*
- * This file is part of the BrainMonkey package.
+ * This file is part of the Brain Monkey package.
  *
- * (c) Giuseppe Mazzapica
+ * (c) Giuseppe Mazzapica and contributors.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,13 +12,11 @@
 namespace Brain\Monkey\Name\Exception;
 
 /**
- * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
- * @package BrainMonkey
+ * @package Brain\Monkey
  * @license http://opensource.org/licenses/MIT MIT
  */
 class InvalidCallable extends Exception
 {
-
     /**
      * @param mixed $callback
      * @return \Brain\Monkey\Name\Exception\InvalidCallable|\Brain\Monkey\Name\Exception\NotInvokableObjectAsCallback
@@ -35,7 +34,5 @@ class InvalidCallable extends Exception
                 is_string($callback) ? "{$callback}" : var_export($callback, true)
             )
         );
-
     }
-
 }

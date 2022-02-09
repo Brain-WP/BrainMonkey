@@ -1,8 +1,9 @@
-<?php # -*- coding: utf-8 -*-
+<?php
+
 /*
- * This file is part of the BrainMonkey package.
+ * This file is part of the Brain Monkey package.
  *
- * (c) Giuseppe Mazzapica
+ * (c) Giuseppe Mazzapica and contributors.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,13 +20,11 @@ namespace Brain\Monkey\Name;
  * However, `new CallbackStringForm(['FooClass', 'foo-method'])` would raise an error for invalid
  * method name.
  *
- * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
- * @package BrainMonkey
+ * @package Brain\Monkey
  * @license http://opensource.org/licenses/MIT MIT
  */
 final class CallbackStringForm
 {
-
     /**
      * @var string
      */
@@ -62,7 +61,7 @@ final class CallbackStringForm
      */
     private function parseCallback($callback)
     {
-        if ( ! is_callable($callback, true)) {
+        if (!is_callable($callback, true)) {
             throw Exception\InvalidCallable::forCallable($callback);
         }
 
@@ -70,37 +69,37 @@ final class CallbackStringForm
             return $this->parseString($callback);
         }
 
-        $is_object = is_object($callback);
+        $isObject = is_object($callback);
 
-        if ($is_object && ! is_callable($callback)) {
+        if ($isObject && !is_callable($callback)) {
             throw new Exception\NotInvokableObjectAsCallback();
         }
 
-        if ($is_object) {
+        if ($isObject) {
             return $callback instanceof \Closure
                 ? (string)new ClosureStringForm($callback)
-                : get_class($callback).'()';
+                : get_class($callback) . '()';
         }
 
         list($object, $method) = $callback;
 
-        $method_name = (new MethodName($method))->name();
+        $methodName = (new MethodName($method))->name();
 
         if (is_string($object)) {
-            $class_name = (new ClassName($object))->fullyQualifiedName();
+            $className = (new ClassName($object))->fullyQualifiedName();
 
-            $this->assertMethodCallable($class_name, $method_name, $callback);
+            $this->assertMethodCallable($className, $methodName, $callback);
 
-            return "{$class_name}::{$method_name}()";
+            return "{$className}::{$methodName}()";
         }
 
-        if ( ! is_callable([$object, $method_name])) {
+        if (!is_callable([$object, $methodName])) {
             throw new Exception\NotInvokableObjectAsCallback();
         }
 
-        $class_name = (new ClassName(get_class($object)))->fullyQualifiedName();
+        $className = (new ClassName(get_class($object)))->fullyQualifiedName();
 
-        return ltrim("{$class_name}->{$method_name}()", '\\');
+        return ltrim("{$className}->{$methodName}()", '\\');
     }
 
     /**
@@ -122,58 +121,58 @@ final class CallbackStringForm
             }
         }
 
-        $is_static_method = substr_count($callback, '::') === 1;
-        $is_normalized_form = substr($callback, -2) === '()';
+        $isStaticMethod = substr_count($callback, '::') === 1;
+        $isNormalizedForm = substr($callback, -2) === '()';
 
         // Callback is a static method passed as string, like "Foo\Bar::some_method"
-        if ($is_static_method && ! $is_normalized_form) {
+        if ($isStaticMethod && !$isNormalizedForm) {
             return $this->parseCallback(explode('::', $callback));
         }
 
         // If this is not a string in normalized form, we just check is a valid function name
-        if ( ! $is_normalized_form) {
+        if (!$isNormalizedForm) {
             return (new FunctionName($callback))->fullyQualifiedName();
         }
 
         // remove parenthesis
         $callback = preg_replace('~\(\)$~', '', $callback);
 
-        $is_dynamic_method = substr_count($callback, '->') === 1;
+        $isDynamicMethod = substr_count($callback, '->') === 1;
 
         // If this is a normalized form of a static or dynamic method let's check that both class
         // and method names are fine
-        if ($is_dynamic_method || $is_static_method) {
-            $separator = $is_dynamic_method ? '->' : '::';
+        if ($isDynamicMethod || $isStaticMethod) {
+            $separator = $isDynamicMethod ? '->' : '::';
             list($class, $method) = explode($separator, $callback);
-            $class_name = (new ClassName($class))->fullyQualifiedName();
-            $method_name = (new MethodName($method))->name();
-            $this->assertMethodCallable($class_name, $method, "{$callback}()");
+            $className = (new ClassName($class))->fullyQualifiedName();
+            $methodName = (new MethodName($method))->name();
+            $this->assertMethodCallable($className, $method, "{$callback}()");
 
-            return ltrim("{$class_name}{$separator}{$method_name}()", '\\');
+            return ltrim("{$className}{$separator}{$methodName}()", '\\');
         }
 
         // Last chance is that the string is fully qualified name of an invokable object.
-        $class_name = (new ClassName($callback))->fullyQualifiedName();
+        $className = (new ClassName($callback))->fullyQualifiedName();
         // Check `__invoke` method existence only if class is available
-        if (class_exists($class_name) && ! method_exists($class_name, '__invoke')) {
+        if (class_exists($className) && !method_exists($className, '__invoke')) {
             throw new Exception\NotInvokableObjectAsCallback();
         }
 
-        return ltrim("{$class_name}()", '\\');
+        return ltrim("{$className}()", '\\');
     }
 
     /**
      * Ensure method existence only if class is available.
      *
-     * @param string       $class_name
-     * @param string       $method
+     * @param string $className
+     * @param string $method
      * @param string|array $callable
      */
-    private function assertMethodCallable($class_name, $method, $callable)
+    private function assertMethodCallable($className, $method, $callable)
     {
         if (
-            class_exists($class_name)
-            && ! (method_exists($class_name, $method) || is_callable([$class_name, $method]))
+            class_exists($className)
+            && !(method_exists($className, $method) || is_callable([$className, $method]))
         ) {
             throw Exception\InvalidCallable::forCallable($callable);
         }

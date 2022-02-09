@@ -1,8 +1,9 @@
-<?php # -*- coding: utf-8 -*-
+<?php
+
 /*
- * This file is part of the BrainMonkey package.
+ * This file is part of the Brain Monkey package.
  *
- * (c) Giuseppe Mazzapica
+ * (c) Giuseppe Mazzapica and contributors.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,15 +14,15 @@ namespace Brain\Monkey\Tests\Unit\Hook;
 use Brain\Monkey\Hook\HookRunningStack;
 use Brain\Monkey\Tests\UnitTestCase;
 
-
 /**
- * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
- * @package BrainMonkey
+ * @package Brain\Monkey\Tests
  * @license http://opensource.org/licenses/MIT MIT
  */
 class HookRunningStackTest extends UnitTestCase
 {
-
+    /**
+     * @test
+     */
     public function testPushAndLast()
     {
         $running = new HookRunningStack();
@@ -33,6 +34,9 @@ class HookRunningStackTest extends UnitTestCase
         static::assertSame('bar', $running->last());
     }
 
+    /**
+     * @test
+     */
     public function testPushAndHas()
     {
         $running = new HookRunningStack();
@@ -51,6 +55,9 @@ class HookRunningStackTest extends UnitTestCase
         static::assertTrue($running->has('bar'));
     }
 
+    /**
+     * @test
+     */
     public function testReset()
     {
         $running = new HookRunningStack();
@@ -64,5 +71,4 @@ class HookRunningStackTest extends UnitTestCase
         static::assertFalse($running->has('foo'));
         static::assertFalse($running->has('bar'));
     }
-
 }

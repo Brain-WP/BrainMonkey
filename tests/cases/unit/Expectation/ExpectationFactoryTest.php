@@ -1,8 +1,9 @@
 <?php
+
 /*
- * This file is part of the BrainMonkey package.
+ * This file is part of the Brain Monkey package.
  *
- * (c) Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
+ * (c) Giuseppe Mazzapica and contributors.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -16,142 +17,162 @@ use Brain\Monkey\Expectation\ExpectationTarget;
 use Brain\Monkey\Tests\UnitTestCase;
 use Mockery\Exception\InvalidCountException;
 
+/**
+ * @package Brain\Monkey\Tests
+ * @license http://opensource.org/licenses/MIT MIT
+ */
 class ExpectationFactoryTest extends UnitTestCase
 {
-
+    /**
+     * @test
+     */
     public function testForFunctionExecuted()
     {
         $factory = new ExpectationFactory();
 
-        $expectation_a = $factory->forFunctionExecuted('test');
-        $expectation_c = $factory->forFunctionExecuted('test_x');
+        $expectationA = $factory->forFunctionExecuted('test');
+        $expectationC = $factory->forFunctionExecuted('test_x');
 
-        $mock_a = $expectation_a->mockeryExpectation()->getMock();
-        $mock_b = $expectation_c->mockeryExpectation()->getMock();
+        $mockA = $expectationA->mockeryExpectation()->getMock();
+        $mockB = $expectationC->mockeryExpectation()->getMock();
 
         /** @noinspection PhpUndefinedMethodInspection */
-        $mock_a->test();
+        $mockA->test();
         /** @noinspection PhpUndefinedMethodInspection */
-        $mock_b->test_x();
+        $mockB->test_x();
 
-        static::assertInstanceOf(Expectation::class, $expectation_a);
-        static::assertInstanceOf(Expectation::class, $expectation_c);
-        static::assertNotSame($expectation_a, $expectation_c);
-        static::assertNotSame($mock_a, $mock_b);
+        static::assertInstanceOf(Expectation::class, $expectationA);
+        static::assertInstanceOf(Expectation::class, $expectationC);
+        static::assertNotSame($expectationA, $expectationC);
+        static::assertNotSame($mockA, $mockB);
     }
 
+    /**
+     * @test
+     */
     public function testForActionAdded()
     {
         $factory = new ExpectationFactory();
 
-        $expectation_a = $factory->forActionAdded('test');
-        $expectation_c = $factory->forActionAdded('test_x');
+        $expectationA = $factory->forActionAdded('test');
+        $expectationC = $factory->forActionAdded('test_x');
 
-        $mock_a = $expectation_a->mockeryExpectation()->getMock();
-        $mock_b = $expectation_c->mockeryExpectation()->getMock();
+        $mockA = $expectationA->mockeryExpectation()->getMock();
+        $mockB = $expectationC->mockeryExpectation()->getMock();
 
         /** @noinspection PhpUndefinedMethodInspection */
-        $mock_a->add_action_test();
+        $mockA->add_action_test();
         /** @noinspection PhpUndefinedMethodInspection */
-        $mock_b->add_action_test_x();
+        $mockB->add_action_test_x();
 
-        static::assertInstanceOf(Expectation::class, $expectation_a);
-        static::assertInstanceOf(Expectation::class, $expectation_c);
-        static::assertNotSame($expectation_a, $expectation_c);
-        static::assertNotSame($mock_a, $mock_b);
+        static::assertInstanceOf(Expectation::class, $expectationA);
+        static::assertInstanceOf(Expectation::class, $expectationC);
+        static::assertNotSame($expectationA, $expectationC);
+        static::assertNotSame($mockA, $mockB);
     }
 
+    /**
+     * @test
+     */
     public function testForActionDone()
     {
         $factory = new ExpectationFactory();
 
-        $expectation_a = $factory->forActionDone('test');
-        $expectation_c = $factory->forActionDone('test_x');
+        $expectationA = $factory->forActionDone('test');
+        $expectationC = $factory->forActionDone('test_x');
 
-        $mock_a = $expectation_a->mockeryExpectation()->getMock();
-        $mock_b = $expectation_c->mockeryExpectation()->getMock();
+        $mockA = $expectationA->mockeryExpectation()->getMock();
+        $mockB = $expectationC->mockeryExpectation()->getMock();
 
         /** @noinspection PhpUndefinedMethodInspection */
-        $mock_a->do_action_test();
+        $mockA->do_action_test();
         /** @noinspection PhpUndefinedMethodInspection */
-        $mock_b->do_action_test_x();
+        $mockB->do_action_test_x();
 
-        static::assertInstanceOf(Expectation::class, $expectation_a);
-        static::assertInstanceOf(Expectation::class, $expectation_c);
-        static::assertNotSame($expectation_a, $expectation_c);
-        static::assertNotSame($mock_a, $mock_b);
+        static::assertInstanceOf(Expectation::class, $expectationA);
+        static::assertInstanceOf(Expectation::class, $expectationC);
+        static::assertNotSame($expectationA, $expectationC);
+        static::assertNotSame($mockA, $mockB);
     }
 
+    /**
+     * @test
+     */
     public function testForFilterAdded()
     {
         $factory = new ExpectationFactory();
 
-        $expectation_a = $factory->forFilterAdded('test');
-        $expectation_c = $factory->forFilterAdded('test_x');
+        $expectationA = $factory->forFilterAdded('test');
+        $expectationC = $factory->forFilterAdded('test_x');
 
-        $mock_a = $expectation_a->mockeryExpectation()->getMock();
-        $mock_b = $expectation_c->mockeryExpectation()->getMock();
+        $mockA = $expectationA->mockeryExpectation()->getMock();
+        $mockB = $expectationC->mockeryExpectation()->getMock();
 
         /** @noinspection PhpUndefinedMethodInspection */
-        $mock_a->add_filter_test();
+        $mockA->add_filter_test();
         /** @noinspection PhpUndefinedMethodInspection */
-        $mock_b->add_filter_test_x();
+        $mockB->add_filter_test_x();
 
-        static::assertInstanceOf(Expectation::class, $expectation_a);
-        static::assertInstanceOf(Expectation::class, $expectation_c);
-        static::assertNotSame($expectation_a, $expectation_c);
-        static::assertNotSame($mock_a, $mock_b);
+        static::assertInstanceOf(Expectation::class, $expectationA);
+        static::assertInstanceOf(Expectation::class, $expectationC);
+        static::assertNotSame($expectationA, $expectationC);
+        static::assertNotSame($mockA, $mockB);
     }
 
+    /**
+     * @test
+     */
     public function testForFilterApplied()
     {
         $factory = new ExpectationFactory();
 
-        $expectation_a = $factory->forFilterApplied('test');
-        $expectation_c = $factory->forFilterApplied('test_x');
+        $expectationA = $factory->forFilterApplied('test');
+        $expectationC = $factory->forFilterApplied('test_x');
 
-        $mock_a = $expectation_a->mockeryExpectation()->getMock();
-        $mock_b = $expectation_c->mockeryExpectation()->getMock();
+        $mockA = $expectationA->mockeryExpectation()->getMock();
+        $mockB = $expectationC->mockeryExpectation()->getMock();
 
         /** @noinspection PhpUndefinedMethodInspection */
-        $mock_a->apply_filters_test('x');
+        $mockA->apply_filters_test('x');
         /** @noinspection PhpUndefinedMethodInspection */
-        $mock_b->apply_filters_test_x('x');
+        $mockB->apply_filters_test_x('x');
 
-        static::assertInstanceOf(Expectation::class, $expectation_a);
-        static::assertInstanceOf(Expectation::class, $expectation_c);
-        static::assertNotSame($expectation_a, $expectation_c);
-        static::assertNotSame($mock_a, $mock_b);
+        static::assertInstanceOf(Expectation::class, $expectationA);
+        static::assertInstanceOf(Expectation::class, $expectationC);
+        static::assertNotSame($expectationA, $expectationC);
+        static::assertNotSame($mockA, $mockB);
     }
 
+    /**
+     * @test
+     */
     public function testMockFor()
     {
         $this->expectMockeryException(InvalidCountException::class);
 
         $factory = new ExpectationFactory();
 
-        $target_a = new ExpectationTarget(ExpectationTarget::TYPE_FILTER_ADDED, 'foo');
-        $target_b = new ExpectationTarget(ExpectationTarget::TYPE_FILTER_APPLIED, 'foo');
+        $targetA = new ExpectationTarget(ExpectationTarget::TYPE_FILTER_ADDED, 'foo');
+        $targetB = new ExpectationTarget(ExpectationTarget::TYPE_FILTER_APPLIED, 'foo');
 
-        static::assertFalse($factory->hasMockFor($target_a));
-        static::assertFalse($factory->hasMockFor($target_b));
+        static::assertFalse($factory->hasMockFor($targetA));
+        static::assertFalse($factory->hasMockFor($targetB));
 
         $factory->forFilterAdded('foo');
         $factory->forFilterApplied('foo');
 
-        static::assertTrue($factory->hasMockFor(clone $target_a));
-        static::assertTrue($factory->hasMockFor(clone $target_b));
+        static::assertTrue($factory->hasMockFor(clone $targetA));
+        static::assertTrue($factory->hasMockFor(clone $targetB));
 
-        $mock_a = $factory->mockFor($target_a);
-        $mock_b = $factory->mockFor($target_b);
+        $mockA = $factory->mockFor($targetA);
+        $mockB = $factory->mockFor($targetB);
 
-        static::assertNotSame($mock_a, $mock_b);
+        static::assertNotSame($mockA, $mockB);
 
-        $mock_a_1 = $factory->mockFor($target_a);
-        $mock_b_1 = $factory->mockFor($target_b);
+        $mockA2 = $factory->mockFor($targetA);
+        $mockB2 = $factory->mockFor($targetB);
 
-        static::assertSame($mock_a, $mock_a_1);
-        static::assertSame($mock_b, $mock_b_1);
+        static::assertSame($mockA, $mockA2);
+        static::assertSame($mockB, $mockB2);
     }
-
 }

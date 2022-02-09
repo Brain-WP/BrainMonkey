@@ -1,8 +1,9 @@
-<?php # -*- coding: utf-8 -*-
+<?php
+
 /*
- * This file is part of the BrainMonkey package.
+ * This file is part of the Brain Monkey package.
  *
- * (c) Giuseppe Mazzapica
+ * (c) Giuseppe Mazzapica and contributors.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,29 +11,26 @@
 
 namespace Brain\Monkey\Name;
 
-
 /**
- * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
- * @package BrainMonkey
+ * @package Brain\Monkey
  * @license http://opensource.org/licenses/MIT MIT
  */
 final class ClassName
 {
-
     /**
      * @var \Brain\Monkey\Name\FunctionName
      */
-    private $function_name;
+    private $functionName;
 
     /**
-     * @param string $class_name
+     * @param string $className
      */
-    public function __construct($class_name)
+    public function __construct($className)
     {
         try {
-            $this->function_name = new FunctionName($class_name);
-        } catch (Exception\InvalidName $e) {
-            throw Exception\InvalidName::forClass($class_name);
+            $this->functionName = new FunctionName($className);
+        } catch (Exception\InvalidName $exception) {
+            throw Exception\InvalidName::forClass($className);
         }
     }
 
@@ -41,7 +39,7 @@ final class ClassName
      */
     public function fullyQualifiedName()
     {
-        return $this->function_name->fullyQualifiedName();
+        return $this->functionName->fullyQualifiedName();
     }
 
     /**
@@ -49,7 +47,7 @@ final class ClassName
      */
     public function shortName()
     {
-        return $this->function_name->shortName();
+        return $this->functionName->shortName();
     }
 
     /**
@@ -57,7 +55,7 @@ final class ClassName
      */
     public function getNamespace()
     {
-        return $this->function_name->getNamespace();
+        return $this->functionName->getNamespace();
     }
 
     /**

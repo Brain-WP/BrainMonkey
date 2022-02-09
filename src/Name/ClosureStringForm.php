@@ -1,8 +1,9 @@
-<?php # -*- coding: utf-8 -*-
+<?php
+
 /*
- * This file is part of the BrainMonkey package.
+ * This file is part of the Brain Monkey package.
  *
- * (c) Giuseppe Mazzapica
+ * (c) Giuseppe Mazzapica and contributors.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,15 +14,12 @@ namespace Brain\Monkey\Name;
 use Brain\Monkey\Name\Exception\InvalidCallable;
 use Brain\Monkey\Name\Exception\InvalidClosureParam;
 
-
 /**
- * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
- * @package BrainMonkey
+ * @package Brain\Monkey
  * @license http://opensource.org/licenses/MIT MIT
  */
 final class ClosureStringForm
 {
-
     const CLOSURE_PATTERN = '/^(static\s+)?function\s*\((.*?)\)$/';
 
     /**
@@ -30,46 +28,49 @@ final class ClosureStringForm
     private $name;
 
     /**
-     * @param string $closure_string
+     * @param string $closureString
      * @return string
      */
-    public static function normalizeString($closure_string)
+    public static function normalizeString($closureString)
     {
         if (
-            ! is_string($closure_string)
-            || ! preg_match(self::CLOSURE_PATTERN, trim($closure_string), $matches)
+            !is_string($closureString)
+            || !preg_match(self::CLOSURE_PATTERN, trim($closureString), $matches)
         ) {
-            throw InvalidCallable::forCallable($closure_string);
+            throw InvalidCallable::forCallable($closureString);
         }
 
-        $raw_params = trim($matches[2]);
+        $rawParams = trim($matches[2]);
         $static = trim($matches[1]);
 
         $normalized = $static ? 'static function (' : 'function (';
 
-        if ( ! $raw_params) {
+        if (!$rawParams) {
             return "{$normalized})";
         }
 
         $variadic = false;
-        $params = explode(',', $raw_params);
+        $params = explode(',', $rawParams);
 
-        $normalized = array_reduce($params, function ($normalized, $param_name) use (&$variadic) {
+        $normalized = array_reduce(
+            $params,
+            static function ($normalized, $paramName) use (&$variadic) {
 
-            $param = ClosureParamStringForm::fromString($param_name);
+                $param = ClosureParamStringForm::fromString($paramName);
 
-            $is_variadic = $param->isVariadic();
-            if ($variadic && $is_variadic) {
-                throw InvalidClosureParam::forMultipleVariadic($param_name);
-            }
+                $isVariadic = $param->isVariadic();
+                if ($variadic && $isVariadic) {
+                    throw InvalidClosureParam::forMultipleVariadic($paramName);
+                }
 
-            $is_variadic and $variadic = true;
+                $isVariadic and $variadic = true;
 
-            return $normalized.(string)$param.', ';
+                return $normalized . (string)$param . ', ';
+            },
+            $normalized
+        );
 
-        }, $normalized);
-
-        return rtrim($normalized, ', ').')';
+        return rtrim($normalized, ', ') . ')';
     }
 
     /**
@@ -109,10 +110,8 @@ final class ClosureStringForm
         $reflection = new \ReflectionFunction($closure);
 
         // Quite hackish, but it seems there's no better way to get if a closure is static
-        $bind = @\Closure::bind($closure, new \stdClass);
-        $static =
-            $bind === null
-            || (new \ReflectionFunction($bind))->getClosureThis() === null;
+        $bind = @\Closure::bind($closure, new \stdClass); // phpcs:ignore
+        $static = ($bind === null) || (new \ReflectionFunction($bind))->getClosureThis() === null;
 
         $arguments = array_map('strval', array_map(
             [ClosureParamStringForm::class, 'fromReflectionParameter'],
@@ -121,6 +120,6 @@ final class ClosureStringForm
 
         $name = $static ? 'static function (' : 'function (';
 
-        return $name.implode(', ', $arguments).')';
+        return $name . implode(', ', $arguments) . ')';
     }
 }

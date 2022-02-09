@@ -1,8 +1,9 @@
-<?php # -*- coding: utf-8 -*-
+<?php
+
 /*
- * This file is part of the BrainMonkey package.
+ * This file is part of the Brain Monkey package.
  *
- * (c) Giuseppe Mazzapica
+ * (c) Giuseppe Mazzapica and contributors.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,20 +16,22 @@ use PHPUnit\Framework\Error\Error as PHPUnit_Error;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
- * @package BrainMonkey
+ * @package Brain\Monkey\Tests
  * @license http://opensource.org/licenses/MIT MIT
  */
 class UnitTestCase extends TestCase
 {
-    private $expect_mockery_exception = null;
+    /**
+     * @var \Exception|null
+     */
+    private $expectMockeryException = null;
 
     /**
      * @before
      */
     protected function setUpFixtures()
     {
-        $this->expect_mockery_exception = null;
+        $this->expectMockeryException = null;
         $libPath = explode('/tests/src/', str_replace('\\', '/', __FILE__))[0];
 
         require_once "{$libPath}/inc/wp-helper-functions.php";
@@ -40,7 +43,7 @@ class UnitTestCase extends TestCase
      */
     protected function tearDownFixtures()
     {
-        if ( ! $this->expect_mockery_exception) {
+        if (!$this->expectMockeryException) {
             Monkey\tearDown();
 
             return;
@@ -57,7 +60,8 @@ class UnitTestCase extends TestCase
      * @param string $message
      * @return void
      */
-    public static function assertStringContains($needle, $haystack, $message = '') {
+    public static function assertStringContains($needle, $haystack, $message = '')
+    {
 
         if (method_exists(TestCase::class, 'assertStringContainsString')) {
             // PHPUnit 7.5+.
@@ -78,6 +82,7 @@ class UnitTestCase extends TestCase
         if (method_exists($this, 'expectError')) {
             // PHPUnit 8.4+.
             $this->expectError();
+
             return;
         }
 
@@ -96,6 +101,7 @@ class UnitTestCase extends TestCase
         if (method_exists($this, 'expectExceptionMessageMatches')) {
             // PHPUnit 8.4+.
             $this->expectExceptionMessageMatches($msgRegex);
+
             return;
         }
 
@@ -109,7 +115,7 @@ class UnitTestCase extends TestCase
      *
      * So we let tests use TestCase::expectMockeryException() to set the expectation on thrown
      * exception, and when that is thrown we do nothing, but we throw PHPUnit exception in case it
-     * is not thrown and we expected it.
+     * is not thrown, and we expected it.
      *
      * @return void
      */
@@ -121,16 +127,16 @@ class UnitTestCase extends TestCase
             throw new \PHPUnit_Framework_ExpectationFailedException(
                 sprintf(
                     'Failed asserting that Mockery exception %s is thrown.',
-                    $this->expect_mockery_exception
+                    $this->expectMockeryException
                 )
             );
-        } catch (\Throwable $e) {
-            if (get_class($e) !== $this->expect_mockery_exception) {
-                throw $e;
+        } catch (\Throwable $exception) {
+            if (get_class($exception) !== $this->expectMockeryException) {
+                throw $exception;
             }
-        } catch (\Exception $e) {
-            if (get_class($e) !== $this->expect_mockery_exception) {
-                throw $e;
+        } catch (\Exception $exception) {
+            if (get_class($exception) !== $this->expectMockeryException) {
+                throw $exception;
             }
         }
     }
@@ -140,16 +146,15 @@ class UnitTestCase extends TestCase
      */
     protected function expectMockeryException($class)
     {
-        if ( ! class_exists($class) || ! is_subclass_of($class, \Exception::class, true)) {
+        if (!class_exists($class) || !is_subclass_of($class, \Exception::class, true)) {
             throw new \PHPUnit_Framework_Exception(
                 sprintf(
                     '%s is not a valid Mockery exception class name.',
                     $class
                 )
-
             );
         }
 
-        $this->expect_mockery_exception = $class;
+        $this->expectMockeryException = $class;
     }
 }

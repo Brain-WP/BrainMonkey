@@ -1,8 +1,9 @@
-<?php # -*- coding: utf-8 -*-
+<?php
+
 /*
- * This file is part of the BrainMonkey package.
+ * This file is part of the Brain Monkey package.
  *
- * (c) Giuseppe Mazzapica
+ * (c) Giuseppe Mazzapica and contributors.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,84 +16,141 @@ use Brain\Monkey\Name\Exception\InvalidCallable;
 use Brain\Monkey\Tests\UnitTestCase;
 
 /**
- * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
- * @package BrainMonkey
+ * @package Brain\Monkey\Tests
  * @license http://opensource.org/licenses/MIT MIT
  */
 class CallbackStringFormTest extends UnitTestCase
 {
-
+    /**
+     * @test
+     */
     public function testClosureToString()
     {
         $callback = function () {
-
+            return $this;
         };
 
-        $string_form = new CallbackStringForm($callback);
+        $stringForm = new CallbackStringForm($callback);
 
-        static::assertSame('function ()', (string)$string_form);
-    }
-
-    public function testFunctionNameToString()
-    {
-        $string_form = new CallbackStringForm('Foo\Bar\Baz');
-        $string_form_escape = new CallbackStringForm('Foo\\Bar\\Baz');
-
-        static::assertSame('Foo\Bar\Baz', (string)$string_form);
-        static::assertSame('Foo\Bar\Baz', (string)$string_form_escape);
-        static::assertSame('Foo\\Bar\\Baz', (string)$string_form);
-        static::assertSame('Foo\\Bar\\Baz', (string)$string_form_escape);
-    }
-
-    public function testStaticMethodToString()
-    {
-        $string_form_a = new CallbackStringForm(['Foo\Bar\Baz', 'method']);
-        /** @noinspection PhpUndefinedClassInspection */
-        /** @noinspection PhpUndefinedNamespaceInspection */
-        /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
-        $string_form_b = new CallbackStringForm([\Foo\Bar\Baz::class, 'method']);
-        $string_form_c = new CallbackStringForm([__CLASS__, __FUNCTION__]);
-
-        static::assertSame('Foo\Bar\Baz::method()', (string)$string_form_a);
-        static::assertSame('Foo\Bar\Baz::method()', (string)$string_form_b);
-        static::assertSame(__CLASS__.'::'.__FUNCTION__.'()', (string)$string_form_c);
-    }
-
-    public function testDynamicMethodToString()
-    {
-        $string_form_a = new CallbackStringForm([new \ArrayObject(), 'getArrayCopy']);
-        $string_form_b = new CallbackStringForm([$this, __FUNCTION__]);
-
-        static::assertSame('ArrayObject->getArrayCopy()', (string)$string_form_a);
-        static::assertSame(__CLASS__.'->'.__FUNCTION__.'()', (string)$string_form_b);
+        static::assertSame('function ()', (string)$stringForm);
     }
 
     /**
-     * @dataProvider equalsParams
-     * @param $left_param
-     * @param $right_param
-     * @param $expected
+     * @test
      */
-    public function testEquals($left_param, $right_param, $expected)
+    public function testFunctionNameToString()
     {
-        $left = new CallbackStringForm($left_param);
-        $right = new CallbackStringForm($right_param);
+        $stringForm = new CallbackStringForm('Foo\Bar\Baz');
+        $stringFormEscaped = new CallbackStringForm('Foo\\Bar\\Baz');
+
+        static::assertSame('Foo\Bar\Baz', (string)$stringForm);
+        static::assertSame('Foo\Bar\Baz', (string)$stringFormEscaped);
+        static::assertSame('Foo\\Bar\\Baz', (string)$stringForm);
+        static::assertSame('Foo\\Bar\\Baz', (string)$stringFormEscaped);
+    }
+
+    /**
+     * @test
+     */
+    public function testStaticMethodToString()
+    {
+        $stringForm1 = new CallbackStringForm(['Foo\Bar\Baz', 'method']);
+        /** @noinspection PhpUndefinedClassInspection */
+        /** @noinspection PhpUndefinedNamespaceInspection */
+        $stringForm2 = new CallbackStringForm([\Foo\Bar\Baz::class, 'method']);
+        $stringForm3 = new CallbackStringForm([__CLASS__, __FUNCTION__]);
+
+        static::assertSame('Foo\Bar\Baz::method()', (string)$stringForm1);
+        static::assertSame('Foo\Bar\Baz::method()', (string)$stringForm2);
+        static::assertSame(__CLASS__ . '::' . __FUNCTION__ . '()', (string)$stringForm3);
+    }
+
+    /**
+     * @test
+     */
+    public function testDynamicMethodToString()
+    {
+        $stringForm1 = new CallbackStringForm([new \ArrayObject(), 'getArrayCopy']);
+        $stringForm2 = new CallbackStringForm([$this, __FUNCTION__]);
+
+        static::assertSame('ArrayObject->getArrayCopy()', (string)$stringForm1);
+        static::assertSame(__CLASS__ . '->' . __FUNCTION__ . '()', (string)$stringForm2);
+    }
+
+    /**
+     * @test
+     * @dataProvider provideCallbackEqualitySamples
+     */
+    public function testEquals($leftParam, $rightParam, $expected)
+    {
+        $left = new CallbackStringForm($leftParam);
+        $right = new CallbackStringForm($rightParam);
 
         $expected
             ? static::assertTrue($left->equals($right), "{$left} === {$right}")
             : static::assertFalse($left->equals($right), "{$left} !== {$right}");
     }
 
-    public function equalsParams()
+    /**
+     * @test
+     */
+    public function testFromStringThrowForMalformedClosure()
     {
-        /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
+        $closure = 'function )';
+        $this->expectException(InvalidCallable::class);
+        new CallbackStringForm($closure);
+    }
+
+    /**
+     * @test
+     */
+    public function testFromStringThrowForMalformedClosureArgs()
+    {
+        $closure = 'function(...)';
+        $this->expectException(InvalidCallable::class);
+        new CallbackStringForm($closure);
+    }
+
+    /**
+     * @return list<array{callable,callable,bool}>
+     */
+    public function provideCallbackEqualitySamples()
+    {
         /** @noinspection PhpUndefinedClassInspection */
         /** @noinspection PhpUndefinedNamespaceInspection */
         return [
-            [function ($foo) {}, function ($foo) {}, true],
-            [function ($foo) {}, 'function ($foo)', true],
-            [function ($foo) {}, function ($bar) {}, false],
-            [function ($foo) {}, 'function ($bar)', false],
+            [
+                function ($foo) {
+                    return $this;
+                },
+                function ($foo) {
+                    return $this;
+                },
+                true,
+            ],
+            [
+                function ($foo) {
+                    return $this;
+                },
+                'function ($foo)',
+                true,
+            ],
+            [
+                function ($foo) {
+                    return $this;
+                },
+                function ($bar) {
+                    return $this;
+                },
+                false,
+            ],
+            [
+                function ($foo) {
+                    return $this;
+                },
+                'function ($bar)',
+                false,
+            ],
             ['Foo\Bar\baz', 'Foo\\Bar\\baz', true],
             ['Foo\Bar\baz', 'Foo\\Baz\\baz', false],
             [['Foo\Bar\Baz', 'method'], [\Foo\Bar\Baz::class, 'method'], true],
@@ -101,19 +159,5 @@ class CallbackStringFormTest extends UnitTestCase
             [[new \ArrayObject(), 'getArrayCopy'], 'ArrayObject->getArrayCopy()', true],
             [[new \ArrayObject(), 'getArrayCopy'], 'ArrayObject::getArrayCopy()', false],
         ];
-    }
-
-    public function testFromStringThrowForMalformedClosure()
-    {
-        $closure = 'function )';
-        $this->expectException(InvalidCallable::class);
-        new CallbackStringForm($closure);
-    }
-
-    public function testFromStringThrowForMalformedClosureArgs()
-    {
-        $closure = 'function(...)';
-        $this->expectException(InvalidCallable::class);
-        new CallbackStringForm($closure);
     }
 }

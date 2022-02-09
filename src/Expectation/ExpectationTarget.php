@@ -1,8 +1,9 @@
-<?php # -*- coding: utf-8 -*-
+<?php
+
 /*
- * This file is part of the BrainMonkey package.
+ * This file is part of the Brain Monkey package.
  *
- * (c) Giuseppe Mazzapica
+ * (c) Giuseppe Mazzapica and contributors.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -20,21 +21,19 @@ use Brain\Monkey\Name\FunctionName;
  *
  * Name of functions and hooks are "normalized" to be used as method names (for mock class).
  *
- * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
- * @package BrainMonkey
+ * @package Brain\Monkey
  * @license http://opensource.org/licenses/MIT MIT
  */
 final class ExpectationTarget
 {
-
-    const TYPE_ACTION_ADDED   = 'add_action';
-    const TYPE_ACTION_DONE    = 'do_action';
+    const TYPE_ACTION_ADDED = 'add_action';
+    const TYPE_ACTION_DONE = 'do_action';
     const TYPE_ACTION_REMOVED = 'remove_action';
-    const TYPE_FILTER_ADDED   = 'add_filter';
+    const TYPE_FILTER_ADDED = 'add_filter';
     const TYPE_FILTER_APPLIED = 'apply_filters';
     const TYPE_FILTER_REMOVED = 'remove_filter';
-    const TYPE_FUNCTION       = 'function';
-    const TYPE_NULL           = '';
+    const TYPE_FUNCTION = 'function';
+    const TYPE_NULL = '';
 
     const TYPES = [
         self::TYPE_FUNCTION,
@@ -47,36 +46,36 @@ final class ExpectationTarget
     ];
 
     const HOOK_SANITIZE_MAP = [
-        '-'  => '_hyphen_',
-        ' '  => '_space_',
-        '/'  => '_slash_',
+        '-' => '_hyphen_',
+        ' ' => '_space_',
+        '/' => '_slash_',
         '\\' => '_backslash_',
-        '.'  => '_dot_',
-        '!'  => '_exclamation_',
-        '"'  => '_double_quote_',
+        '.' => '_dot_',
+        '!' => '_exclamation_',
+        '"' => '_double_quote_',
         '\'' => '_quote_',
-        '£'  => '_pound_',
-        '$'  => '_dollar_',
-        '%'  => '_percent_',
-        '='  => '_equal_',
-        '?'  => '_question_',
-        '*'  => '_asterisk_',
-        '@'  => '_slug_',
-        '#'  => '_sharp_',
-        '+'  => '_plus_',
-        '|'  => '_pipe_',
-        '<'  => '_lt_',
-        '>'  => '_gt_',
-        ','  => '_comma_',
-        ';'  => '_semicolon_',
-        ':'  => '_colon_',
-        '~'  => '_tilde_',
-        '('  => '_bracket_open_',
-        ')'  => '_bracket_close_',
-        '['  => '_square_bracket_open_',
-        ']'  => '_square_bracket_close_',
-        '{'  => '_curly_bracket_open_',
-        '}'  => '_curly_bracket_close_',
+        '£' => '_pound_',
+        '$' => '_dollar_',
+        '%' => '_percent_',
+        '=' => '_equal_',
+        '?' => '_question_',
+        '*' => '_asterisk_',
+        '@' => '_slug_',
+        '#' => '_sharp_',
+        '+' => '_plus_',
+        '|' => '_pipe_',
+        '<' => '_lt_',
+        '>' => '_gt_',
+        ',' => '_comma_',
+        ';' => '_semicolon_',
+        ':' => '_colon_',
+        '~' => '_tilde_',
+        '(' => '_bracket_open_',
+        ')' => '_bracket_close_',
+        '[' => '_square_bracket_open_',
+        ']' => '_square_bracket_close_',
+        '{' => '_curly_bracket_open_',
+        '}' => '_curly_bracket_close_',
     ];
 
     /**
@@ -92,7 +91,7 @@ final class ExpectationTarget
     /**
      * @var string
      */
-    private $original_name;
+    private $originalName;
 
     /**
      * @param string $type
@@ -100,11 +99,11 @@ final class ExpectationTarget
      */
     public function __construct($type, $name)
     {
-        if ( ! in_array($type, self::TYPES, true)) {
+        if (!in_array($type, self::TYPES, true)) {
             throw Exception\InvalidExpectationType::forType($name);
         }
 
-        if ( ! is_string($name)) {
+        if (!is_string($name)) {
             throw Exception\InvalidExpectationName::forNameAndType($name, $type);
         }
 
@@ -113,18 +112,17 @@ final class ExpectationTarget
         if ($type === self::TYPE_FUNCTION) {
             $nameObject = new FunctionName($name);
             $namespace = str_replace('\\', '_', ltrim($nameObject->getNamespace(), '\\'));
-            $this->original_name = $nameObject->fullyQualifiedName();
+            $this->originalName = $nameObject->fullyQualifiedName();
             $this->name = $namespace
-                ? "{$namespace}_".$nameObject->shortName()
+                ? "{$namespace}_" . $nameObject->shortName()
                 : $nameObject->shortName();
 
             return;
         }
 
-        $this->original_name = $name;
+        $this->originalName = $name;
         $replaced = strtr($name, self::HOOK_SANITIZE_MAP);
         $this->name = preg_replace('/[^a-zA-Z0-9_]/', '__', $replaced);
-
     }
 
     /**
@@ -132,7 +130,7 @@ final class ExpectationTarget
      */
     public function identifier()
     {
-        return md5($this->original_name.$this->type);
+        return md5($this->originalName . $this->type);
     }
 
     /**
@@ -171,7 +169,7 @@ final class ExpectationTarget
             case ExpectationTarget::TYPE_FILTER_REMOVED:
                 $name = "remove_filter_{$name}";
                 break;
-            default :
+            default:
                 throw new \UnexpectedValueException(sprintf('Unexpected %s type.', __CLASS__));
         }
 
@@ -193,7 +191,7 @@ final class ExpectationTarget
     public function equals(ExpectationTarget $target)
     {
         return
-            $this->original_name === $target->original_name
+            $this->originalName === $target->originalName
             && $this->type === $target->type;
     }
 }

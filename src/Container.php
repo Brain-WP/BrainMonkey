@@ -1,8 +1,9 @@
-<?php # -*- coding: utf-8 -*-
+<?php
+
 /*
- * This file is part of the BrainMonkey package.
+ * This file is part of the Brain Monkey package.
  *
- * (c) Giuseppe Mazzapica
+ * (c) Giuseppe Mazzapica and contributors.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,13 +12,11 @@
 namespace Brain\Monkey;
 
 /**
- * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
- * @package BrainMonkey
+ * @package Brain\Monkey
  * @license http://opensource.org/licenses/MIT MIT
  */
 final class Container
 {
-
     /**
      * @var Container|null
      */
@@ -35,8 +34,8 @@ final class Container
      */
     public static function instance()
     {
-        if ( ! self::$instance) {
-            require_once dirname(__DIR__).'/inc/patchwork-loader.php';
+        if (!self::$instance) {
+            require_once dirname(__DIR__) . '/inc/patchwork-loader.php';
             self::$instance = new static();
         }
 
@@ -99,12 +98,12 @@ final class Container
 
     /**
      * @param string $id
-     * @param mixed  $service
+     * @param mixed $service
      * @return mixed
      */
     private function service($id, $service)
     {
-        if ( ! array_key_exists($id, $this->services)) {
+        if (!array_key_exists($id, $this->services)) {
             $this->services[$id] = $service;
         }
 

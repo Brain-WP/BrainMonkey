@@ -1,8 +1,9 @@
-<?php # -*- coding: utf-8 -*-
+<?php
+
 /*
- * This file is part of the BrainMonkey package.
+ * This file is part of the Brain Monkey package.
  *
- * (c) Giuseppe Mazzapica
+ * (c) Giuseppe Mazzapica and contributors.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,36 +11,33 @@
 
 namespace Brain\Monkey\Name;
 
-
 /**
- * @author  Giuseppe Mazzapica <giuseppe.mazzapica@gmail.com>
- * @package BrainMonkey
+ * @package Brain\Monkey
  * @license http://opensource.org/licenses/MIT MIT
  */
 final class MethodName
 {
-
     /**
      * @var string
      */
     private $name;
 
     /**
-     * @param string $method_name
+     * @param string $methodName
      */
-    public function __construct($method_name)
+    public function __construct($methodName)
     {
         try {
-            $function_name = new FunctionName($method_name);
-        } catch (Exception\InvalidName $e) {
-            throw Exception\InvalidName::forMethod($method_name);
+            $functionName = new FunctionName($methodName);
+        } catch (Exception\InvalidName $exception) {
+            throw Exception\InvalidName::forMethod($methodName);
         }
 
-        if ($function_name->getNamespace()) {
-            throw Exception\InvalidName::forMethod($method_name);
+        if ($functionName->getNamespace()) {
+            throw Exception\InvalidName::forMethod($methodName);
         }
 
-        $this->name = $function_name->shortName();
+        $this->name = $functionName->shortName();
     }
 
     /**
