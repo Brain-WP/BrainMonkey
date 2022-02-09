@@ -79,7 +79,7 @@ jobs:
 
             -   name: Check if PHPUnit 9 is installed
                 id: phpunit_ver
-                run: echo ::set-output name=is_phpunit_9::$(composer show phpunit/phpunit | grep -E -c 'versions.+9')
+                run: echo ::set-output name=is_phpunit_9::$(composer show phpunit/phpunit | grep -E -c 'versions.+\* 9\.')
 
             -   name: Migrate PHPUnit configuration (PHPUnit 9)
                 if: ${{ steps.phpunit_ver.outputs.is_phpunit_9 != 0 }}
