@@ -1,77 +1,95 @@
 name: PHP Quality Assurance
 on:
-  push:
-  # Allow manually triggering the workflow.
-  workflow_dispatch:
-
-# Cancels all previous workflow runs for the same branch that have not yet completed.
+    push:
+    pull_request:
+    workflow_dispatch:
 concurrency:
-  # The concurrency group contains the workflow name and the branch name.
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
 
 jobs:
-    qa:
+    static-qa:
         runs-on: ubuntu-latest
-        if: "!contains(github.event.head_commit.message, 'ci skip')"
-        strategy:
-            fail-fast: true
-            matrix:
-                php-versions: ['5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1']
-                dependency-versions: ['lowest', 'highest']
-
-                include:
-                - php-versions: '8.2'
-                  dependency-versions: 'highest'
-
-        continue-on-error: ${{ matrix.php-versions == '8.2' }}
-
+        if: ${{ !contains(github.event.head_commit.message, 'skip qa') }}
         steps:
-            - uses: actions/checkout@v2
+            -   name: Checkout
+                uses: actions/checkout@v2
 
-            - name: Setup PHP
-              uses: shivammathur/setup-php@v2
-              with:
-                php-version: ${{ matrix.php-versions }}
-                ini-values: zend.assertions=1, error_reporting=-1, display_errors=On
-                coverage: ${{ ( matrix.php-versions == '7.4' && 'xdebug' ) || 'none' }}
-                tools: parallel-lint
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: 7.4
+                    coverage: none
+                    tools: cs2pr
 
-            - name: Check syntax error in sources
-              if: ${{ matrix.dependency-versions == 'highest' }}
-              run: parallel-lint ./src/ ./tests/
+            -   name: Install dependencies
+                uses: ramsey/composer-install@v2
 
-            - name: Install dependencies - normal
-              if: ${{ matrix.php-versions != '8.2' }}
-              uses: "ramsey/composer-install@v2"
-              with:
-                dependency-versions: ${{ matrix.dependency-versions }}
+            -   name: Check code styles
+                run: |
+                    ./vendor/bin/phpcs -ps . --standard=PHPCompatibility --ignore=*/vendor/* --extensions=php --basepath=./ --report-full --report-checkstyle="phpcs-report.xml" --runtime-set testVersion 5.6- --runtime-set ignore_warnings_on_exit 1
+                    cs2pr --graceful-warnings phpcs-report.xml
 
-            - name: Install dependencies - ignore-platform-reqs
-              if: ${{ matrix.php-versions == '8.2' }}
-              uses: "ramsey/composer-install@v2"
-              with:
-                dependency-versions: ${{ matrix.dependency-versions }}
-                composer-options: "--ignore-platform-reqs"
+    unit-tests:
+        runs-on: ubuntu-latest
+        if: ${{ !contains(github.event.head_commit.message, 'skip tests') }}
+        env:
+            USE_COVERAGE: 'no'
+        strategy:
+            fail-fast: false
+            matrix:
+                php-ver: [ '5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1' ]
+                dependency-versions: [ 'lowest', 'highest' ]
+                experimental: [ false ]
+                include:
+                    -   php-ver: '8.2'
+                        dependency-versions: 'highest'
+                        composer-options: '--ignore-platform-reqs'
+                        experimental: true
+        continue-on-error: ${{ matrix.experimental == true }}
+        steps:
+            -   name: Update "USE_COVERAGE" env var based on matrix
+                if: ${{ matrix.php-ver == '7.4' && matrix.dependency-versions == 'highest' }}
+                run: echo "USE_COVERAGE=yes" >> $GITHUB_ENV
 
-            - name: Check cross-version PHP compatibility
-              if: ${{ matrix.php-versions == '7.4' && matrix.dependency-versions == 'highest' }} # results is same across versions, do it once
-              run: composer phpcompat
+            -   name: Checkout
+                uses: actions/checkout@v2
 
-            - name: Migrate test configuration (>= 7.3)
-              if: ${{ matrix.php-versions >= 7.3 && matrix.dependency-versions == 'highest' }}
-              run: ./vendor/bin/phpunit --migrate-configuration
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: ${{ matrix.php-ver }}
+                    ini-values: zend.assertions=1, error_reporting=-1, display_errors=On
+                    coverage: ${{ ((env.USE_COVERAGE == 'yes') && 'xdebug') || 'none' }}
+                    tools: cs2pr
 
-            - name: Run unit tests (without code coverage)
-              if: ${{ matrix.php-versions != '7.4' || matrix.dependency-versions != 'highest' }}
-              run: ./vendor/bin/phpunit
+            -   name: Install parallel-lint
+                if: ${{ matrix.dependency-versions == 'highest' }}
+                run: composer require php-parallel-lint/php-parallel-lint:^1.3.1 --dev --no-update
 
-            - name: Run unit tests with code coverage
-              if: ${{ matrix.php-versions == '7.4' && matrix.dependency-versions == 'highest' }}
-              run: ./vendor/bin/phpunit --coverage-clover=coverage.xml
+            -   name: Install dependencies
+                uses: ramsey/composer-install@v2
+                with:
+                    dependency-versions: ${{ matrix.dependency-versions }}
+                    composer-options: ${{ matrix.composer-options }}
 
-            - name: Update codecov.io
-              uses: codecov/codecov-action@v2
-              if: ${{ matrix.php-versions == '7.4' && matrix.dependency-versions == 'highest' }} # upload coverage once is enough
-              with:
-                file: ./coverage.xml
+            -   name: Lint PHP sources
+                if: ${{ matrix.dependency-versions == 'highest' }}
+                run: ./vendor/bin/parallel-lint ./src/ --checkstyle | cs2pr
+
+            -   name: Check if PHPUnit 9 is installed
+                id: phpunit_ver
+                run: echo ::set-output name=is_phpunit_9::$(composer show phpunit/phpunit | grep -E -c 'versions.+9')
+
+            -   name: Migrate PHPUnit configuration (PHPUnit 9)
+                if: ${{ steps.phpunit_ver.outputs.is_phpunit_9 != 0 }}
+                run: ./vendor/bin/phpunit --migrate-configuration
+
+            -   name: Run unit tests
+                run: ./vendor/bin/phpunit ${{ ((env.USE_COVERAGE == 'yes') && '--coverage-clover=coverage.xml') || '--no-coverage' }}
+
+            -   name: Update codecov.io
+                uses: codecov/codecov-action@v2
+                if: ${{ env.USE_COVERAGE == 'yes' }}
+                with:
+                    file: ./coverage.xml
