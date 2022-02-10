@@ -31,7 +31,7 @@ final class CallbackStringForm
     private $parsed;
 
     /**
-     * @param callable $callback
+     * @param mixed $callback
      */
     public function __construct($callback)
     {
@@ -39,7 +39,7 @@ final class CallbackStringForm
     }
 
     /**
-     * @param \Brain\Monkey\Name\CallbackStringForm $callback
+     * @param CallbackStringForm $callback
      * @return bool
      */
     public function equals(CallbackStringForm $callback)
@@ -69,25 +69,26 @@ final class CallbackStringForm
             return $this->parseString($callback);
         }
 
-        $isObject = is_object($callback);
-
-        if ($isObject && !is_callable($callback)) {
-            throw new Exception\NotInvokableObjectAsCallback();
-        }
-
-        if ($isObject) {
-            return $callback instanceof \Closure
+        if (is_object($callback)) {
+            if (!is_callable($callback)) {
+                throw new Exception\NotInvokableObjectAsCallback();
+            }
+            /** @var callable-object|\Closure $callback */
+            return ($callback instanceof \Closure)
                 ? (string)new ClosureStringForm($callback)
                 : get_class($callback) . '()';
         }
 
+        /**
+         * @var object|class-string $object
+         * @var string $method
+         */
         list($object, $method) = $callback;
 
         $methodName = (new MethodName($method))->name();
 
         if (is_string($object)) {
             $className = (new ClassName($object))->fullyQualifiedName();
-
             $this->assertMethodCallable($className, $methodName, $callback);
 
             return "{$className}::{$methodName}()";
@@ -135,7 +136,7 @@ final class CallbackStringForm
         }
 
         // remove parenthesis
-        $callback = preg_replace('~\(\)$~', '', $callback);
+        $callback = (string)preg_replace('~\(\)$~', '', $callback);
 
         $isDynamicMethod = substr_count($callback, '->') === 1;
 
@@ -143,6 +144,7 @@ final class CallbackStringForm
         // and method names are fine
         if ($isDynamicMethod || $isStaticMethod) {
             $separator = $isDynamicMethod ? '->' : '::';
+            /** @psalm-suppress PossiblyInvalidArrayAccess */
             list($class, $method) = explode($separator, $callback);
             $className = (new ClassName($class))->fullyQualifiedName();
             $methodName = (new MethodName($method))->name();
@@ -167,6 +169,7 @@ final class CallbackStringForm
      * @param string $className
      * @param string $method
      * @param string|array $callable
+     * @return void
      */
     private function assertMethodCallable($className, $method, $callable)
     {

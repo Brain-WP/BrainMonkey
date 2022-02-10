@@ -33,7 +33,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^5.7.26 || ^6.0 || ^7.0 || >=8.0 <8.5.12 || ^8.5.14 || ^9.0",
-        "inpsyde/php-coding-standards": "^1@dev"
+        "inpsyde/php-coding-standards": "^1@dev",
+        "vimeo/psalm": "^4.20.0"
     },
     "autoload": {
         "psr-4": {
@@ -60,6 +61,19 @@
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true
         }
+    },
+    "scripts": {
+        "psalm": "@php ./vendor/vimeo/psalm/psalm --no-cache --output-format=compact",
+        "cs": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs",
+        "tests": "@php ./vendor/phpunit/phpunit/phpunit --no-coverage",
+        "tests:unit": "@php ./vendor/phpunit/phpunit/phpunit --testsuite=unit --no-coverage",
+        "tests:functional": "@php ./vendor/phpunit/phpunit/phpunit --testsuite=functional --no-coverage",
+        "tests:cov": "@php ./vendor/phpunit/phpunit/phpunit",
+        "qa" : [
+            "@tests",
+            "@cs",
+            "@psalm"
+        ]
     },
     "extra": {
         "branch-alias": {

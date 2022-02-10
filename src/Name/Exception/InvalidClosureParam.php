@@ -22,11 +22,18 @@ class InvalidClosureParam extends Exception
     const CODE_MULTIPLE_VARIADIC = 3;
 
     /**
-     * @param string $name
+     * @param mixed $name
      * @return static
      */
     public static function forInvalidName($name)
     {
+        if (!is_string($name)) {
+            $name = is_object($name)
+                ? 'instance of ' . get_class($name)
+                : 'variable of type ' . gettype($name);
+        }
+
+        /** @psalm-suppress UnsafeInstantiation */
         return new static(
             sprintf('%s is not a valid function argument name.', $name),
             self::CODE_INVALID_NAME
@@ -40,6 +47,10 @@ class InvalidClosureParam extends Exception
      */
     public static function forInvalidType($type, $name)
     {
+        assert(is_string($type));
+        assert(is_string($name));
+
+        /** @psalm-suppress UnsafeInstantiation */
         return new static(
             sprintf('%s is not a valid function argument type for argument %s.', $type, $name),
             self::CODE_INVALID_TYPE
@@ -52,6 +63,9 @@ class InvalidClosureParam extends Exception
      */
     public static function forMultipleVariadic($name)
     {
+        assert(is_string($name));
+
+        /** @psalm-suppress UnsafeInstantiation */
         return new static(
             sprintf(
                 '%s is a variadic argument for a function that already has a variadic argument.',

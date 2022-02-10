@@ -30,6 +30,9 @@ class InvalidAddedHookArgument extends InvalidHookArgument
      */
     public static function forWrongArgumentsCount($type)
     {
+        assert(is_string($type));
+
+        /** @psalm-suppress UnsafeInstantiation */
         return new static(
             sprintf(
                 '"%s" must be called at with hook name and at maximum three other arguments: '
@@ -46,10 +49,13 @@ class InvalidAddedHookArgument extends InvalidHookArgument
      */
     public static function forMissingCallback($type)
     {
+        assert(is_string($type));
+
+        /** @psalm-suppress UnsafeInstantiation */
         return new static(
             sprintf(
                 'A callback parameter is required for "%s".',
-                $type === HookStorage::ACTIONS ? "add_action" : "add_filter"
+                ($type === HookStorage::ACTIONS) ? "add_action" : "add_filter"
             ),
             self::CODE_MISSING_CALLBACK
         );
@@ -61,10 +67,13 @@ class InvalidAddedHookArgument extends InvalidHookArgument
      */
     public static function forInvalidPriority($type)
     {
+        assert(is_string($type));
+
+        /** @psalm-suppress UnsafeInstantiation */
         return new static(
             sprintf(
-                'Priority parameter passed to "%s" must be an integer.',
-                $type === HookStorage::ACTIONS ? "add_action" : "add_filter"
+                'Priority parameter passed to "%s" must be a number.',
+                ($type === HookStorage::ACTIONS) ? "add_action" : "add_filter"
             ),
             self::CODE_INVALID_PRIORITY
         );
@@ -76,10 +85,13 @@ class InvalidAddedHookArgument extends InvalidHookArgument
      */
     public static function forInvalidAcceptedArgs($type)
     {
+        assert(is_string($type));
+
+        /** @psalm-suppress UnsafeInstantiation */
         return new static(
             sprintf(
                 'Accepted args number parameter passed to "%s" must be an integer.',
-                $type === HookStorage::ACTIONS ? "add_action" : "add_filter"
+                ($type === HookStorage::ACTIONS) ? "add_action" : "add_filter"
             ),
             self::CODE_INVALID_ACCEPTED_ARGS
         );

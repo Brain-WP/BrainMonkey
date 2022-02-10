@@ -20,7 +20,7 @@ use Brain\Monkey\Expectation\ExpectationTarget;
 class ExpectationArgsRequired extends Exception
 {
     /**
-     * @param \Brain\Monkey\Expectation\ExpectationTarget $target
+     * @param ExpectationTarget $target
      * @return static
      */
     public static function forExpectationType(ExpectationTarget $target)
@@ -42,6 +42,7 @@ class ExpectationArgsRequired extends Exception
                 break;
         }
 
+        /** @psalm-suppress UnsafeInstantiation */
         return new static(
             "Can't use `withNoArgs()` for {$type} expectations: they require at least one argument."
         );

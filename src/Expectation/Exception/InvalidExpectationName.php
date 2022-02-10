@@ -26,6 +26,9 @@ class InvalidExpectationName extends Exception
      */
     public static function forNameAndType($name, $type)
     {
+        assert(is_string($type));
+
+        /** @psalm-suppress UnsafeInstantiation */
         return new static(
             sprintf(
                 '%s name to set expectation for must be in a string, got %s.',

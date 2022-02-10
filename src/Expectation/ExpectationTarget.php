@@ -78,13 +78,23 @@ final class ExpectationTarget
         '}' => '_curly_bracket_close_',
     ];
 
+    const PREFIX_MAP = [
+        ExpectationTarget::TYPE_FUNCTION => '',
+        ExpectationTarget::TYPE_ACTION_ADDED => 'add_action_',
+        ExpectationTarget::TYPE_ACTION_DONE => 'do_action_',
+        ExpectationTarget::TYPE_ACTION_REMOVED => 'remove_action_',
+        ExpectationTarget::TYPE_FILTER_ADDED => 'add_filter_',
+        ExpectationTarget::TYPE_FILTER_APPLIED => 'apply_filters_',
+        ExpectationTarget::TYPE_FILTER_REMOVED => 'remove_filter_',
+    ];
+
     /**
      * @var string
      */
     private $type;
 
     /**
-     * @var callable|string
+     * @var string
      */
     private $name;
 
@@ -120,9 +130,12 @@ final class ExpectationTarget
             return;
         }
 
+        $safeName = preg_replace('/[^a-zA-Z0-9_]/', '__', strtr($name, self::HOOK_SANITIZE_MAP));
+        if (!is_string($safeName)) {
+            throw Exception\InvalidExpectationName::forNameAndType($name, $type);
+        }
         $this->originalName = $name;
-        $replaced = strtr($name, self::HOOK_SANITIZE_MAP);
-        $this->name = preg_replace('/[^a-zA-Z0-9_]/', '__', $replaced);
+        $this->name = $safeName;
     }
 
     /**
@@ -147,33 +160,13 @@ final class ExpectationTarget
     public function mockMethodName()
     {
         $name = $this->name();
+        $type = $this->type();
 
-        switch ($this->type()) {
-            case ExpectationTarget::TYPE_FUNCTION:
-                break;
-            case ExpectationTarget::TYPE_ACTION_ADDED:
-                $name = "add_action_{$name}";
-                break;
-            case ExpectationTarget::TYPE_ACTION_DONE:
-                $name = "do_action_{$name}";
-                break;
-            case ExpectationTarget::TYPE_ACTION_REMOVED:
-                $name = "remove_action_{$name}";
-                break;
-            case ExpectationTarget::TYPE_FILTER_ADDED:
-                $name = "add_filter_{$name}";
-                break;
-            case ExpectationTarget::TYPE_FILTER_APPLIED:
-                $name = "apply_filters_{$name}";
-                break;
-            case ExpectationTarget::TYPE_FILTER_REMOVED:
-                $name = "remove_filter_{$name}";
-                break;
-            default:
-                throw new \UnexpectedValueException(sprintf('Unexpected %s type.', __CLASS__));
+        if (!array_key_exists($type, self::PREFIX_MAP)) {
+            throw new \UnexpectedValueException(sprintf('Unexpected %s type.', __CLASS__));
         }
 
-        return $name;
+        return self::PREFIX_MAP[$type] . $name;
     }
 
     /**
@@ -185,13 +178,13 @@ final class ExpectationTarget
     }
 
     /**
-     * @param \Brain\Monkey\Expectation\ExpectationTarget $target
+     * @param ExpectationTarget $target
      * @return bool
      */
     public function equals(ExpectationTarget $target)
     {
         return
-            $this->originalName === $target->originalName
-            && $this->type === $target->type;
+            ($this->originalName === $target->originalName)
+            && ($this->type === $target->type);
     }
 }

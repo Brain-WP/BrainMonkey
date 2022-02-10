@@ -11,6 +11,8 @@
 
 namespace Brain\Monkey\Expectation;
 
+use Mockery;
+
 /**
  * A factory to create expectation objects for different "targets".
  *
@@ -22,7 +24,7 @@ namespace Brain\Monkey\Expectation;
 class ExpectationFactory
 {
     /**
-     * @var \Brain\Monkey\Expectation\Expectation[]
+     * @var array<string, Expectation>
      */
     private $expectations = [];
 
@@ -40,7 +42,7 @@ class ExpectationFactory
 
     /**
      * @param string $function
-     * @return \Brain\Monkey\Expectation\Expectation;
+     * @return Expectation
      */
     public function forFunctionExecuted($function)
     {
@@ -51,7 +53,7 @@ class ExpectationFactory
 
     /**
      * @param string $action
-     * @return \Brain\Monkey\Expectation\Expectation;
+     * @return Expectation
      */
     public function forActionAdded($action)
     {
@@ -62,7 +64,7 @@ class ExpectationFactory
 
     /**
      * @param string $action
-     * @return \Brain\Monkey\Expectation\Expectation;
+     * @return Expectation
      */
     public function forActionDone($action)
     {
@@ -73,7 +75,7 @@ class ExpectationFactory
 
     /**
      * @param string $action
-     * @return \Brain\Monkey\Expectation\Expectation;
+     * @return Expectation
      */
     public function forActionRemoved($action)
     {
@@ -84,7 +86,7 @@ class ExpectationFactory
 
     /**
      * @param string $filter
-     * @return \Brain\Monkey\Expectation\Expectation;
+     * @return Expectation
      */
     public function forFilterAdded($filter)
     {
@@ -95,7 +97,7 @@ class ExpectationFactory
 
     /**
      * @param string $filter
-     * @return \Brain\Monkey\Expectation\Expectation;
+     * @return Expectation
      */
     public function forFilterApplied($filter)
     {
@@ -106,7 +108,7 @@ class ExpectationFactory
 
     /**
      * @param string $filter
-     * @return \Brain\Monkey\Expectation\Expectation;
+     * @return Expectation
      */
     public function forFilterRemoved($filter)
     {
@@ -116,7 +118,7 @@ class ExpectationFactory
     }
 
     /**
-     * @param \Brain\Monkey\Expectation\ExpectationTarget $target
+     * @param ExpectationTarget $target
      * @return bool
      */
     public function hasMockFor(ExpectationTarget $target)
@@ -125,7 +127,7 @@ class ExpectationFactory
     }
 
     /**
-     * @param \Brain\Monkey\Expectation\ExpectationTarget $target
+     * @param ExpectationTarget $target
      * @return bool
      */
     public function hasReturnExpectationFor(ExpectationTarget $target)
@@ -138,16 +140,19 @@ class ExpectationFactory
     }
 
     /**
-     * @param \Brain\Monkey\Expectation\ExpectationTarget $target
-     * @return \Mockery\LegacyMockInterface|\Mockery\MockInterface|null
+     * @param ExpectationTarget $target
+     * @return Mockery\LegacyMockInterface|Mockery\MockInterface
      */
     public function mockFor(ExpectationTarget $target)
     {
         return $this->hasMockFor($target)
             ? $this->expectations[$target->identifier()]->mockeryExpectation()->getMock()
-            : \Mockery::mock();
+            : Mockery::mock();
     }
 
+    /**
+     * @return void
+     */
     public function reset()
     {
         $this->expectations = [];
@@ -155,14 +160,20 @@ class ExpectationFactory
     }
 
     /**
-     * @param \Brain\Monkey\Expectation\ExpectationTarget $target
-     * @return \Brain\Monkey\Expectation\Expectation
+     * @param ExpectationTarget $target
+     * @return Expectation
      */
     private function create(ExpectationTarget $target)
     {
         $id = $target->identifier();
 
-        /** @noinspection PhpMethodParametersCountMismatchInspection */
+        /**
+         * @var \Mockery\Expectation $expectation
+         *
+         * @psalm-suppress MixedMethodCall
+         * @psalm-suppress PossiblyUndefinedMethod
+         * @psalm-suppress UndefinedMagicMethod
+         */
         $expectation = $this->mockFor($target)
             ->shouldReceive($target->mockMethodName())
             ->atLeast()
@@ -170,6 +181,10 @@ class ExpectationFactory
 
         if ($target->type() === ExpectationTarget::TYPE_FILTER_APPLIED) {
             $expectation = $expectation->andReturnUsing(
+                /**
+                 * @param mixed $arg
+                 * @return mixed
+                 */
                 static function ($arg) {
                     return $arg;
                 }

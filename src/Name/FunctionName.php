@@ -22,12 +22,12 @@ final class FunctionName
     /**
      * @var string
      */
-    private $functionName = '';
+    private $functionName;
 
     /**
      * @var string
      */
-    private $namespace = '';
+    private $namespace;
 
     /**
      * @param string $functionName
@@ -62,7 +62,7 @@ final class FunctionName
     }
 
     /**
-     * @param \Brain\Monkey\Name\FunctionName $name
+     * @param FunctionName $name
      * @return bool
      */
     public function equals(FunctionName $name)
@@ -75,14 +75,16 @@ final class FunctionName
      * When name is valid returns an array of the name itself and its namespace parts.
      *
      * @param mixed $functionName
-     * @return string[]
+     * @return array{string, string}
+     *
+     * @psalm-assert non-empty-string $functionName
      */
     private function parseName($functionName)
     {
         $chunks = is_string($functionName) ? explode('\\', ltrim($functionName, '\\')) : null;
         $valid = $chunks ? preg_filter(self::VALID_NAME_PATTERN, '$0', $chunks) : null;
 
-        if (!$valid || $valid !== $chunks) {
+        if (!$valid || !$chunks || ($valid !== $chunks)) {
             $name = is_string($functionName)
                 ? "'{$functionName}'"
                 : 'Variable of type ' . gettype($functionName);

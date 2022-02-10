@@ -12,7 +12,7 @@
  * @package Brain\Monkey
  */
 
-// Ignore this. Just a safeguard in case of WordPress + Composer broken (really broken) setup.
+// Ignore this. Just a safeguard in case of WordPress + Composer broken setup.
 namespace {
 
     if (function_exists('Brain\Monkey\setUp')) {
@@ -22,9 +22,14 @@ namespace {
 
 namespace Brain\Monkey {
 
+    use Mockery;
+    use Patchwork;
+
     /**
      * Setup function to be called before _each_ unit test. This is not required to just mock
      * PHP functions without using WP features.
+     *
+     * @return void
      */
     function setUp()
     {
@@ -35,12 +40,14 @@ namespace Brain\Monkey {
 
     /**
      * Setup function to be called after _each_ unit test. This is *always* required.
+     *
+     * @return void
      */
     function tearDown()
     {
         Container::instance()->reset();
-        \Mockery::close();
-        \Patchwork\restoreAll();
+        Mockery::close();
+        Patchwork\restoreAll();
     }
 }
 
@@ -48,7 +55,9 @@ namespace Brain\Monkey\Functions {
 
     use Brain\Monkey\Container;
     use Brain\Monkey\Expectation\EscapeHelper;
+    use Brain\Monkey\Expectation\Expectation;
     use Brain\Monkey\Expectation\FunctionStubFactory;
+    use Brain\Monkey\Expectation\FunctionStub;
     use Brain\Monkey\Name\FunctionName;
 
     /**
@@ -58,7 +67,7 @@ namespace Brain\Monkey\Functions {
      * FunctionStub.
      *
      * @param string $functionName the name of the function to mock
-     * @return \Brain\Monkey\Expectation\FunctionStub
+     * @return FunctionStub
      */
     function when($functionName)
     {
@@ -70,7 +79,7 @@ namespace Brain\Monkey\Functions {
     /**
      * API method to fast & simple create multiple functions stubs.
      *
-     * It does not allow to add expectations.
+     * It does not allow adding expectations.
      *
      * The function name to create stub for can be passed as array key or as array value (with no
      * key).
@@ -88,7 +97,8 @@ namespace Brain\Monkey\Functions {
      *
      *
      * @param array $functions
-     * @param mixed|null $defaultReturn
+     * @param mixed $defaultReturn
+     * @return void
      */
     function stubs(array $functions, $defaultReturn = null)
     {
@@ -97,12 +107,14 @@ namespace Brain\Monkey\Functions {
                 ? [$value, $defaultReturn]
                 : [$key, $value];
 
+            assert(is_string($functionName));
+
             if (is_callable($returnValue)) {
                 when($functionName)->alias($returnValue);
                 continue;
             }
 
-            $returnValue === null
+            ($returnValue === null)
                 ? when($functionName)->returnArg()
                 : when($functionName)->justReturn($returnValue);
         }
@@ -115,7 +127,7 @@ namespace Brain\Monkey\Functions {
      * Mockery methods.
      *
      * @param string $functionName
-     * @return \Brain\Monkey\Expectation\Expectation
+     * @return Expectation
      */
     function expect($functionName)
     {
@@ -136,21 +148,28 @@ namespace Brain\Monkey\Functions {
     /**
      * Stub translation functions.
      *
+     * @return void
+     *
      * @see EscapeHelper
      */
     function stubTranslationFunctions()
     {
+        static $nCb;
+        /**
+         * @psalm-suppress MissingClosureParamType
+         * @psalm-suppress MissingClosureReturnType
+         */
+        $nCb or $nCb = static function ($single, $plural, $number) {
+            return ($number === 1) ? $single : $plural;
+        };
+
         stubs(
             [
                 '__',
                 '_x',
                 'translate',
-                '_n' => static function ($single, $plural, $number) {
-                    return ($number === 1) ? $single : $plural;
-                },
-                '_nx' => static function ($single, $plural, $number) {
-                    return ($number === 1) ? $single : $plural;
-                },
+                '_n' => $nCb,
+                '_nx' => $nCb,
                 'esc_html__' => [EscapeHelper::class, 'esc'],
                 'esc_html_x' => [EscapeHelper::class, 'esc'],
                 'esc_attr__' => [EscapeHelper::class, 'esc'],
@@ -166,6 +185,8 @@ namespace Brain\Monkey\Functions {
 
     /**
      * Stub escape functions with default behavior.
+     *
+     * @return void
      *
      * @see EscapeHelper
      */
@@ -190,6 +211,7 @@ namespace Brain\Monkey\Actions {
 
     use Brain\Monkey\Container;
     use Brain\Monkey\Hook;
+    use Brain\Monkey\Expectation;
 
     /**
      * API entry-point for added action expectations.
@@ -198,13 +220,13 @@ namespace Brain\Monkey\Actions {
      * the expectations, using Mockery methods.
      *
      * @param string $action
-     * @return \Brain\Monkey\Expectation\Expectation
+     * @return Expectation\Expectation
      */
     function expectAdded($action)
     {
-        return Container::instance()
-            ->expectationFactory()
-            ->forActionAdded($action);
+        assert(is_string($action));
+
+        return Container::instance()->expectationFactory()->forActionAdded($action);
     }
 
     /**
@@ -214,13 +236,13 @@ namespace Brain\Monkey\Actions {
      * the expectations, using Mockery methods.
      *
      * @param string $action
-     * @return \Brain\Monkey\Expectation\Expectation
+     * @return Expectation\Expectation
      */
     function expectDone($action)
     {
-        return Container::instance()
-            ->expectationFactory()
-            ->forActionDone($action);
+        assert(is_string($action));
+
+        return Container::instance()->expectationFactory()->forActionDone($action);
     }
 
     /**
@@ -229,11 +251,13 @@ namespace Brain\Monkey\Actions {
      * Brain Monkey version of `has_action` will alias here.
      *
      * @param string $action
-     * @param null $callback
-     * @return bool
+     * @param callable|null $callback
+     * @return bool|int
      */
     function has($action, $callback = null)
     {
+        assert(is_string($action));
+
         $type = Hook\HookStorage::ACTIONS;
         $hookStorage = Container::instance()->hookStorage();
 
@@ -254,9 +278,9 @@ namespace Brain\Monkey\Actions {
      */
     function did($action)
     {
-        return Container::instance()
-            ->hookStorage()
-            ->isHookDone(Hook\HookStorage::ACTIONS, $action);
+        assert(is_string($action));
+
+        return Container::instance()->hookStorage()->isHookDone(Hook\HookStorage::ACTIONS, $action);
     }
 
     /**
@@ -264,14 +288,14 @@ namespace Brain\Monkey\Actions {
      *
      * Brain Monkey version of `doing_action` will alias here.
      *
-     * @param string $action
+     * @param string|null $action
      * @return bool
      */
     function doing($action)
     {
-        return Container::instance()
-            ->hookRunningStack()
-            ->has($action);
+        assert(($action === null) || is_string($action));
+
+        return Container::instance()->hookRunningStack()->has($action);
     }
 
     /**
@@ -281,19 +305,20 @@ namespace Brain\Monkey\Actions {
      * the expectations, using Mockery methods.
      *
      * @param string $action
-     * @return \Brain\Monkey\Expectation\Expectation
+     * @return Expectation\Expectation
      */
     function expectRemoved($action)
     {
-        return Container::instance()
-            ->expectationFactory()
-            ->forActionRemoved($action);
+        assert(is_string($action));
+
+        return Container::instance()->expectationFactory()->forActionRemoved($action);
     }
 }
 
 namespace Brain\Monkey\Filters {
 
     use Brain\Monkey\Container;
+    use Brain\Monkey\Expectation;
     use Brain\Monkey\Hook;
 
     /**
@@ -303,13 +328,13 @@ namespace Brain\Monkey\Filters {
      * the expectations, using Mockery methods.
      *
      * @param string $filter
-     * @return \Brain\Monkey\Expectation\Expectation
+     * @return Expectation\Expectation
      */
     function expectAdded($filter)
     {
-        return Container::instance()
-            ->expectationFactory()
-            ->forFilterAdded($filter);
+        assert(is_string($filter));
+
+        return Container::instance()->expectationFactory()->forFilterAdded($filter);
     }
 
     /**
@@ -319,13 +344,13 @@ namespace Brain\Monkey\Filters {
      * the expectations, using Mockery methods.
      *
      * @param string $filter
-     * @return \Brain\Monkey\Expectation\Expectation
+     * @return Expectation\Expectation
      */
     function expectApplied($filter)
     {
-        return Container::instance()
-            ->expectationFactory()
-            ->forFilterApplied($filter);
+        assert(is_string($filter));
+
+        return Container::instance()->expectationFactory()->forFilterApplied($filter);
     }
 
     /**
@@ -334,13 +359,15 @@ namespace Brain\Monkey\Filters {
      * Brain Monkey version of `has_filter` will alias here.
      *
      * @param string $filter
-     * @param null $callback
-     * @return bool|int If callback is omitted, returns boolean for whether the hook has anything
-     *     registered. When checking a specific callback, the priority of that hook is returned, or
-     *     false if the callback is not attached.
+     * @param callable|null $callback
+     * @return false|int|bool If callback is omitted, returns boolean for whether the hook has
+     *                        anything registered. When checking a specific callback, the priority
+     *                        of that hook is returned, or false if the callback is not attached.
      */
     function has($filter, $callback = null)
     {
+        assert(is_string($filter));
+
         $type = Hook\HookStorage::FILTERS;
         $hookStorage = Container::instance()->hookStorage();
 
@@ -354,16 +381,16 @@ namespace Brain\Monkey\Filters {
     /**
      * Utility method to check if given filter as been applied.
      *
-     * There's no WordPress function counter part for it.
+     * There's no WordPress function counterpart for it.
      *
      * @param string $filter
      * @return int
      */
     function applied($filter)
     {
-        return Container::instance()
-            ->hookStorage()
-            ->isHookDone(Hook\HookStorage::FILTERS, $filter);
+        assert(is_string($filter));
+
+        return Container::instance()->hookStorage()->isHookDone(Hook\HookStorage::FILTERS, $filter);
     }
 
     /**
@@ -371,14 +398,14 @@ namespace Brain\Monkey\Filters {
      *
      * Brain Monkey version of `doing_filter` will alias here.
      *
-     * @param string $filter
+     * @param string|null $filter
      * @return bool
      */
     function doing($filter)
     {
-        return Container::instance()
-            ->hookRunningStack()
-            ->has($filter);
+        assert(($filter === null) || is_string($filter));
+
+        return Container::instance()->hookRunningStack()->has($filter);
     }
 
     /**
@@ -388,12 +415,12 @@ namespace Brain\Monkey\Filters {
      * the expectations, using Mockery methods.
      *
      * @param string $filter
-     * @return \Brain\Monkey\Expectation\Expectation
+     * @return Expectation\Expectation
      */
     function expectRemoved($filter)
     {
-        return Container::instance()
-            ->expectationFactory()
-            ->forFilterRemoved($filter);
+        assert(is_string($filter));
+
+        return Container::instance()->expectationFactory()->forFilterRemoved($filter);
     }
 }

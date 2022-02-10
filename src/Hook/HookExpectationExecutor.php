@@ -25,18 +25,18 @@ use Brain\Monkey\Expectation\ExpectationFactory;
 class HookExpectationExecutor
 {
     /**
-     * @var \Brain\Monkey\Hook\HookRunningStack
+     * @var HookRunningStack
      */
     private $stack;
 
     /**
-     * @var \Brain\Monkey\Expectation\ExpectationFactory
+     * @var ExpectationFactory
      */
     private $factory;
 
     /**
-     * @param \Brain\Monkey\Hook\HookRunningStack $stack
-     * @param \Brain\Monkey\Expectation\ExpectationFactory $factory
+     * @param HookRunningStack $stack
+     * @param ExpectationFactory $factory
      */
     public function __construct(HookRunningStack $stack, ExpectationFactory $factory)
     {
@@ -47,6 +47,7 @@ class HookExpectationExecutor
     /**
      * @param string $action
      * @param array $args
+     * @return void
      */
     public function executeAddAction($action, array $args)
     {
@@ -56,6 +57,7 @@ class HookExpectationExecutor
     /**
      * @param string $action
      * @param array $args
+     * @return void
      */
     public function executeAddFilter($action, array $args)
     {
@@ -65,6 +67,7 @@ class HookExpectationExecutor
     /**
      * @param string $action
      * @param array $args
+     * @return void
      */
     public function executeDoAction($action, array $args = [])
     {
@@ -77,7 +80,7 @@ class HookExpectationExecutor
     /**
      * @param string $filter
      * @param array $args
-     * @return mixed|null
+     * @return mixed
      */
     public function executeApplyFilters($filter, array $args)
     {

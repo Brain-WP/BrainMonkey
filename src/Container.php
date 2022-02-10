@@ -23,13 +23,11 @@ final class Container
     private static $instance;
 
     /**
-     * @var array
+     * @var array<string, object>
      */
     private $services = [];
 
     /**
-     * Static instance lookup.
-     *
      * @return Container
      */
     public static function instance()
@@ -43,46 +41,71 @@ final class Container
     }
 
     /**
-     * @return \Brain\Monkey\Expectation\ExpectationFactory
+     * @return Expectation\ExpectationFactory
      */
     public function expectationFactory()
     {
-        return $this->service(__FUNCTION__, new Expectation\ExpectationFactory());
+        return $this->service(
+            __FUNCTION__,
+            static function () {
+                return new Expectation\ExpectationFactory();
+            }
+        );
     }
 
     /**
-     * @return \Brain\Monkey\Hook\HookRunningStack
+     * @return Hook\HookRunningStack
      */
     public function hookRunningStack()
     {
-        return $this->service(__FUNCTION__, new Hook\HookRunningStack());
+        return $this->service(
+            __FUNCTION__,
+            static function () {
+                return new Hook\HookRunningStack();
+            }
+        );
     }
 
     /**
-     * @return \Brain\Monkey\Hook\HookStorage
+     * @return Hook\HookStorage
      */
     public function hookStorage()
     {
-        return $this->service(__FUNCTION__, new Hook\HookStorage());
+        return $this->service(
+            __FUNCTION__,
+            static function () {
+                return new Hook\HookStorage();
+            }
+        );
     }
 
     /**
-     * @return \Brain\Monkey\Hook\HookExpectationExecutor
+     * @return Hook\HookExpectationExecutor
      */
     public function hookExpectationExecutor()
     {
-        return $this->service(__FUNCTION__, new Hook\HookExpectationExecutor(
-            $this->hookRunningStack(),
-            $this->expectationFactory()
-        ));
+        return $this->service(
+            __FUNCTION__,
+            static function (Container $container) {
+                $stack = $container->hookRunningStack();
+                $factory = $container->expectationFactory();
+
+                return new Hook\HookExpectationExecutor($stack, $factory);
+            }
+        );
     }
 
     /**
-     * @return \Brain\Monkey\Expectation\FunctionStubFactory
+     * @return Expectation\FunctionStubFactory
      */
     public function functionStubFactory()
     {
-        return $this->service(__FUNCTION__, new Expectation\FunctionStubFactory());
+        return $this->service(
+            __FUNCTION__,
+            static function () {
+                return new Expectation\FunctionStubFactory();
+            }
+        );
     }
 
     /**
@@ -97,16 +120,21 @@ final class Container
     }
 
     /**
+     * @template T of object
+     *
      * @param string $id
-     * @param mixed $service
-     * @return mixed
+     * @param callable(Container):T $serviceFactory
+     * @return T
      */
-    private function service($id, $service)
+    private function service($id, callable $serviceFactory)
     {
         if (!array_key_exists($id, $this->services)) {
-            $this->services[$id] = $service;
+            $this->services[$id] = $serviceFactory($this);
         }
 
-        return $this->services[$id];
+        /** @var T $service */
+        $service = $this->services[$id];
+
+        return $service;
     }
 }

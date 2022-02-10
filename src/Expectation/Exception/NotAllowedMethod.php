@@ -30,11 +30,11 @@ class NotAllowedMethod extends Exception
      */
     public static function forMethod($methodName)
     {
+        assert(is_string($methodName));
+
+        /** @psalm-suppress UnsafeInstantiation */
         return new static(
-            sprintf(
-                '%s method is not allowed for Brain Monkey expectation.',
-                $methodName
-            ),
+            "{$methodName} method is not allowed for Brain Monkey expectation.",
             self::CODE_METHOD
         );
     }
@@ -44,6 +44,7 @@ class NotAllowedMethod extends Exception
      */
     public static function forByDefault()
     {
+        /** @psalm-suppress UnsafeInstantiation */
         return new static(
             'byDefault method is not allowed for Brain Monkey hook expectation.',
             self::CODE_BY_DEFAULT
@@ -56,6 +57,9 @@ class NotAllowedMethod extends Exception
      */
     public static function forReturningMethod($methodName)
     {
+        assert(is_string($methodName));
+
+        /** @psalm-suppress UnsafeInstantiation */
         return new static(
             sprintf(
                 'Bad usage of "%s" method: returning expectation can only be used for functions '
@@ -66,6 +70,10 @@ class NotAllowedMethod extends Exception
         );
     }
 
+    /**
+     * @param ExpectationTarget $target
+     * @return static
+     */
     public static function forWhenHappen(ExpectationTarget $target)
     {
         $type = '';
@@ -79,6 +87,7 @@ class NotAllowedMethod extends Exception
                 break;
         }
 
+        /** @psalm-suppress UnsafeInstantiation */
         return new static(
             "Can't use `whenHappen()` for {$type} expectations: use `andReturnUsing()` instead.",
             self::CODE_WHEN_HAPPEN

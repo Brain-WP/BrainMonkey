@@ -23,6 +23,9 @@ class MissedPatchworkReplace extends Exception
      */
     public static function forFunction($functionName)
     {
+        assert(is_string($functionName));
+
+        /** @psalm-suppress UnsafeInstantiation */
         return new static(
             "Patchwork was not able to replace '{$functionName}', try to load Patchwork earlier."
         );

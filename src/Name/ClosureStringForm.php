@@ -46,14 +46,18 @@ final class ClosureStringForm
         $normalized = $static ? 'static function (' : 'function (';
 
         if (!$rawParams) {
-            return "{$normalized})";
+            return $normalized . ')';
         }
 
         $variadic = false;
-        $params = explode(',', $rawParams);
 
+        /** @var string $normalized */
         $normalized = array_reduce(
-            $params,
+            explode(',', $rawParams),
+            /**
+             * @param string $normalized
+             * @param string $paramName
+             */
             static function ($normalized, $paramName) use (&$variadic) {
 
                 $param = ClosureParamStringForm::fromString($paramName);
@@ -65,7 +69,7 @@ final class ClosureStringForm
 
                 $isVariadic and $variadic = true;
 
-                return $normalized . (string)$param . ', ';
+                return $normalized . $param->__toString() . ', ';
             },
             $normalized
         );
@@ -90,7 +94,7 @@ final class ClosureStringForm
     }
 
     /**
-     * @param \Brain\Monkey\Name\ClosureStringForm $name
+     * @param ClosureStringForm $name
      * @return bool
      */
     public function equals(ClosureStringForm $name)
@@ -111,7 +115,8 @@ final class ClosureStringForm
 
         // Quite hackish, but it seems there's no better way to get if a closure is static
         $bind = @\Closure::bind($closure, new \stdClass); // phpcs:ignore
-        $static = ($bind === null) || (new \ReflectionFunction($bind))->getClosureThis() === null;
+        /** @psalm-suppress TypeDoesNotContainNull */
+        $static = ($bind === null) || ((new \ReflectionFunction($bind))->getClosureThis() === null);
 
         $arguments = array_map('strval', array_map(
             [ClosureParamStringForm::class, 'fromReflectionParameter'],

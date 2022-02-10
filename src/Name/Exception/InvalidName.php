@@ -22,30 +22,30 @@ class InvalidName extends Exception
     const CODE_FOR_METHOD = 3;
 
     /**
-     * @param string $function
-     * @return \Brain\Monkey\Name\Exception\InvalidName
+     * @param mixed $function
+     * @return static
      */
     public static function forFunction($function)
     {
-        return self::createFor($function, self::CODE_FOR_FUNCTION);
+        return static::createFor($function, self::CODE_FOR_FUNCTION);
     }
 
     /**
-     * @param string $class
-     * @return \Brain\Monkey\Name\Exception\InvalidName
+     * @param mixed $class
+     * @return static
      */
     public static function forClass($class)
     {
-        return self::createFor($class, self::CODE_FOR_CLASS);
+        return static::createFor($class, self::CODE_FOR_CLASS);
     }
 
     /**
-     * @param string $function
-     * @return \Brain\Monkey\Name\Exception\InvalidName
+     * @param mixed $method
+     * @return static
      */
-    public static function forMethod($function)
+    public static function forMethod($method)
     {
-        return self::createFor($function, self::CODE_FOR_METHOD);
+        return static::createFor($method, self::CODE_FOR_METHOD);
     }
 
     /**
@@ -78,6 +78,8 @@ class InvalidName extends Exception
             default:
                 $name = 'A variable of type ' . gettype($thing);
         }
+
+        /** @psalm-suppress UnsafeInstantiation */
 
         return new static(sprintf('%s is not a valid %s name.', $name, $type), $code);
     }

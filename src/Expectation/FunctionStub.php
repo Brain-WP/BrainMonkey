@@ -12,6 +12,7 @@
 namespace Brain\Monkey\Expectation;
 
 use Brain\Monkey\Name\FunctionName;
+use Patchwork;
 
 /**
  * @package Brain\Monkey
@@ -20,7 +21,7 @@ use Brain\Monkey\Name\FunctionName;
 class FunctionStub
 {
     /**
-     * @var \Brain\Monkey\Name\FunctionName
+     * @var FunctionName
      */
     private $functionName;
 
@@ -62,11 +63,12 @@ PHP;
      * Redefine target function replacing it on the fly with a given callable.
      *
      * @param callable $callback
+     * @return void
      */
     public function alias(callable $callback)
     {
         $fqn = $this->functionName->fullyQualifiedName();
-        \Patchwork\redefine($fqn, $callback);
+        Patchwork\redefine($fqn, $callback);
         $this->assertRedefined($fqn);
     }
 
@@ -74,7 +76,7 @@ PHP;
      * Redefine target function replacing it with a function that execute Brain Monkey expectation
      * target method on the mock associated with given Brain Monkey expectation.
      *
-     * @param \Brain\Monkey\Expectation\Expectation $expectation
+     * @param Expectation $expectation
      * @return void
      */
     public function redefineUsingExpectation(Expectation $expectation)
@@ -82,6 +84,10 @@ PHP;
         $fqn = $this->functionName->fullyQualifiedName();
 
         $this->alias(
+            /**
+             * @param mixed ...$args
+             * @return mixed
+             */
             static function (...$args) use ($expectation, $fqn) {
                 $mock = $expectation->mockeryExpectation()->getMock();
                 $target = new ExpectationTarget(ExpectationTarget::TYPE_FUNCTION, $fqn);
@@ -95,12 +101,13 @@ PHP;
      * Redefine target function making it return an arbitrary value.
      *
      * @param mixed $return
+     * @return void
      */
     public function justReturn($return = null)
     {
         $fqn = ltrim($this->functionName->fullyQualifiedName(), '\\');
 
-        \Patchwork\redefine(
+        Patchwork\redefine(
             $fqn,
             static function () use ($return) {
                 return $return;
@@ -114,6 +121,7 @@ PHP;
      * Redefine target function making it echo an arbitrary value.
      *
      * @param mixed $value
+     * @return void
      */
     public function justEcho($value = null)
     {
@@ -122,10 +130,10 @@ PHP;
 
         $this->assertPrintable($value, 'provided to justEcho');
 
-        \Patchwork\redefine(
+        Patchwork\redefine(
             $fqn,
             static function () use ($value) {
-                echo $value;
+                printf('%s', (string)$value);
             }
         );
 
@@ -138,6 +146,7 @@ PHP;
      * argument.
      *
      * @param int $argNum The position (1-based) of the argument to return
+     * @return void
      */
     public function returnArg($argNum = 1)
     {
@@ -145,8 +154,12 @@ PHP;
 
         $fqn = $this->functionName->fullyQualifiedName();
 
-        \Patchwork\redefine(
+        Patchwork\redefine(
             $fqn,
+            /**
+             * @param mixed ...$args
+             * @return mixed
+             */
             static function (...$args) use ($fqn, $argNum) {
                 if (!array_key_exists($argNum - 1, $args)) {
                     $count = count($args);
@@ -167,6 +180,7 @@ PHP;
      * Redefined function will throw an exception if the function does not receive desired argument.
      *
      * @param int $argNum The position (1-based) of the argument to echo
+     * @return void
      */
     public function echoArg($argNum = 1)
     {
@@ -174,8 +188,9 @@ PHP;
 
         $fqn = $this->functionName->fullyQualifiedName();
 
-        \Patchwork\redefine(
+        Patchwork\redefine(
             $fqn,
+            /** @param mixed ...$args */
             function (...$args) use ($fqn, $argNum) {
                 if (!array_key_exists($argNum - 1, $args)) {
                     $count = count($args);
@@ -189,7 +204,7 @@ PHP;
 
                 $this->assertPrintable($arg, "passed as argument {$argNum} to {$fqn}");
 
-                echo (string)$arg;
+                printf('%s', (string)$arg);
             }
         );
 
@@ -200,6 +215,8 @@ PHP;
      * @param mixed $argNum
      * @param string $method
      * @return int
+     *
+     * @psalm-assert positive-int $argNum
      */
     private function assertValidArgNum($argNum, $method)
     {
@@ -218,17 +235,21 @@ PHP;
 
     /**
      * @param string $functionName
+     * @return void
      */
     private function assertRedefined($functionName)
     {
-        if (\Patchwork\hasMissed($functionName)) {
+        if (Patchwork\hasMissed($functionName)) {
             throw Exception\MissedPatchworkReplace::forFunction($functionName);
         }
     }
 
     /**
-     * @param        $value
+     * @param mixed $value
      * @param string $coming
+     * @return void
+     *
+     * @psalm-assert scalar|\Stringable $value
      */
     private function assertPrintable($value, $coming = '')
     {

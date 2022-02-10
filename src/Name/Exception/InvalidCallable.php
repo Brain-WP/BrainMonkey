@@ -19,7 +19,7 @@ class InvalidCallable extends Exception
 {
     /**
      * @param mixed $callback
-     * @return \Brain\Monkey\Name\Exception\InvalidCallable|\Brain\Monkey\Name\Exception\NotInvokableObjectAsCallback
+     * @return InvalidCallable|NotInvokableObjectAsCallback
      */
     public static function forCallable($callback)
     {
@@ -27,6 +27,7 @@ class InvalidCallable extends Exception
             return new NotInvokableObjectAsCallback();
         }
 
+        /** @psalm-suppress UnsafeInstantiation */
         return new static(
             sprintf(
                 'Given %s "%s" is not a valid PHP callable.',

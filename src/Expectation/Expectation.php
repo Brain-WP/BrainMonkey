@@ -11,7 +11,7 @@
 
 namespace Brain\Monkey\Expectation;
 
-use Mockery\ExpectationInterface;
+use Mockery;
 
 /**
  * A wrap around Mockery expectation.
@@ -38,7 +38,7 @@ use Mockery\ExpectationInterface;
  * @method Expectation andReturn(...$args)
  * @method Expectation andReturnNull()
  * @method Expectation andReturnValues(...$args)
- * @method Expectation andReturnUsing(callable ...$args)
+ * @method Expectation andReturnUsing(callable $args)
  * @method Expectation andThrow(\Throwable $throwable)
  */
 class Expectation
@@ -73,12 +73,12 @@ class Expectation
     ];
 
     /**
-     * @var \Mockery\Expectation|\Mockery\ExpectationInterface
+     * @var Mockery\ExpectationInterface
      */
     private $expectation;
 
     /**
-     * @var \Brain\Monkey\Expectation\ExpectationTarget
+     * @var ExpectationTarget
      */
     private $target;
 
@@ -93,12 +93,12 @@ class Expectation
     private $returnExpectations;
 
     /**
-     * @param \Mockery\ExpectationInterface $expectation
-     * @param \Brain\Monkey\Expectation\ExpectationTarget $target
+     * @param Mockery\Expectation $expectation
+     * @param ExpectationTarget $target
      * @param \ArrayAccess $returnExpectations
      */
     public function __construct(
-        ExpectationInterface $expectation,
+        Mockery\ExpectationInterface $expectation,
         ExpectationTarget $target,
         \ArrayAccess $returnExpectations = null
     ) {
@@ -164,7 +164,7 @@ class Expectation
     }
 
     /**
-     * @return \Mockery\Expectation|\Mockery\ExpectationInterface
+     * @return Mockery\ExpectationInterface
      */
     public function mockeryExpectation()
     {
@@ -172,9 +172,8 @@ class Expectation
     }
 
     /**
-     * Mockery expectation allow chaining different expectations with by chaining `getMock()`
-     * method.
-     * Since `getMock()` is disabled for Brain Monkey expectation this methods provides a way to
+     * Mockery expectations allow chaining different expectations by chaining `getMock()` method.
+     * Since `getMock()` is disabled for Brain Monkey expectations, this method provides a way to
      * chain expectations.
      *
      * @return static
@@ -182,7 +181,9 @@ class Expectation
     public function andAlsoExpectIt()
     {
         $method = $this->target->mockMethodName();
-        $this->expectation = $this->expectation->getMock()->shouldReceive($method);
+        /** @var Mockery\ExpectationInterface $expectation */
+        $expectation = $this->expectation->getMock()->shouldReceive($method);
+        $this->expectation = $expectation;
 
         return $this;
     }
@@ -199,7 +200,9 @@ class Expectation
             throw Exception\ExpectationArgsRequired::forExpectationType($this->target);
         }
 
-        $this->expectation = $this->expectation->withNoArgs();
+        /** @var Mockery\Expectation $expectation */
+        $expectation = $this->expectation;
+        $this->expectation = $expectation->withNoArgs();
 
         return $this;
     }
@@ -228,14 +231,15 @@ class Expectation
             $args[] = 10;
         }
 
-        $this->expectation = $this->expectation->with(...$args);
+        /** @var Mockery\Expectation $expectation */
+        $expectation = $this->expectation;
+        $this->expectation = $expectation->with(...$args);
 
         return $this;
     }
 
     /**
-     * Brain Monkey doesn't allow return expectation for actions (added/done) nor for added
-     * filters.
+     * Brain Monkey doesn't allow return expectation for actions (added/done) nor for added filters.
      * However, it is desirable to do something when the expected callback is used, this is the
      * reason to be of this method.
      *
@@ -245,9 +249,8 @@ class Expectation
      * });
      * ```
      *
-     * Snippet above will not change the return of `do_action('some_action', $some_arg)`
-     * like a normal return expectation would do, but allows to catch expected events with a
-     * callback.
+     * Snippet above will not change the return of `do_action('some_action', $some_arg)` like a
+     * normal return expectation would do, but allows catching expected events with a callback.
      *
      * For expectation types that allows return expectation (functions, applied filters) this method
      * becomes just an alias for Mockery `andReturnUsing()`.
@@ -260,8 +263,9 @@ class Expectation
         if (in_array($this->target->type(), self::RETURNING_EXPECTATION_TYPES, true)) {
             throw Exception\NotAllowedMethod::forWhenHappen($this->target);
         }
-
-        $this->expectation->andReturnUsing($callback);
+        /** @var Mockery\Expectation $expectation */
+        $expectation = $this->expectation;
+        $expectation->andReturnUsing($callback);
 
         return $this;
     }
@@ -275,7 +279,13 @@ class Expectation
             throw Exception\NotAllowedMethod::forReturningMethod('andReturnFirstParam');
         }
 
-        $this->expectation->andReturnUsing(
+        /** @var Mockery\Expectation $expectation */
+        $expectation = $this->expectation;
+        $expectation->andReturnUsing(
+            /**
+             * @param mixed $arg
+             * @return mixed
+             */
             static function ($arg = null) {
                 return $arg;
             }

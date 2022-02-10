@@ -20,16 +20,12 @@ use Brain\Monkey\Exception as BaseException;
 class Exception extends BaseException
 {
     /**
-     *
      * @param \Exception $exception
      * @return static
      */
     public static function becauseOf(\Exception $exception)
     {
-        return new static(
-            $exception->getMessage(),
-            $exception->getCode(),
-            $exception
-        );
+        /** @psalm-suppress UnsafeInstantiation */
+        return new static($exception->getMessage(), (int)$exception->getCode(), $exception);
     }
 }

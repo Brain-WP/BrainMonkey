@@ -23,17 +23,19 @@ class FunctionStubFactory
     const SCOPE_EXPECTATION = 'an expectation';
 
     /**
-     * @var array
+     * @var array<string, array{FunctionStub, string}>
      */
     private $storage = [];
 
     /**
-     * @param \Brain\Monkey\Name\FunctionName $name
+     * @param FunctionName $name
      * @param string $scope
-     * @return \Brain\Monkey\Expectation\FunctionStub
+     * @return FunctionStub
      */
     public function create(FunctionName $name, $scope)
     {
+        assert(is_string($scope));
+
         $storedType = $this->storedType($name);
 
         if (!$storedType) {
@@ -61,7 +63,7 @@ class FunctionStubFactory
     }
 
     /**
-     * @param \Brain\Monkey\Name\FunctionName $name
+     * @param FunctionName $name
      * @return bool
      */
     public function has(FunctionName $name)
@@ -78,7 +80,7 @@ class FunctionStubFactory
     }
 
     /**
-     * @param \Brain\Monkey\Name\FunctionName $name
+     * @param FunctionName $name
      * @return string
      */
     private function storedType(FunctionName $name)

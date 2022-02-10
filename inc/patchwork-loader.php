@@ -17,8 +17,10 @@ if (function_exists('Patchwork\redefine')) {
 }
 
 if (file_exists(dirname(dirname(dirname(__DIR__))) . "/antecedent/patchwork/Patchwork.php")) {
+    /** @psalm-suppress MissingFile */
     require_once dirname(dirname(dirname(__DIR__))) . "/antecedent/patchwork/Patchwork.php";
 } elseif (file_exists(dirname(__DIR__) . "/vendor/antecedent/patchwork/Patchwork.php")) {
+    /** @psalm-suppress MissingFile */
     require_once dirname(__DIR__) . "/vendor/antecedent/patchwork/Patchwork.php";
 }
 

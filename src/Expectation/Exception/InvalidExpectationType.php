@@ -23,11 +23,9 @@ class InvalidExpectationType extends Exception
      */
     public static function forType($type)
     {
-        return new static(
-            sprintf(
-                '%s method is not allowed for Brain Monkey expectation.',
-                $type
-            )
-        );
+        assert(is_string($type));
+
+        /** @psalm-suppress UnsafeInstantiation */
+        return new static("{$type} method is not allowed for Brain Monkey expectation.");
     }
 }

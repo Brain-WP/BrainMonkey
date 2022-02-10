@@ -40,10 +40,11 @@ class ClosureParamStringForm
 
     /**
      * @param string $param
-     * @return static
+     * @return ClosureParamStringForm
      */
     public static function fromString($param)
     {
+        assert(is_string($param));
         $param = trim($param);
 
         $variadic = substr_count($param, '...') === 1;
@@ -55,10 +56,11 @@ class ClosureParamStringForm
             throw InvalidClosureParam::forInvalidName($param);
         }
 
+        /** @var string $name */
         $name = array_pop($parts);
         $type = $parts ? ltrim(array_pop($parts), '\\') : '';
 
-        strpos($name, '$') === 0 and $name = substr($name, 1);
+        (strpos($name, '$') === 0) and $name = substr($name, 1) ?: '';
 
         if ($name && !preg_match(self::VALID_PARAM_PATTERN, $name)) {
             throw InvalidClosureParam::forInvalidName($name);
@@ -68,12 +70,12 @@ class ClosureParamStringForm
             throw InvalidClosureParam::forInvalidType($type, $name);
         }
 
-        return new static($name, $type, $variadic);
+        return new self($name, $type, $variadic);
     }
 
     /**
      * @param \ReflectionParameter $parameter
-     * @return static
+     * @return ClosureParamStringForm
      */
     public static function fromReflectionParameter(\ReflectionParameter $parameter)
     {
@@ -84,7 +86,7 @@ class ClosureParamStringForm
             preg_match(self::REFLECTION_PARAM_PATTERN, $parameter->__toString(), $matches);
             $type = empty($matches[1]) ? '' : $matches[1];
 
-            return new static($paramName, $type, $isVariadic);
+            return new self($paramName, $type, $isVariadic);
         }
 
         $type = '';
@@ -96,10 +98,10 @@ class ClosureParamStringForm
             }
 
             // In PHP 7.0 the ReflectionType::__toString() method will retrieve the type.
-            $type = ltrim($type, '\\');
+            $type = ltrim((string)$type, '\\');
         }
 
-        return new static($paramName, $type, $isVariadic);
+        return new self($paramName, $type, $isVariadic);
     }
 
     /**
@@ -119,7 +121,7 @@ class ClosureParamStringForm
     }
 
     /**
-     * @param \Brain\Monkey\Name\ClosureParamStringForm $param
+     * @param ClosureParamStringForm $param
      * @return bool
      */
     public function equals(ClosureParamStringForm $param)

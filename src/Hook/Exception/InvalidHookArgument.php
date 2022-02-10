@@ -25,6 +25,7 @@ class InvalidHookArgument extends Exception
      */
     public static function forInvalidType($type)
     {
+        /** @psalm-suppress UnsafeInstantiation */
         return new static(
             sprintf(
                 'HookStorage hook type must either HookStorage::ACTIONS or '
@@ -40,6 +41,7 @@ class InvalidHookArgument extends Exception
      */
     public static function forInvalidHook($type)
     {
+        /** @psalm-suppress UnsafeInstantiation */
         return new static(
             sprintf(
                 'Hook name must be in a string, got %s.',
@@ -55,19 +57,22 @@ class InvalidHookArgument extends Exception
      */
     public static function forEmptyArguments($key, $type)
     {
+        assert(is_string($key));
+        assert(is_string($type));
+
         $function = $missing = '';
 
         switch ($type) {
             case HookStorage::ACTIONS:
                 $missing = 'callback';
-                $function = $key === HookStorage::ADDED ? "'add_action'" : "'do_action'";
+                $function = ($key === HookStorage::ADDED) ? "'add_action'" : "'do_action'";
                 break;
             case HookStorage::FILTERS:
                 $missing = $key === HookStorage::ADDED ? 'callback' : 'first';
-                $function = $key === HookStorage::ADDED ? "'add_filter'" : "'apply_filters'";
+                $function = ($key === HookStorage::ADDED) ? "'add_filter'" : "'apply_filters'";
                 break;
         }
-
+        /** @psalm-suppress UnsafeInstantiation */
         return new static(
             sprintf(
                 'Missing %s required argument for %s.',

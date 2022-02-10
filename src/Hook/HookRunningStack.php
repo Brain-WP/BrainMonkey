@@ -23,7 +23,7 @@ namespace Brain\Monkey\Hook;
 final class HookRunningStack
 {
     /**
-     * @var array
+     * @var list<string>
      */
     private $stack = [];
 
@@ -33,6 +33,8 @@ final class HookRunningStack
      */
     public function push($hookName)
     {
+        assert(is_string($hookName));
+
         $this->stack[] = $hookName;
 
         return $this;
@@ -56,7 +58,10 @@ final class HookRunningStack
      */
     public function has($hookName = null)
     {
-        return $this->stack && (($hookName === null) || in_array($hookName, $this->stack, true));
+        $isNull = $hookName === null;
+        assert($isNull || is_string($hookName));
+
+        return $this->stack && ($isNull || in_array($hookName, $this->stack, true));
     }
 
     /**

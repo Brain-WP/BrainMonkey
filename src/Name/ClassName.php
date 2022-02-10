@@ -18,7 +18,7 @@ namespace Brain\Monkey\Name;
 final class ClassName
 {
     /**
-     * @var \Brain\Monkey\Name\FunctionName
+     * @var FunctionName
      */
     private $functionName;
 
@@ -59,7 +59,7 @@ final class ClassName
     }
 
     /**
-     * @param \Brain\Monkey\Name\ClassName $name
+     * @param ClassName $name
      * @return bool
      */
     public function equals(ClassName $name)

@@ -22,6 +22,12 @@ use Brain\Monkey\Name\CallbackStringForm;
  *
  * @package Brain\Monkey
  * @license http://opensource.org/licenses/MIT MIT
+ *
+ * @psalm-type hook-type = HookStorage::ACTIONS|HookStorage::FILTERS
+ * @psalm-type hook-name = string
+ * @psalm-type added-hook-args = array{CallbackStringForm, int, int}
+ * @psalm-type added-hooks = array<hook-type, array<hook-name, list<added-hook-args>>>
+ * @psalm-type done-hooks = array<hook-type, array<hook-name, list<array>>>
  */
 final class HookStorage
 {
@@ -30,6 +36,9 @@ final class HookStorage
     const ADDED = 'added';
     const DONE = 'done';
 
+    /**
+     * @var array<HookStorage::ADDED, added-hooks>|array<HookStorage::DONE, done-hooks>
+     */
     private $storage = [self::ADDED => [], self::DONE => []];
 
     /**
@@ -41,8 +50,8 @@ final class HookStorage
     }
 
     /**
-     * @param string $type
-     * @param string $hook
+     * @param hook-type $type
+     * @param hook-name $hook
      * @param array $args
      * @return static
      */
@@ -52,8 +61,8 @@ final class HookStorage
     }
 
     /**
-     * @param string $type
-     * @param string $hook
+     * @param hook-type $type
+     * @param hook-name $hook
      * @param array $args
      * @return bool
      */
@@ -71,14 +80,12 @@ final class HookStorage
 
         $args = $this->parseArgsToAdd($args, self::ADDED, $type);
 
+        /** @var list<added-hook-args> $all */
         $all = $this->storage[self::ADDED][$type][$hook];
         $removed = 0;
 
-        /**
-         * @var CallbackStringForm $callback
-         */
         foreach ($all as $key => list($callback, $priority)) {
-            if ($callback->equals($args[0]) && $priority === $args[1]) {
+            if ($callback->equals($args[0]) && ($priority === $args[1])) {
                 unset($all[$key]);
                 $removed++;
             }
@@ -93,8 +100,8 @@ final class HookStorage
     }
 
     /**
-     * @param string $type
-     * @param string $hook
+     * @param hook-type $type
+     * @param hook-name $hook
      * @param array $args
      * @return static
      */
@@ -104,44 +111,48 @@ final class HookStorage
     }
 
     /**
-     * @param string $type
-     * @param string $hook
+     * @param hook-type $type
+     * @param hook-name $hook
      * @param callable|null $function
      * @return bool
      */
     public function isHookAdded($type, $hook, $function = null)
     {
+        assert(is_string($hook));
+
         return $this->isInStorage(self::ADDED, $type, $hook, $function);
     }
 
     /**
-     * @param string $type
-     * @param string $hook
+     * @param hook-type $type
+     * @param hook-name $hook
      * @return int
      */
     public function isHookDone($type, $hook)
     {
+        assert(is_string($hook));
+
         return $this->isInStorage(self::DONE, $type, $hook);
     }
 
     /**
-     * @param $type
-     * @param $hook
-     * @param $function
+     * @param hook-type $type
+     * @param hook-name $hook
+     * @param callable $function
      * @return bool|int
      */
     public function hookPriority($type, $hook, $function)
     {
+        assert(is_string($type));
+        assert(is_string($hook));
+
         if (!isset($this->storage[self::ADDED][$type][$hook])) {
             return false;
         }
 
+        /** @var list<added-hook-args> $all */
         $all = $this->storage[self::ADDED][$type][$hook];
 
-        /**
-         * @var CallbackStringForm $callback
-         * @var int $priority
-         */
         foreach ($all as list($callback, $priority)) {
             if ($callback->equals(new CallbackStringForm($function))) {
                 return $priority;
@@ -152,78 +163,86 @@ final class HookStorage
     }
 
     /**
-     * @param string $key
-     * @param string $type
-     * @param string $hook
+     * @param HookStorage::ADDED|HookStorage::DONE $storageType
+     * @param hook-type $hookType
+     * @param hook-name $hook
      * @param array $args
      * @return static
      */
-    private function pushToStorage($key, $type, $hook, array $args)
+    private function pushToStorage($storageType, $hookType, $hook, array $args)
     {
-        if ($type !== self::ACTIONS && $type !== self::FILTERS) {
-            throw Exception\InvalidHookArgument::forInvalidType($type);
-        }
-
         if (!is_string($hook)) {
             throw Exception\InvalidHookArgument::forInvalidHook($hook);
         }
 
+        if (($hookType !== self::ACTIONS) && ($hookType !== self::FILTERS)) {
+            throw Exception\InvalidHookArgument::forInvalidType($hookType);
+        }
+
         // do_action() is the only of the target functions that doesn't require additional arguments
-        if (!$args && ($key !== self::DONE || $type !== self::ACTIONS)) {
-            throw Exception\InvalidHookArgument::forEmptyArguments($key, $type);
+        if (!$args && (($storageType !== self::DONE) || ($hookType !== self::ACTIONS))) {
+            throw Exception\InvalidHookArgument::forEmptyArguments($storageType, $hookType);
         }
 
-        $storage = &$this->storage[$key];
+        $storage = &$this->storage[$storageType];
 
-        array_key_exists($type, $storage) or $storage[$type] = [];
-        array_key_exists($hook, $storage[$type]) or $storage[$type][$hook] = [];
+        /** @psalm-suppress InvalidArrayOffset */
+        array_key_exists($hookType, $storage) or $storage[$hookType] = [];
+        array_key_exists($hook, $storage[$hookType]) or $storage[$hookType][$hook] = [];
 
-        if ($key === self::ADDED) {
-            $args = $this->parseArgsToAdd($args, $key, $type);
+        if ($storageType === self::ADDED) {
+            $args = $this->parseArgsToAdd($args, $storageType, $hookType);
         }
 
-        $storage[$type][$hook][] = $args;
+        $storage[$hookType][$hook][] = $args;
 
         return $this;
     }
 
     /**
-     * @param string $key
-     * @param string $type
-     * @param string $hook
+     * @param HookStorage::ADDED|HookStorage::DONE $storageType
+     * @param hook-type $type
+     * @param hook-name $hook
      * @param callable|null $function
-     * @return int|bool
+     * @return ($storageType is HookStorage::ADDED ? bool : int)
      */
-    private function isInStorage($key, $type, $hook, $function = null)
+    private function isInStorage($storageType, $type, $hook, $function = null)
     {
-        $storage = $this->storage[$key];
+        $storage = $this->storage[$storageType];
 
         if (!in_array($type, [self::ACTIONS, self::FILTERS], true)) {
             throw Exception\InvalidHookArgument::forInvalidType($type);
         }
 
         if (!array_key_exists($type, $storage) || !array_key_exists($hook, $storage[$type])) {
-            return $key === self::ADDED ? false : 0;
+            return ($storageType === self::ADDED) ? false : 0;
         }
 
         if ($function === null) {
-            return $key === self::ADDED ? true : count($storage[$type][$hook]);
+            return ($storageType === self::ADDED) ? true : count($storage[$type][$hook]);
         }
 
-        $filter = static function (array $args) use ($function) {
-            return $args[0]->equals(new CallbackStringForm($function));
-        };
+        /**
+         * If here, $function is not null, hence we are searching for an added hook, so we can
+         * assert $hookArgs is added hooks args.
+         *
+         * @var list<added-hook-args> $hookArgs
+         */
+        $hookArgs = $storage[$type][$hook];
+        foreach ($hookArgs as list($callable)) {
+            if ($callable->equals(new CallbackStringForm($function))) {
+                return true;
+            }
+        }
 
-        $matching = array_filter($storage[$type][$hook], $filter);
-
-        return $key === self::ADDED ? (bool)$matching : count($matching);
+        return false;
     }
 
     /**
      * @param array $args
-     * @param string $key
-     * @param string $type
-     * @return array
+     * @param HookStorage::ADDED|HookStorage::DONE $key
+     * @param hook-type $type
+     * @return added-hook-args
      */
     private function parseArgsToAdd(array $args, $key, $type)
     {
@@ -235,22 +254,23 @@ final class HookStorage
             throw Exception\InvalidAddedHookArgument::forWrongArgumentsCount($type);
         }
 
-        $args = array_replace([null, 10, 1], array_values($args));
-
-        if (!$args[0]) {
+        $args = array_values($args);
+        if (empty($args[0])) {
             throw Exception\InvalidAddedHookArgument::forMissingCallback($type);
         }
 
-        $args[0] = new CallbackStringForm($args[0]);
+        $callable = new CallbackStringForm($args[0]);
+        $priority = isset($args[1]) ? $args[1] : 10;
+        $acceptedArgs = isset($args[2]) ? $args[2] : 1;
 
-        if (!is_int($args[1])) {
+        if (!is_int($priority)) {
             throw Exception\InvalidAddedHookArgument::forInvalidPriority($type);
         }
 
-        if (!is_int($args[2])) {
+        if (!is_int($acceptedArgs)) {
             throw Exception\InvalidAddedHookArgument::forInvalidAcceptedArgs($type);
         }
 
-        return $args;
+        return [$callable, $priority, $acceptedArgs];
     }
 }

@@ -49,7 +49,7 @@ final class MethodName
     }
 
     /**
-     * @param \Brain\Monkey\Name\MethodName $name
+     * @param MethodName $name
      * @return bool
      */
     public function equals(MethodName $name)

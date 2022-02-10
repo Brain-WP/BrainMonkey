@@ -29,6 +29,8 @@ class EscapeHelper
      */
     public static function esc($text)
     {
+        assert(is_string($text));
+
         return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
     }
 
@@ -38,6 +40,8 @@ class EscapeHelper
      */
     public static function escAndEcho($text)
     {
+        assert(is_string($text));
+
         print static::esc($text);
     }
 
@@ -47,6 +51,8 @@ class EscapeHelper
      */
     public static function escUrlRaw($url)
     {
+        assert(is_string($url));
+
         if (!parse_url($url, PHP_URL_SCHEME)) {
             $url = "http://{$url}";
         }
@@ -69,11 +75,14 @@ class EscapeHelper
      */
     public static function escXml($text)
     {
+        assert(is_string($text));
+
+        // Undo existing entities.
         $text = html_entity_decode(
             $text,
             ENT_QUOTES | ENT_XML1 | ENT_XHTML,
             'UTF-8'
-        ); // Undo existing entities.
+        );
 
         $cdataRegex = '\<\!\[CDATA\[.*?\]\]\>';
 
