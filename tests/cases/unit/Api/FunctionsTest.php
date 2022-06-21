@@ -431,4 +431,19 @@ class FunctionsTest extends UnitTestCase
             ],
         ];
     }
+
+    public function testRestoreWorks()
+    {
+        Functions\when('file_exists')->alias(function ($file_path) {
+            return "File path is: {$file_path}.";
+        });
+
+        /** @noinspection PhpUndefinedFunctionInspection */
+        static::assertSame('File path is: test.php.', \file_exists('test.php'));
+
+        Functions\when('file_exists')->restore();
+
+        /** @noinspection PhpUndefinedFunctionInspection */
+        static::assertFalse(\file_exists('test.php'));
+    }
 }
