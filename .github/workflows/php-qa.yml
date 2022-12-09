@@ -46,8 +46,8 @@ jobs:
               uses: "ramsey/composer-install@v2"
               with:
                 dependency-versions: ${{ matrix.dependency-versions }}
-                # Bust the cache at least once a month - output format: YYYY-MM-DD.
-                custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
+                # Bust the cache at least once a month - output format: YYYY-MM.
+                custom-cache-suffix: $(date -u "+%Y-%m")
 
             - name: Install dependencies - ignore-platform-reqs
               if: ${{ matrix.php-versions == '8.2' }}
@@ -55,7 +55,7 @@ jobs:
               with:
                 dependency-versions: ${{ matrix.dependency-versions }}
                 composer-options: "--ignore-platform-reqs"
-                custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
+                custom-cache-suffix: $(date -u "+%Y-%m")
 
             - name: Check cross-version PHP compatibility
               if: ${{ matrix.php-versions == '7.4' && matrix.dependency-versions == 'highest' }} # results is same across versions, do it once
