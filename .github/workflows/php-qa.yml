@@ -17,14 +17,14 @@ jobs:
         strategy:
             fail-fast: true
             matrix:
-                php-versions: ['5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1']
+                php-versions: ['5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2']
                 dependency-versions: ['lowest', 'highest']
 
                 include:
-                - php-versions: '8.2'
+                - php-versions: '8.3'
                   dependency-versions: 'highest'
 
-        continue-on-error: ${{ matrix.php-versions == '8.2' }}
+        continue-on-error: ${{ matrix.php-versions == '8.3' }}
 
         steps:
             - uses: actions/checkout@v3
@@ -42,7 +42,7 @@ jobs:
               run: parallel-lint ./src/ ./tests/
 
             - name: Install dependencies - normal
-              if: ${{ matrix.php-versions != '8.2' }}
+              if: ${{ matrix.php-versions != '8.3' }}
               uses: "ramsey/composer-install@v2"
               with:
                 dependency-versions: ${{ matrix.dependency-versions }}
@@ -50,7 +50,7 @@ jobs:
                 custom-cache-suffix: $(date -u "+%Y-%m")
 
             - name: Install dependencies - ignore-platform-reqs
-              if: ${{ matrix.php-versions == '8.2' }}
+              if: ${{ matrix.php-versions == '8.3' }}
               uses: "ramsey/composer-install@v2"
               with:
                 dependency-versions: ${{ matrix.dependency-versions }}
