@@ -36,6 +36,7 @@ jobs:
                 ini-values: zend.assertions=1, error_reporting=-1, display_errors=On
                 coverage: ${{ ( matrix.php-versions == '7.4' && 'xdebug' ) || 'none' }}
                 tools: parallel-lint
+                fail-fast: true
 
             - name: Check syntax error in sources
               if: ${{ matrix.dependency-versions == 'highest' }}
