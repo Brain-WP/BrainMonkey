@@ -134,6 +134,9 @@ When called, it will create a stub for _all_ the following functions:
 * `esc_attr_x()` 
 * `esc_html_e()` 
 * `esc_attr_e()` 
+* `_n_noop()` \(since 2.7\)
+* `_nx_noop()` \(since 2.7\)
+* `translate_nooped_plural()` \(since 2.7\)
 
 The created stub will not attempt any translation, but will return \(or echo\) the first received argument.
 
