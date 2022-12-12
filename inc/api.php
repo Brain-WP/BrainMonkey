@@ -45,6 +45,7 @@ namespace Brain\Monkey\Functions {
     use Brain\Monkey\Container;
     use Brain\Monkey\Expectation\EscapeHelper;
     use Brain\Monkey\Expectation\FunctionStubFactory;
+    use Brain\Monkey\Expectation\UrlsHelper;
     use Brain\Monkey\Name\FunctionName;
 
     /**
@@ -181,6 +182,39 @@ namespace Brain\Monkey\Functions {
                 'esc_xml'      => [EscapeHelper::class, 'escXml'],
             ]
         );
+    }
+
+    /**
+     * Stub URL-related functions with default behavior.
+     */
+    function stubWpUrlFunctions($domain = 'example.org', $use_https = null)
+    {
+        $helper = new UrlsHelper($domain, $use_https);
+
+       stubs([
+            'home_url' => $helper->stubUrlCallback(),
+            'get_home_url' => $helper->stubUrlForSiteCallback(),
+            'site_url' => $helper->stubUrlCallback(),
+            'get_site_url' => $helper->stubUrlForSiteCallback(),
+            'admin_url' => $helper->stubUrlCallback('wp-admin', 'admin'),
+            'get_admin_url' => $helper->stubUrlForSiteCallback('wp-admin', 'admin'),
+            'content_url' => $helper->stubUrlCallback('wp-content', null, false),
+            'rest_url' => $helper->stubUrlCallback('wp-json'),
+            'get_rest_url' => $helper->stubUrlForSiteCallback('wp-json'),
+            'includes_url' => $helper->stubUrlCallback('wp-includes'),
+            'network_home_url' => $helper->stubUrlCallback(),
+            'network_site_url' => $helper->stubUrlCallback(),
+            'network_admin_url' => $helper->stubUrlCallback('wp-admin/network', 'admin'),
+            'user_admin_url' => $helper->stubUrlCallback('wp-admin/user', 'admin'),
+            'wp_login_url' => static function ($redirect = '', $force_reauth = false) use ($helper) {
+                $callback = $helper->stubUrlCallback();
+                $url = $callback('/wp-login.php', 'login');
+                $has_redirect = ($redirect !== '') && is_string($redirect);
+                $has_redirect and $url .= '?redirect_to=' . urlencode($redirect);
+                $force_reauth and $url .= ($has_redirect ? '&reauth=1' : '?reauth=1');
+                return $url;
+            },
+        ]);
     }
 }
 

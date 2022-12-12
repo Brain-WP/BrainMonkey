@@ -431,4 +431,64 @@ class FunctionsTest extends UnitTestCase
             ],
         ];
     }
+
+    public function testStubWpUrlFunctionsWithDefaults()
+    {
+        Functions\stubWpUrlFunctions();
+
+        static::assertSame('https://example.org', home_url());
+        static::assertSame('https://example.org/', home_url('/'));
+        static::assertSame('https://example.org/', get_home_url(1, '/'));
+        static::assertSame('https://example.org/', site_url('/'));
+        static::assertSame('https://example.org/', get_site_url(2, '/'));
+        static::assertSame('https://example.org/wp-admin/post-new.php', admin_url('/post-new.php'));
+        static::assertSame('https://example.org/wp-admin/post-new.php', admin_url('post-new.php'));
+        static::assertSame('/wp-admin/post-new.php', admin_url('/post-new.php', 'relative'));
+        static::assertSame('https://example.org/wp-admin/', get_admin_url(1, '/'));
+        static::assertSame('https://example.org/wp-content/plugins/foo/img.jpg', content_url('/plugins/foo/img.jpg'));
+        static::assertSame('https://example.org/wp-json', rest_url());
+        static::assertSame('https://example.org/wp-json/wp/', get_rest_url(1, '/wp/'));
+        static::assertSame('https://example.org/wp-includes', includes_url());
+        static::assertSame('https://example.org', network_home_url());
+        static::assertSame('https://example.org', network_site_url());
+        static::assertSame('https://example.org/wp-admin/network', network_admin_url());
+        static::assertSame('https://example.org/wp-admin/user/', user_admin_url('/'));
+    }
+
+    public function testStubWpUrlFunctionsWithSettings()
+    {
+        Functions\stubWpUrlFunctions('wikipedia.org', false);
+
+        static::assertSame('http://wikipedia.org', home_url());
+        static::assertSame('http://wikipedia.org/wp-admin/post-new.php', admin_url('/post-new.php'));
+    }
+
+    public function testStubWpUrlViaIsSslFunctions()
+    {
+        Functions\when('is_ssl')->justReturn(false);
+        Functions\when('force_ssl_admin')->justReturn(true);
+        Functions\stubWpUrlFunctions();
+
+        static::assertSame('http://example.org', home_url());
+        static::assertSame('https://example.org/wp-admin/', admin_url('/'));
+        static::assertSame('https://example.org/wp-admin/network', network_admin_url());
+        static::assertSame('https://example.org/wp-login.php', wp_login_url());
+    }
+
+    public function testStubWpLoginUrl()
+    {
+        Functions\stubWpUrlFunctions();
+        Functions\when('is_ssl')->justReturn(true);
+
+        static::assertSame('https://example.org/wp-login.php', wp_login_url());
+        static::assertSame('https://example.org/wp-login.php?reauth=1', wp_login_url('', true));
+        static::assertSame(
+            'https://example.org/wp-login.php?redirect_to=https%3A%2F%2Fexample.org',
+            wp_login_url('https://example.org')
+        );
+        static::assertSame(
+            'https://example.org/wp-login.php?redirect_to=https%3A%2F%2Fexample.org&reauth=1',
+            wp_login_url('https://example.org', true)
+        );
+    }
 }
