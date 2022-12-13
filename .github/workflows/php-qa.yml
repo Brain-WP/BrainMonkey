@@ -17,14 +17,14 @@ jobs:
         strategy:
             fail-fast: true
             matrix:
-                php-versions: ['5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1']
+                php-versions: ['5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2']
                 dependency-versions: ['lowest', 'highest']
 
                 include:
-                - php-versions: '8.2'
+                - php-versions: '8.3'
                   dependency-versions: 'highest'
 
-        continue-on-error: ${{ matrix.php-versions == '8.2' }}
+        continue-on-error: ${{ matrix.php-versions == '8.3' }}
 
         steps:
             - uses: actions/checkout@v3
@@ -36,26 +36,27 @@ jobs:
                 ini-values: zend.assertions=1, error_reporting=-1, display_errors=On
                 coverage: ${{ ( matrix.php-versions == '7.4' && 'xdebug' ) || 'none' }}
                 tools: parallel-lint
+                fail-fast: true
 
             - name: Check syntax error in sources
               if: ${{ matrix.dependency-versions == 'highest' }}
               run: parallel-lint ./src/ ./tests/
 
             - name: Install dependencies - normal
-              if: ${{ matrix.php-versions != '8.2' }}
+              if: ${{ matrix.php-versions != '8.3' }}
               uses: "ramsey/composer-install@v2"
               with:
                 dependency-versions: ${{ matrix.dependency-versions }}
-                # Bust the cache at least once a month - output format: YYYY-MM-DD.
-                custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
+                # Bust the cache at least once a month - output format: YYYY-MM.
+                custom-cache-suffix: $(date -u "+%Y-%m")
 
             - name: Install dependencies - ignore-platform-reqs
-              if: ${{ matrix.php-versions == '8.2' }}
+              if: ${{ matrix.php-versions == '8.3' }}
               uses: "ramsey/composer-install@v2"
               with:
                 dependency-versions: ${{ matrix.dependency-versions }}
                 composer-options: "--ignore-platform-reqs"
-                custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
+                custom-cache-suffix: $(date -u "+%Y-%m")
 
             - name: Check cross-version PHP compatibility
               if: ${{ matrix.php-versions == '7.4' && matrix.dependency-versions == 'highest' }} # results is same across versions, do it once
