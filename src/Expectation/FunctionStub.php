@@ -27,6 +27,22 @@ class FunctionStub
     private $function_name;
 
     /**
+     * Array of redefined functions
+     *
+     * This array is used so that we can restore the function
+     * after redefining it.
+     * The array looks something like:
+     *
+     *   array(
+     *     function name => handle instance,
+     *     another function name => handle instance,
+     *   ).
+     *
+     * @var array<string, mixed>
+     */
+    private $handles;
+
+    /**
      * @param FunctionName $function_name
      */
     public function __construct(FunctionName $function_name)
@@ -68,7 +84,7 @@ PHP;
     public function alias(callable $callback)
     {
         $fqn = $this->function_name->fullyQualifiedName();
-        \Patchwork\redefine($fqn, $callback);
+        $this->handles[$fqn] = \Patchwork\redefine($fqn, $callback);
         $this->assertRedefined($fqn);
     }
 
@@ -101,7 +117,7 @@ PHP;
     {
         $fqn = ltrim($this->function_name->fullyQualifiedName(), '\\');
 
-        \Patchwork\redefine($fqn, function () use ($return) {
+        $this->handles[$fqn] = \Patchwork\redefine($fqn, function () use ($return) {
             return $return;
         });
 
@@ -120,7 +136,7 @@ PHP;
 
         $this->assertPrintable($value, 'provided to justEcho');
 
-        \Patchwork\redefine($fqn, function () use ($value) {
+        $this->handles[$fqn] = \Patchwork\redefine($fqn, function () use ($value) {
             echo $value;
         });
 
@@ -140,7 +156,7 @@ PHP;
 
         $fqn = $this->function_name->fullyQualifiedName();
 
-        \Patchwork\redefine($fqn, function (...$args) use ($fqn, $arg_num) {
+        $this->handles[$fqn] = \Patchwork\redefine($fqn, function (...$args) use ($fqn, $arg_num) {
             if ( ! array_key_exists($arg_num - 1, $args)) {
                 $count = count($args);
                 throw new Exception\InvalidArgumentForStub(
@@ -165,7 +181,7 @@ PHP;
 
         $fqn = $this->function_name->fullyQualifiedName();
 
-        \Patchwork\redefine($fqn, function (...$args) use ($fqn, $arg_num) {
+        $this->handles[$fqn] = \Patchwork\redefine($fqn, function (...$args) use ($fqn, $arg_num) {
 
             if ( ! array_key_exists($arg_num - 1, $args)) {
                 $count = count($args);
@@ -181,6 +197,14 @@ PHP;
             echo (string)$arg;
         });
 
+        $this->assertRedefined($fqn);
+    }
+
+    public function restore()
+    {
+        $fqn = $this->function_name->fullyQualifiedName();
+        $handle = $this->handles[$fqn];
+        \Patchwork\restore($handle);
         $this->assertRedefined($fqn);
     }
 
