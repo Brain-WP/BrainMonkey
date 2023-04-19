@@ -45,6 +45,8 @@ Following functions are defined by Brain Monkey when it is loaded for tests:
 * `absint()` \(since 2.3\)
 * `wp_json_encode()` \(since 2.6\)
 * `is_wp_error()` \(since 2.3\)
+* `wp_validate_boolean()` \(since 2.7\)
+* `wp_slash()` \(since 2.7\)
 
 **Translation function:**
 

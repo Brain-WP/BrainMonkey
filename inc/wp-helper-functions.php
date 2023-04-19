@@ -100,3 +100,20 @@ if ( ! function_exists('is_wp_error')) {
         return $thing instanceof \WP_Error;
     }
 }
+
+if ( ! function_exists('wp_validate_boolean')) {
+    function wp_validate_boolean($var)
+    {
+        return (is_string($var) && (strtolower($var) === 'false')) ? false : (bool)$var;
+    }
+}
+
+if ( ! function_exists('wp_slash')) {
+    function wp_slash($value)
+    {
+        if (is_array($value)) {
+            return array_map('wp_slash', $value);
+        }
+        return is_string($value) ? addslashes($value) : $value;
+    }
+}
