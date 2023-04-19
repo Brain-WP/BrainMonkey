@@ -12,6 +12,8 @@ namespace Brain\Monkey\Expectation;
 
 class UrlsHelper
 {
+    const DEFAULT_DOMAIN = 'example.org';
+
     /**
      * @var string
      */
@@ -26,9 +28,9 @@ class UrlsHelper
      * @param $domain
      * @param $use_https
      */
-    public function __construct($domain = 'example.org', $use_https = null)
+    public function __construct($domain = null, $use_https = null)
     {
-        $this->domain = (is_string($domain) && $domain) ? $domain : 'example.org';
+        $this->domain = (is_string($domain) && $domain !== '') ? $domain : self::DEFAULT_DOMAIN;
         $this->use_https = ($use_https === null)
             ? null
             : (bool)filter_var($use_https, FILTER_VALIDATE_BOOLEAN);
