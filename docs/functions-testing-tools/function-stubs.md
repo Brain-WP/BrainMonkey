@@ -168,8 +168,8 @@ When called, it will create a stub for _all_ the following functions:
 
 The function accepts as first argument the domain to use for subbing the URLs, default to `example.org`.
 
-E.g., after `Functions\stubWpUrlFunctions()`, the `home_url()` function returns `https://example.org`,
-but after `Functions\stubWpUrlFunctions('acme.com')`, the `home_url()` function returns `https://acme.org`.
+E.g., calling `Functions\stubWpUrlFunctions()`, the `home_url()` function returns `https://example.org`,
+but calling `Functions\stubWpUrlFunctions('acme.com')`, the `home_url()` function returns `https://acme.org`.
 
 The function also accepts a second parameter to force the usage of HTTPs protocol. By default, that
 second parameter is `null` which makes the stub using HTTPs, _unless_ `is_ssl()` is defined, and
