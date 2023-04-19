@@ -25,8 +25,8 @@ class UrlsHelper
     private $use_https;
 
     /**
-     * @param $domain
-     * @param $use_https
+     * @param mixed $domain
+     * @param mixed $use_https
      */
     public function __construct($domain = null, $use_https = null)
     {
@@ -37,14 +37,16 @@ class UrlsHelper
     }
 
     /**
-     * @param $base_path
-     * @param $def_schema
+     * @param mixed $base_path
+     * @param mixed $def_schema
      * @return \Closure
      */
     public function stubUrlForSiteCallback($base_path = '', $def_schema = null)
     {
         return function ($site_id, $path = '', $schema = null) use ($base_path, $def_schema) {
-            ($def_schema && $schema === null) and $schema = $def_schema;
+            if (is_string($def_schema) && ($def_schema !== '') && ($schema === null)) {
+                $schema = $def_schema;
+            }
             return $this->build_url(
                 $this->build_relative_path($base_path, $path),
                 $this->determineSchema($schema)
@@ -53,9 +55,9 @@ class UrlsHelper
     }
 
     /**
-     * @param $base_path
-     * @param $def_schema
-     * @param $use_schema_arg
+     * @param mixed $base_path
+     * @param mixed $def_schema
+     * @param mixed $use_schema_arg
      * @return \Closure
      */
     public function stubUrlCallback($base_path = '', $def_schema = null, $use_schema_arg = true)
@@ -70,18 +72,20 @@ class UrlsHelper
     }
 
     /**
-     * @param $relative
-     * @param $schema
-     * @return mixed|string
+     * @param string $relative
+     * @param string|null $schema
+     * @return string
      */
     private function build_url($relative, $schema)
     {
-        return ($schema === null) ? ($relative ?: '/') : $schema . $this->domain . $relative;
+        return ($schema === null)
+            ? (($relative === '') ? '/' : $relative)
+            : $schema . $this->domain . $relative;
     }
 
     /**
-     * @param $base_path
-     * @param $path
+     * @param mixed $base_path
+     * @param mixed $path
      * @return string
      */
     private function build_relative_path($base_path, $path)
@@ -97,7 +101,7 @@ class UrlsHelper
     }
 
     /**
-     * @param $schema_argument
+     * @param mixed $schema_argument
      * @return string|null
      */
     private function determineSchema($schema_argument = null)
