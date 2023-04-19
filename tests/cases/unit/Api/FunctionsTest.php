@@ -327,6 +327,22 @@ class FunctionsTest extends UnitTestCase
         static::assertSame('Bar!', esc_html__('Bar!', 'my-txt-domain'));
         static::assertSame('Baz!', esc_attr__('Baz!', 'my-txt-domain'));
         static::assertSame('Foo bar', esc_attr_x('Foo bar', 'context', 'my-txt-domain'));
+        static::assertSame(
+            ['singular' => 'Foo', 'plural' => 'Foos'],
+            _n_noop('Foo', 'Foos')
+        );
+        static::assertSame(
+            ['singular' => 'Foo', 'plural' => 'Foos'],
+            _nx_noop('Foo', 'Foos')
+        );
+        static::assertSame(
+            'Foo',
+            translate_nooped_plural(['singular' => 'Foo', 'plural' => 'Foos'], 1)
+        );
+        static::assertSame(
+            'Foos',
+            translate_nooped_plural(['singular' => 'Foo', 'plural' => 'Foos'], 2)
+        );
     }
 
     public function testStubsTranslationsEcho()
