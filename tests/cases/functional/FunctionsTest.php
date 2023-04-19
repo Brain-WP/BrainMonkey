@@ -58,6 +58,12 @@ class FunctionsTest extends FunctionalTestCase
         static::assertFalse(wp_validate_boolean('false'));
         static::assertTrue(wp_validate_boolean(1));
         static::assertTrue(wp_validate_boolean('lorem ipsum'));
+
+        static::assertSame('foo', wp_slash('foo'));
+        static::assertSame(1, wp_slash(1));
+        static::assertSame(['foo', 2, 'bar'], wp_slash(['foo', 2, 'bar']));
+        static::assertSame('L\\\'x\\"y', wp_slash('L\'x"y'));
+        static::assertSame(['L\\\'x\\"y', 'bar'], wp_slash(['L\'x"y', 'bar']));
     }
 
     public function testReDefinePredefinedStubsWithWhen()
