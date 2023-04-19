@@ -53,12 +53,9 @@ class FunctionsTest extends FunctionalTestCase
         static::assertTrue(is_wp_error($error));
         static::assertFalse(is_wp_error('x'));
 
-        static::assertTrue(is_bool(wp_validate_boolean(true)));
-        static::assertTrue(is_bool(wp_validate_boolean(false)));
-        static::assertTrue(is_bool(wp_validate_boolean(1)));
-        static::assertTrue(is_bool(wp_validate_boolean('lorem ipsum')));
         static::assertTrue(wp_validate_boolean(true));
         static::assertFalse(wp_validate_boolean(false));
+        static::assertFalse(wp_validate_boolean('false'));
         static::assertTrue(wp_validate_boolean(1));
         static::assertTrue(wp_validate_boolean('lorem ipsum'));
     }
