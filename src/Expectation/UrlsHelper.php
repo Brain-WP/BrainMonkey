@@ -38,7 +38,7 @@ class UrlsHelper
 
     /**
      * @param $base_path
-     * @param $for_admin
+     * @param $def_schema
      * @return \Closure
      */
     public function stubUrlForSiteCallback($base_path = '', $def_schema = null)
@@ -54,7 +54,7 @@ class UrlsHelper
 
     /**
      * @param $base_path
-     * @param $for_admin
+     * @param $def_schema
      * @param $use_schema_arg
      * @return \Closure
      */
