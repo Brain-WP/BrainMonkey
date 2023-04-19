@@ -210,8 +210,8 @@ namespace Brain\Monkey\Functions {
                 $callback = $helper->stubUrlCallback();
                 $url = $callback('/wp-login.php', 'login');
                 $has_redirect = ($redirect !== '') && is_string($redirect);
-                $has_redirect and $url .= '?redirect_to=' . urlencode($redirect);
-                $force_reauth and $url .= ($has_redirect ? '&reauth=1' : '?reauth=1');
+                $url .= $has_redirect ? '?redirect_to=' . urlencode($redirect) : '';
+                $url .= $force_reauth ? ($has_redirect ? '&reauth=1' : '?reauth=1') : '';
                 return $url;
             },
         ]);
