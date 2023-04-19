@@ -111,7 +111,7 @@ class UrlsHelper
         }
 
         $use_https = $this->use_https;
-        $is_ssl = function_exists('is_ssl') ? is_ssl() : true;
+        $is_ssl = function_exists('is_ssl') ? \is_ssl() : true;
         if ($use_https === null && !in_array($schema_argument, ['http', 'https'], true)) {
             $use_https = $is_ssl;
             if (
@@ -119,7 +119,7 @@ class UrlsHelper
                 && in_array($schema_argument, ['admin', 'login', 'login_post', 'rpc'])
                 && function_exists('force_ssl_admin')
             ) {
-                $use_https = force_ssl_admin();
+                $use_https = \force_ssl_admin();
             }
         }
         if ($schema_argument === 'http') {
