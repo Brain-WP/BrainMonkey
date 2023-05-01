@@ -161,8 +161,8 @@ namespace Brain\Monkey\Functions {
                 '_nx_noop' => static function ($singular, $plural) {
                     return compact('singular', 'plural');
                 },
-                'translate_nooped_plural' => static function($nooped, $number) {
-                    return ($number === 1) ? $nooped['singular'] : $nooped['plural'];
+                'translate_nooped_plural' => static function($nooped_plural, $count) {
+                    return ($count === 1) ? $nooped_plural['singular'] : $nooped_plural['plural'];
                 },
             ]
         );

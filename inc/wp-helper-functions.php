@@ -60,30 +60,30 @@ if ( ! function_exists('__return_empty_string')) {
 }
 
 if ( ! function_exists('untrailingslashit')) {
-    function untrailingslashit($string)
+    function untrailingslashit($value)
     {
-        return rtrim($string, '/\\');
+        return rtrim($value, '/\\');
     }
 }
 
 if ( ! function_exists('trailingslashit')) {
-    function trailingslashit($string)
+    function trailingslashit($value)
     {
-        return rtrim($string, '/\\').'/';
+        return rtrim($value, '/\\').'/';
     }
 }
 
 if ( ! function_exists('user_trailingslashit')) {
-    function user_trailingslashit($string)
+    function user_trailingslashit($url)
     {
-        return trailingslashit($string);
+        return trailingslashit($url);
     }
 }
 
 if ( ! function_exists('absint')) {
-    function absint($number)
+    function absint($maybeint)
     {
-        return abs((int)$number);
+        return abs((int)$maybeint);
     }
 }
 
@@ -102,9 +102,9 @@ if ( ! function_exists('is_wp_error')) {
 }
 
 if ( ! function_exists('wp_validate_boolean')) {
-    function wp_validate_boolean($var)
+    function wp_validate_boolean($value)
     {
-        return (is_string($var) && (strtolower($var) === 'false')) ? false : (bool)$var;
+        return (is_string($value) && (strtolower($value) === 'false')) ? false : (bool)$value;
     }
 }
 
