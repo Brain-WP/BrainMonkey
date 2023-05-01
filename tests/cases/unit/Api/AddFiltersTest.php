@@ -46,11 +46,25 @@ class AddFiltersTest extends UnitTestCase
         static::assertFalse(has_filter('bar', __CLASS__.'->'.__FUNCTION__.'()'));
     }
 
-    public function testHasWithoutCallback()
+    public function testAddAndHasWithoutCallback()
     {
         static::assertFalse(has_filter('the_title'));
         add_filter('the_title', 'strtolower', 30, 1);
         static::assertTrue(has_filter('the_title'));
+    }
+
+    public function testAddAndHasWithCallbackFalse()
+    {
+        static::assertFalse(has_filter('testMeA'));
+        add_filter('testMeA', 'trim', 5);
+        static::assertTrue(has_filter('testMeA', false));
+    }
+
+    public function testAddAndHasWithCallbackNull()
+    {
+        static::assertFalse(has_filter('testMeA'));
+        add_filter('testMeA', 'trim', 15);
+        static::assertTrue(has_filter('testMeA', null));
     }
 
     public function testExpectAdded()

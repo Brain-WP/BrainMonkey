@@ -56,6 +56,20 @@ class AddActionTest extends UnitTestCase
         static::assertTrue(has_action('init'));
     }
 
+    public function testAddAndHasWithCallbackFalse()
+    {
+        static::assertFalse(has_action('testMeA'));
+        add_action('testMeA', 'trim', 5);
+        static::assertTrue(has_action('testMeA', false));
+    }
+
+    public function testAddAndHasWithCallbackNull()
+    {
+        static::assertFalse(has_action('testMeA'));
+        add_action('testMeA', 'trim', 15);
+        static::assertTrue(has_action('testMeA', null));
+    }
+
     public function testExpectAdded()
     {
         Actions\expectAdded('init')
