@@ -85,7 +85,7 @@ The last of the when-related methods allows to make a function behave just like 
 
 ```php
 Functions\when('duplicate')->alias(function($value) {
-    "Was ".$value.", now is ".($value * 2);
+    return "Was ".$value.", now is ".($value * 2);
 });
 
 Functions\when('bigger')->alias('strtoupper');
