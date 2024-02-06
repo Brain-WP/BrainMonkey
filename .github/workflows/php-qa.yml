@@ -78,5 +78,7 @@ jobs:
             - name: Update codecov.io
               uses: codecov/codecov-action@v4
               if: ${{ matrix.php-versions == '7.4' && matrix.dependency-versions == 'highest' }} # upload coverage once is enough
+              env:
+                CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
               with:
                 file: ./coverage.xml
