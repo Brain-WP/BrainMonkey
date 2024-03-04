@@ -45,7 +45,7 @@ jobs:
 
             - name: Install dependencies - normal
               if: ${{ matrix.php-versions != '8.4' }}
-              uses: "ramsey/composer-install@v2"
+              uses: "ramsey/composer-install@v3"
               with:
                 dependency-versions: ${{ matrix.dependency-versions }}
                 # Bust the cache at least once a month - output format: YYYY-MM.
@@ -53,7 +53,7 @@ jobs:
 
             - name: Install dependencies - ignore-platform-reqs
               if: ${{ matrix.php-versions == '8.4' }}
-              uses: "ramsey/composer-install@v2"
+              uses: "ramsey/composer-install@v3"
               with:
                 dependency-versions: ${{ matrix.dependency-versions }}
                 composer-options: "--ignore-platform-reqs"
