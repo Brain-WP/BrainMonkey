@@ -96,16 +96,16 @@ class Expectation
     /**
      * @param \Mockery\ExpectationInterface               $expectation
      * @param \Brain\Monkey\Expectation\ExpectationTarget $target
-     * @param \ArrayAccess                                $return_expectations
+     * @param \ArrayAccess|null                           $return_expectations
      */
     public function __construct(
         ExpectationInterface $expectation,
         ExpectationTarget $target,
-        \ArrayAccess $return_expectations = null
+        $return_expectations = null
     ) {
         $this->expectation = $expectation;
         $this->target = $target;
-        $this->return_expectations = $return_expectations ? : new \ArrayObject();
+        $this->return_expectations = ($return_expectations instanceof \ArrayAccess) ? $return_expectations : new \ArrayObject();
     }
 
     /**
