@@ -42,9 +42,8 @@ class FunctionStub
         $function = <<<PHP
 namespace {$namespace} {
     function {$name}() {
-        trigger_error(
-            '"{$name}" is not defined nor mocked in this test.',
-            E_USER_ERROR
+        throw new \Brain\Monkey\Expectation\Exception\MissingFunctionExpectations(
+            '"{$name}" is not defined nor mocked in this test.'
         );
      }
 }

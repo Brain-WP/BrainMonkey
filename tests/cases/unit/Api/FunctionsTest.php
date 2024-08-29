@@ -10,6 +10,7 @@
 
 namespace Brain\Monkey\Tests\Unit\Api;
 
+use Brain\Monkey\Expectation\Exception\MissingFunctionExpectations;
 use Brain\Monkey\Functions;
 use Brain\Monkey\Tests\UnitTestCase;
 use Mockery\Exception\InvalidCountException;
@@ -146,53 +147,53 @@ class FunctionsTest extends UnitTestCase
         i_do_not_exists('Cool!');
     }
 
-    public function testUndefinedFunctionTriggerErrorRightAfterDefinition()
+    public function testUndefinedFunctionThrowsExceptionRightAfterDefinition()
     {
-        $this->expectErrorException();
-        Functions\when('since_i_am_not_defined_i_will_trigger_error');
-        $this->expectExceptionMsgRegex('/since_i_am_not_defined_i_will_trigger_error.+not defined/');
+        $this->expectException(MissingFunctionExpectations::class);
+        Functions\when('since_i_am_not_defined_i_will_throw_exception');
+        $this->expectExceptionMsgRegex('/since_i_am_not_defined_i_will_throw_exception.+not defined/');
         /** @noinspection PhpUndefinedFunctionInspection */
-        since_i_am_not_defined_i_will_trigger_error();
+        since_i_am_not_defined_i_will_throw_exception();
     }
 
     /**
-     * @depends testUndefinedFunctionTriggerErrorRightAfterDefinition
+     * @depends testUndefinedFunctionThrowsExceptionRightAfterDefinition
      */
     public function testUndefinedFunctionSurviveTests()
     {
-        static::assertTrue(function_exists('since_i_am_not_defined_i_will_trigger_error'));
+        static::assertTrue(function_exists('since_i_am_not_defined_i_will_throw_exception'));
     }
 
     /**
      * @depends testUndefinedFunctionSurviveTests
      */
-    public function testSurvivedFunctionStillTriggerError()
+    public function testSurvivedFunctionStillThrowsException()
     {
-        $this->expectErrorException();
-        $this->expectExceptionMsgRegex('/since_i_am_not_defined_i_will_trigger_error.+not defined/');
+        $this->expectException(MissingFunctionExpectations::class);
+        $this->expectExceptionMsgRegex('/since_i_am_not_defined_i_will_throw_exception.+not defined/');
         /** @noinspection PhpUndefinedFunctionInspection */
-        since_i_am_not_defined_i_will_trigger_error();
+        since_i_am_not_defined_i_will_throw_exception();
     }
 
     /**
-     * @depends testSurvivedFunctionStillTriggerError
+     * @depends testSurvivedFunctionStillThrowsException
      */
     public function testNothingJustMockASurvivedFunction()
     {
-        Functions\when('since_i_am_not_defined_i_will_trigger_error')->justReturn(1234567890);
+        Functions\when('since_i_am_not_defined_i_will_throw_exception')->justReturn(1234567890);
         /** @noinspection PhpUndefinedFunctionInspection */
-        static::assertSame(1234567890, since_i_am_not_defined_i_will_trigger_error());
+        static::assertSame(1234567890, since_i_am_not_defined_i_will_throw_exception());
     }
 
     /**
      * @depends testNothingJustMockASurvivedFunction
      */
-    public function testSurvivedFunctionStillTriggerErrorAfterBeingMocked()
+    public function testSurvivedFunctionStillThrowsExceptionAfterBeingMocked()
     {
-        $this->expectErrorException();
-        $this->expectExceptionMsgRegex('/since_i_am_not_defined_i_will_trigger_error.+not defined/');
+        $this->expectException(MissingFunctionExpectations::class);
+        $this->expectExceptionMsgRegex('/since_i_am_not_defined_i_will_throw_exception.+not defined/');
         /** @noinspection PhpUndefinedFunctionInspection */
-        since_i_am_not_defined_i_will_trigger_error();
+        since_i_am_not_defined_i_will_throw_exception();
     }
 
     public function testAndAlsoExpectIt()
