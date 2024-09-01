@@ -88,7 +88,7 @@ Functions\stubs(
 );
 ```
 
-### Pre-defined stubs for escaping functions
+### Pre-defined stubs for WP escaping functions
 
 To stub WordPress escaping functions is a very common usage for `Functions\stubs`.
 
@@ -111,7 +111,7 @@ By calling `Functions\stubEscapeFunctions()`, for _all_ of the functions listed 
 
 It will _not_ be the exact same escape mechanism that WordPress would apply, but "similar enough" for unit tests purpose and could still be helpful to discover some bugs.
 
-### Pre-defined stubs for translation functions
+### Pre-defined stubs for WP translation functions
 
 Another common usage for `Functions\stubs`, since its introduction, has been to stub translation functions.
 
@@ -143,6 +143,40 @@ The created stub will not attempt any translation, but will return \(or echo\) t
 Only for functions that both translate and escape \(`esc_html__()`, `esc_html_x()`...\) the same escaping mechanism used by the pre-defined escaping functions stubs \(see above\) is applied before returning first received argument.
 
 Please note how `Functions\stubTranslationFunctions()` creates stubs for functions that _echo_ translated text, something not easily doable with `Functions\stubs()` alone.
+
+### Pre-defined stubs for WP URL functions
+
+One very common and repetitive task testing WordPress code without WordPress loaded is to stub
+WordPress URLs, a task made easy by the function:
+
+**`Functions\stubWpUrlFunctions()`**
+
+When called, it will create a stub for _all_ the following functions:
+
+* `home_url()`
+* `get_home_url()`
+* `site_url()`
+* `get_site_url()`
+* `admin_url()`
+* `get_admin_url()`
+* `content_url()`
+* `rest_url()`
+* `get_rest_url()`
+* `includes_url()`
+* `network_home_url()`
+* `network_site_url()`
+* `network_admin_url()`
+* `user_admin_url()`
+* `wp_login_url()`
+
+The function accepts as first argument the domain to use for subbing the URLs, default to `example.org`.
+
+E.g., calling `Functions\stubWpUrlFunctions()`, the `home_url()` function returns `https://example.org`,
+but calling `Functions\stubWpUrlFunctions('acme.com')`, the `home_url()` function returns `https://acme.org`.
+
+The function also accepts a second parameter to force the usage of the HTTPS protocol. By default, that
+second parameter is `null` which makes the stub use HTTPS, _unless_ the `is_ssl()` function is defined (stubbed), and
+it returns `false`.
 
 ### Gotcha for `Functions\stubs`
 
