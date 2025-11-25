@@ -25,8 +25,10 @@ jobs:
                   dependency-versions: 'highest'
                 - php-versions: '8.5'
                   dependency-versions: 'highest'
+                - php-versions: '8.6'
+                  dependency-versions: 'highest'
 
-        continue-on-error: ${{ matrix.php-versions == '8.5' }}
+        continue-on-error: ${{ matrix.php-versions == '8.6' }}
 
         steps:
             - uses: actions/checkout@v6
@@ -45,20 +47,13 @@ jobs:
               if: ${{ matrix.dependency-versions == 'highest' }}
               run: parallel-lint ./src/ ./tests/
 
-            - name: Install dependencies - normal
-              if: ${{ matrix.php-versions != '8.5' }}
+            - name: Install dependencies
               uses: "ramsey/composer-install@v3"
               with:
                 dependency-versions: ${{ matrix.dependency-versions }}
+                # For PHP "nightly", we need to install with ignore platform reqs as not all dependencies may allow it yet.
+                composer-options: ${{ matrix.php == '8.6' && '--ignore-platform-req=php+' || '' }}
                 # Bust the cache at least once a month - output format: YYYY-MM.
-                custom-cache-suffix: $(date -u "+%Y-%m")
-
-            - name: Install dependencies - ignore-platform-reqs
-              if: ${{ matrix.php-versions == '8.5' }}
-              uses: "ramsey/composer-install@v3"
-              with:
-                dependency-versions: ${{ matrix.dependency-versions }}
-                composer-options: "--ignore-platform-reqs"
                 custom-cache-suffix: $(date -u "+%Y-%m")
 
             - name: Check cross-version PHP compatibility
