@@ -2,7 +2,7 @@
 
 To install Brain Monkey you need:
 
-* PHP 5.6+
+* PHP 7.2+
 * [Composer](https://getcomposer.org)
 
 Brain Monkey is available on Packagist, so the only thing you need to do is to add it as a dependency for your project.

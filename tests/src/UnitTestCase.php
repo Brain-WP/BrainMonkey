@@ -134,10 +134,6 @@ class UnitTestCase extends TestCase
             if (get_class($e) !== $this->expect_mockery_exception) {
                 throw $e;
             }
-        } catch (\Exception $e) {
-            if (get_class($e) !== $this->expect_mockery_exception) {
-                throw $e;
-            }
         }
     }
 

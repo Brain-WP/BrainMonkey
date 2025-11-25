@@ -14,7 +14,7 @@ It provides **two set of helpers**:
 
 ## Requirements
 
-* PHP 5.6+
+* PHP 7.2+
 * [Composer](https://getcomposer.org/) to install
 
 Via Composer following packages are required:
