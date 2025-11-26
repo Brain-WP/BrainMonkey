@@ -78,30 +78,14 @@ class ClosureParamStringFormTest extends UnitTestCase
 
     public function testFromReflectionToString7()
     {
-        if (PHP_MAJOR_VERSION < 7) {
-            $this->markTestSkipped('Skipping PHP 7 test.');
-
-            return;
-        }
-
         $param_a = \Mockery::mock(\ReflectionParameter::class);
         /** @noinspection PhpMethodParametersCountMismatchInspection */
         $param_a->shouldReceive('hasType')->andReturn(true);
-        if (PHP_VERSION_ID < 70100) {
-            // phpcs:ignore PHPCompatibility.Classes.NewClasses.reflectiontypeFound
-            $type_a = \Mockery::mock(\ReflectionType::class);
-            /** @noinspection PhpMethodParametersCountMismatchInspection */
-            $param_a->shouldReceive('getType')->andReturn($type_a);
-            /** @noinspection PhpMethodParametersCountMismatchInspection */
-            $type_a->shouldReceive('__toString')->andReturn('array');
-        } else {
-            // phpcs:ignore PHPCompatibility.Classes.NewClasses.reflectionnamedtypeFound
-            $type_a = \Mockery::mock(\ReflectionNamedType::class);
-            /** @noinspection PhpMethodParametersCountMismatchInspection */
-            $param_a->shouldReceive('getType')->andReturn($type_a);
-            /** @noinspection PhpMethodParametersCountMismatchInspection */
-            $type_a->shouldReceive('getName')->andReturn('array');
-        }
+        $type_a = \Mockery::mock(\ReflectionNamedType::class);
+        /** @noinspection PhpMethodParametersCountMismatchInspection */
+        $param_a->shouldReceive('getType')->andReturn($type_a);
+        /** @noinspection PhpMethodParametersCountMismatchInspection */
+        $type_a->shouldReceive('getName')->andReturn('array');
         /** @noinspection PhpMethodParametersCountMismatchInspection */
         $param_a->shouldReceive('getName')->andReturn('foo');
         /** @noinspection PhpMethodParametersCountMismatchInspection */
@@ -116,63 +100,11 @@ class ClosureParamStringFormTest extends UnitTestCase
         $param_b = \Mockery::mock(\ReflectionParameter::class);
         /** @noinspection PhpMethodParametersCountMismatchInspection */
         $param_b->shouldReceive('hasType')->andReturn(true);
-        if (PHP_VERSION_ID < 70100) {
-            // phpcs:ignore PHPCompatibility.Classes.NewClasses.reflectiontypeFound
-            $type_b = \Mockery::mock(\ReflectionType::class);
-            /** @noinspection PhpMethodParametersCountMismatchInspection */
-            $param_b->shouldReceive('getType')->andReturn($type_b);
-            /** @noinspection PhpMethodParametersCountMismatchInspection */
-            $type_b->shouldReceive('__toString')->andReturn('Foo\\Bar');
-        } else {
-            // phpcs:ignore PHPCompatibility.Classes.NewClasses.reflectionnamedtypeFound
-            $type_b = \Mockery::mock(\ReflectionNamedType::class);
-            /** @noinspection PhpMethodParametersCountMismatchInspection */
-            $param_b->shouldReceive('getType')->andReturn($type_b);
-            /** @noinspection PhpMethodParametersCountMismatchInspection */
-            $type_b->shouldReceive('getName')->andReturn('Foo\\Bar');
-        }
+        $type_b = \Mockery::mock(\ReflectionNamedType::class);
         /** @noinspection PhpMethodParametersCountMismatchInspection */
-        $param_b->shouldReceive('getName')->andReturn('bar');
+        $param_b->shouldReceive('getType')->andReturn($type_b);
         /** @noinspection PhpMethodParametersCountMismatchInspection */
-        $param_b->shouldReceive('isVariadic')->andReturn(true);
-
-        /** @noinspection PhpParamsInspection */
-        static::assertSame(
-            'Foo\\Bar ...$bar',
-            (string)ClosureParamStringForm::fromReflectionParameter($param_b)
-        );
-    }
-
-    public function testFromReflectionToString5()
-    {
-
-        if (PHP_MAJOR_VERSION >= 7) {
-            $this->markTestSkipped('Skipping PHP 5.6 test.');
-
-            return;
-        }
-
-        $param_a = \Mockery::mock(\ReflectionParameter::class);
-        /** @noinspection PhpMethodParametersCountMismatchInspection */
-        $param_a->shouldReceive('hasType')->never();
-        /** @noinspection PhpMethodParametersCountMismatchInspection */
-        $param_a->shouldReceive('__toString')->andReturn('Parameter #0 [ <optional> array ...$foo ]');
-        /** @noinspection PhpMethodParametersCountMismatchInspection */
-        $param_a->shouldReceive('getName')->andReturn('foo');
-        /** @noinspection PhpMethodParametersCountMismatchInspection */
-        $param_a->shouldReceive('isVariadic')->andReturn(true);
-
-        /** @noinspection PhpParamsInspection */
-        static::assertSame(
-            'array ...$foo',
-            (string)ClosureParamStringForm::fromReflectionParameter($param_a)
-        );
-
-        $param_b = \Mockery::mock(\ReflectionParameter::class);
-        /** @noinspection PhpMethodParametersCountMismatchInspection */
-        $param_b->shouldReceive('hasType')->andReturn(true);
-        /** @noinspection PhpMethodParametersCountMismatchInspection */
-        $param_b->shouldReceive('__toString')->andReturn('Parameter #0 [ <optional> Foo\\Bar ...$bar ]');
+        $type_b->shouldReceive('getName')->andReturn('Foo\\Bar');
         /** @noinspection PhpMethodParametersCountMismatchInspection */
         $param_b->shouldReceive('getName')->andReturn('bar');
         /** @noinspection PhpMethodParametersCountMismatchInspection */
