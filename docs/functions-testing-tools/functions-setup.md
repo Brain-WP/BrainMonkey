@@ -29,11 +29,11 @@ After Brain Monkey is part of the project \(see _Getting Started / Installation_
 Let's take PHPUnit as example, the average test case class that uses Brain Monkey would be something like:
 
 ```php
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Brain\Monkey;
 
-class MyTestCase extends PHPUnit_Framework_TestCase
+class MyTestCase extends TestCase
 {
     // Adds Mockery expectations to the PHPUnit assertions count.
     use MockeryPHPUnitIntegration;
@@ -46,7 +46,7 @@ class MyTestCase extends PHPUnit_Framework_TestCase
 }
 ```
 
-After that for all test classes can extend this class instead of directly extending `PHPUnit_Framework_TestCase`.
+After that, all test classes can extend this class instead of directly extending `PHPUnit\Framework\TestCase`.
 
 That's all. Again, I used PHPUnit for the example, but any testing framework can be used.
 
