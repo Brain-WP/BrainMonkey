@@ -363,6 +363,7 @@ class FunctionsTest extends UnitTestCase
         Functions\stubEscapeFunctions();
 
         $lorem = '<b>Lorem ipsum</b>';
+        // phpcs:ignore PHPCompatibility.ParameterValues.NewHTMLEntitiesFlagsDefault.NotSet -- This is deliberate as WP doesn't set the parameter.
         $escaped = htmlspecialchars($lorem);
 
         static::assertSame($escaped, esc_html($lorem));
