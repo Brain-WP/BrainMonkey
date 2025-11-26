@@ -1,5 +1,19 @@
-# Auto detect text files and perform LF normalization
-text eol=lf
+#
+# Exclude these files from release archives.
+# This will also make them unavailable when using Composer with `--prefer-dist`.
+# If you develop for this repo using Composer, use `--prefer-source`.
+# https://www.reddit.com/r/PHP/comments/2jzp6k/i_dont_need_your_tests_in_my_production/
+# https://blog.madewithlove.be/post/gitattributes/
+#
+.github/         export-ignore
+tests/           export-ignore
+.gitattributes   export-ignore
+.gitbook.yaml    export-ignore
+.gitignore       export-ignore
+phpunit.xml.dist export-ignore
 
-tests/ export-ignore
-.travis.yml export-ignore
+#
+# Auto detect text files and perform LF normalization
+# https://pablorsk.medium.com/be-a-git-ninja-the-gitattributes-file-e58c07c9e915
+#
+text eol=lf
