@@ -65,16 +65,16 @@ jobs:
               run: ./vendor/bin/phpunit --migrate-configuration
 
             - name: Run unit tests (without code coverage)
-              if: ${{ matrix.php-versions != '7.4' || matrix.dependency-versions != 'highest' }}
+              if: ${{ matrix.php-versions != '7.4' || matrix.dependency-versions != 'highest' || github.event.repository.fork == true }}
               run: ./vendor/bin/phpunit
 
             - name: Run unit tests with code coverage
-              if: ${{ matrix.php-versions == '7.4' && matrix.dependency-versions == 'highest' }}
+              if: ${{ matrix.php-versions == '7.4' && matrix.dependency-versions == 'highest' && github.event.repository.fork == false }}
               run: ./vendor/bin/phpunit --coverage-clover=coverage.xml
 
             - name: Update codecov.io
               uses: codecov/codecov-action@v5
-              if: ${{ matrix.php-versions == '7.4' && matrix.dependency-versions == 'highest' }} # upload coverage once is enough
+              if: ${{ matrix.php-versions == '7.4' && matrix.dependency-versions == 'highest' && github.event.repository.fork == false }} # upload coverage once is enough
               env:
                 CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
               with:
