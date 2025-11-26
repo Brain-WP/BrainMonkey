@@ -24,7 +24,7 @@ Via Composer following packages are required:
 
 When installed for development, following packages are also required:
 
-* [phpunit/phpunit](https://packagist.org/packages/phpunit/phpunit) version 5.7 \(BSD-3-Clause\)
+* [phpunit/phpunit](https://packagist.org/packages/phpunit/phpunit) version 5.7 or higher \(BSD-3-Clause\)
 
 ## License
 
