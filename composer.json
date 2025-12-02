@@ -70,7 +70,7 @@
     },
     "scripts" : {
         "phpcompat": [
-            "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs -ps . --standard=PHPCompatibility --ignore=*/vendor/* --extensions=php --basepath=./ --runtime-set testVersion 5.6-"
+            "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs -ps . --standard=PHPCompatibility --ignore=*/vendor/* --parallel=10 --extensions=php --basepath=./ --runtime-set testVersion 5.6-"
         ]
     }
 }
