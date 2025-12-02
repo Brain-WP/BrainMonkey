@@ -1,21 +1,21 @@
 name: PHP Quality Assurance
 on:
-  push:
-  # Allow manually triggering the workflow.
-  workflow_dispatch:
+    push:
+    pull_request:
+    # Allow manually triggering the workflow.
+    workflow_dispatch:
 
 # Cancels all previous workflow runs for the same branch that have not yet completed.
 concurrency:
-  # The concurrency group contains the workflow name and the branch name.
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+    # The concurrency group contains the workflow name and the branch name.
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
 
 jobs:
     qa:
         runs-on: ubuntu-latest
-        if: "!contains(github.event.head_commit.message, 'ci skip')"
+
         strategy:
-            fail-fast: true
             matrix:
                 php-versions: ['5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.3']
                 dependency-versions: ['lowest', 'highest']
@@ -31,7 +31,8 @@ jobs:
         continue-on-error: ${{ matrix.php-versions == '8.6' }}
 
         steps:
-            - uses: actions/checkout@v6
+            - name: Checkout code
+              uses: actions/checkout@v6
 
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
