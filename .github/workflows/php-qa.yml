@@ -12,6 +12,38 @@ concurrency:
     cancel-in-progress: true
 
 jobs:
+    phpcompatibility:
+        runs-on: ubuntu-latest
+
+        name: "PHPCompatibility"
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v6
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                php-version: 'latest'
+                coverage: 'none'
+                tools: cs2pr
+              env:
+                fail-fast: true
+
+            - name: Install dependencies
+              uses: "ramsey/composer-install@v3"
+              with:
+                # Bust the cache at least once a month - output format: YYYY-MM.
+                custom-cache-suffix: $(date -u "+%Y-%m")
+
+            - name: Check cross-version PHP compatibility
+              id: phpcs
+              run: composer phpcompat -- --report-full --report-checkstyle=./phpcs-report.xml
+
+            - name: Show PHPCS results in PR
+              if: ${{ always() && steps.phpcs.outcome == 'failure' }}
+              run: cs2pr ./phpcs-report.xml
+
     qa:
         runs-on: ubuntu-latest
 
@@ -56,10 +88,6 @@ jobs:
                 composer-options: ${{ matrix.php == '8.6' && '--ignore-platform-req=php+' || '' }}
                 # Bust the cache at least once a month - output format: YYYY-MM.
                 custom-cache-suffix: $(date -u "+%Y-%m")
-
-            - name: Check cross-version PHP compatibility
-              if: ${{ matrix.php-versions == '7.4' && matrix.dependency-versions == 'highest' }} # results is same across versions, do it once
-              run: composer phpcompat
 
             - name: Migrate test configuration (>= 7.3)
               if: ${{ matrix.php-versions >= 7.3 && matrix.dependency-versions == 'highest' }}
