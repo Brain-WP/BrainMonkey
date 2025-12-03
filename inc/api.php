@@ -237,7 +237,9 @@ namespace Brain\Monkey\Actions {
      *
      * @param string $action
      * @param null   $callback
-     * @return bool
+     * @return bool|int If callback is omitted, returns boolean for whether the hook has anything registered.
+     *                  When checking a specific callback, the priority of that hook is returned,
+     *                  or false if the callback is not attached.
      */
     function has($action, $callback = null)
     {
