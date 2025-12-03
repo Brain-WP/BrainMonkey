@@ -237,7 +237,7 @@ namespace Brain\Monkey\Actions {
      *
      * @param string $action
      * @param null   $callback
-     * @return bool
+     * @return bool|int
      */
     function has($action, $callback = null)
     {
