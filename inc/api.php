@@ -235,8 +235,8 @@ namespace Brain\Monkey\Actions {
      *
      * Brain Monkey version of `has_action` will alias here.
      *
-     * @param string $action
-     * @param null   $callback
+     * @param string        $action
+     * @param callable|null $callback
      * @return bool|int If callback is omitted, returns boolean for whether the hook has anything registered.
      *                  When checking a specific callback, the priority of that hook is returned,
      *                  or false if the callback is not attached.
@@ -342,8 +342,8 @@ namespace Brain\Monkey\Filters {
      *
      * Brain Monkey version of `has_filter` will alias here.
      *
-     * @param string $filter
-     * @param null   $callback
+     * @param string        $filter
+     * @param callable|null $callback
      * @return bool|int If callback is omitted, returns boolean for whether the hook has anything registered.
      *                  When checking a specific callback, the priority of that hook is returned,
      *                  or false if the callback is not attached.

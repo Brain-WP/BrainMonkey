@@ -186,7 +186,7 @@ PHP;
     /**
      * @param mixed  $arg_num
      * @param string $method
-     * @return bool
+     * @return int
      */
     private function assertValidArgNum($arg_num, $method)
     {
