@@ -118,12 +118,18 @@ class UnitTestCase extends TestCase
         try {
             Monkey\tearDown();
 
-            throw new \PHPUnit_Framework_ExpectationFailedException(
-                sprintf(
-                    'Failed asserting that Mockery exception %s is thrown.',
-                    $this->expect_mockery_exception
-                )
+            $message = sprintf(
+                'Failed asserting that Mockery exception %s is thrown.',
+                $this->expect_mockery_exception
             );
+
+            if (class_exists('PHPUnit\\Framework\\ExpectationFailedException')) {
+                // PHPUnit 6.0+.
+                throw new \PHPUnit\Framework\ExpectationFailedException($message);
+            } else {
+                // PHPUnit 5.x.
+                throw new \PHPUnit_Framework_ExpectationFailedException($message);
+            }
         } catch (\Throwable $e) {
             if (get_class($e) !== $this->expect_mockery_exception) {
                 throw $e;
@@ -141,13 +147,18 @@ class UnitTestCase extends TestCase
     protected function expectMockeryException($class)
     {
         if ( ! class_exists($class) || ! is_subclass_of($class, \Exception::class, true)) {
-            throw new \PHPUnit_Framework_Exception(
-                sprintf(
-                    '%s is not a valid Mockery exception class name.',
-                    $class
-                )
-
+            $message = sprintf(
+                '%s is not a valid Mockery exception class name.',
+                $class
             );
+
+            if (class_exists('PHPUnit\\Framework\\Exception')) {
+                // PHPUnit 6.0+.
+                throw new \PHPUnit\Framework\Exception($message);
+            } else {
+                // PHPUnit 5.x.
+                throw new \PHPUnit_Framework_Exception($message);
+            }
         }
 
         $this->expect_mockery_exception = $class;
