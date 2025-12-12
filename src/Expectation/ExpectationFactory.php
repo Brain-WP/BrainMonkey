@@ -39,7 +39,7 @@ class ExpectationFactory
 
     /**
      * @param string $function
-     * @return \Brain\Monkey\Expectation\Expectation;
+     * @return \Brain\Monkey\Expectation\Expectation
      */
     public function forFunctionExecuted($function)
     {
@@ -50,7 +50,7 @@ class ExpectationFactory
 
     /**
      * @param string $action
-     * @return \Brain\Monkey\Expectation\Expectation;
+     * @return \Brain\Monkey\Expectation\Expectation
      */
     public function forActionAdded($action)
     {
@@ -61,7 +61,7 @@ class ExpectationFactory
 
     /**
      * @param string $action
-     * @return \Brain\Monkey\Expectation\Expectation;
+     * @return \Brain\Monkey\Expectation\Expectation
      */
     public function forActionDone($action)
     {
@@ -72,7 +72,7 @@ class ExpectationFactory
 
     /**
      * @param string $action
-     * @return \Brain\Monkey\Expectation\Expectation;
+     * @return \Brain\Monkey\Expectation\Expectation
      */
     public function forActionRemoved($action)
     {
@@ -83,7 +83,7 @@ class ExpectationFactory
 
     /**
      * @param string $filter
-     * @return \Brain\Monkey\Expectation\Expectation;
+     * @return \Brain\Monkey\Expectation\Expectation
      */
     public function forFilterAdded($filter)
     {
@@ -94,7 +94,7 @@ class ExpectationFactory
 
     /**
      * @param string $filter
-     * @return \Brain\Monkey\Expectation\Expectation;
+     * @return \Brain\Monkey\Expectation\Expectation
      */
     public function forFilterApplied($filter)
     {
@@ -105,7 +105,7 @@ class ExpectationFactory
 
     /**
      * @param string $filter
-     * @return \Brain\Monkey\Expectation\Expectation;
+     * @return \Brain\Monkey\Expectation\Expectation
      */
     public function forFilterRemoved($filter)
     {
