@@ -83,16 +83,8 @@ jobs:
 
         strategy:
             matrix:
-                php-versions: ['5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.3']
+                php-versions: ['5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.3', '8.4', '8.5', '8.6']
                 dependency-versions: ['lowest', 'highest']
-
-                include:
-                - php-versions: '8.4'
-                  dependency-versions: 'highest'
-                - php-versions: '8.5'
-                  dependency-versions: 'highest'
-                - php-versions: '8.6'
-                  dependency-versions: 'highest'
 
         continue-on-error: ${{ matrix.php-versions == '8.6' }}
 
@@ -117,6 +109,11 @@ jobs:
                 composer-options: ${{ matrix.php == '8.6' && '--ignore-platform-req=php+' || '' }}
                 # Bust the cache at least once a month - output format: YYYY-MM.
                 custom-cache-suffix: $(date -u "+%Y-%m")
+
+            # Mockery is only compatible with PHP 8.4 as of Mockery 1.6.10, so we need to update what "lowest" means.
+            - name: Update Mockery lowest (PHP >= 8.4)
+              if: ${{ matrix.php-versions >= '8.4' && matrix.dependency-versions == 'lowest' }}
+              run: composer require mockery/mockery:"1.6.10"
 
             - name: Migrate test configuration (>= 7.3)
               if: ${{ matrix.php-versions >= 7.3 && matrix.dependency-versions == 'highest' }}
