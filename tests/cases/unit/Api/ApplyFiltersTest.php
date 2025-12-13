@@ -227,6 +227,8 @@ class ApplyFiltersTest extends UnitTestCase
         Filters\expectApplied('first_level')->once()->andReturnUsing(function ($arg) {
 
             static::assertTrue(current_filter() === 'first_level');
+            static::assertTrue(doing_filter(), 'doing_filter() without hook name doesn\'t work (in first level)');
+            static::assertTrue(doing_filter(null), 'doing_filter() with null hook name doesn\'t work (in first level)');
             static::assertTrue(doing_filter('first_level'));
             static::assertFalse(doing_filter('second_level'));
 
@@ -237,6 +239,7 @@ class ApplyFiltersTest extends UnitTestCase
 
             static::assertSame('How is Monkey?', $arg);
             static::assertTrue(current_filter() === 'second_level');
+            static::assertTrue(doing_filter(), 'doing_filter() without hook name doesn\'t work (in second level)');
             static::assertTrue(doing_filter('first_level'));
             static::assertTrue(doing_filter('second_level'));
 
@@ -245,6 +248,8 @@ class ApplyFiltersTest extends UnitTestCase
 
 
         static::assertSame('Monkey is great!', apply_filters('first_level', 'How is Monkey?'));
+        static::assertFalse(doing_filter(), 'doing_filter() without hook name doesn\'t work (in outer code)');
+        static::assertFalse(doing_filter(null), 'doing_filter() with null hook name doesn\'t work (in outer code)');
         static::assertFalse(doing_filter('first_level'));
         static::assertFalse(doing_filter('second_level'));
     }

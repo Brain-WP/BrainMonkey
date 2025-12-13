@@ -52,7 +52,7 @@ final class HookRunningStack
     }
 
     /**
-     * @param string $hook_name
+     * @param string|null $hook_name
      * @return bool
      */
     public function has($hook_name = null)
