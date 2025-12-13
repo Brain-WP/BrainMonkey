@@ -20,6 +20,8 @@ jobs:
         steps:
             - name: Checkout code
               uses: actions/checkout@v6
+              with:
+                persist-credentials: false
 
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
@@ -58,6 +60,8 @@ jobs:
         steps:
             - name: Checkout code
               uses: actions/checkout@v6
+              with:
+                persist-credentials: false
 
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
@@ -91,6 +95,8 @@ jobs:
         steps:
             - name: Checkout code
               uses: actions/checkout@v6
+              with:
+                persist-credentials: false
 
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
