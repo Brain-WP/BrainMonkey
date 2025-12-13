@@ -116,12 +116,15 @@ class DoActionTest extends UnitTestCase
         Actions\expectDone('first_level')->once()->whenHappen(function () {
             do_action('second_level', 'Catch me!');
             do_action('second_level', 'Catch me!');
+            static::assertTrue(doing_action('first_level'));
         });
 
         Actions\expectDone('second_level')->twice()->whenHappen(function ($arg) {
 
             static::assertSame('Catch me!', $arg);
             static::assertTrue(current_filter() === 'second_level');
+            static::assertTrue(doing_action(), 'doing_action() without hook name doesn\'t work (in second level)');
+            static::assertTrue(doing_action(null), 'doing_action() with null hook name doesn\'t work (in second level)');
             static::assertTrue(doing_action('first_level'));
             static::assertTrue(doing_action('second_level'));
             // Checking for output will ensure above assertions have ran.
@@ -132,6 +135,7 @@ class DoActionTest extends UnitTestCase
 
         do_action('first_level');
 
+        static::assertFalse(doing_action(), 'doing_action() without hook name doesn\'t work (in outer code)');
         static::assertFalse(doing_action('first_level'));
         static::assertFalse(doing_action('second_level'));
     }

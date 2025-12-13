@@ -273,10 +273,10 @@ namespace Brain\Monkey\Actions {
      *
      * Brain Monkey version of `doing_action` will alias here.
      *
-     * @param string $action
+     * @param string|null $action
      * @return bool
      */
-    function doing($action)
+    function doing($action = null)
     {
         return Container::instance()
                         ->hookRunningStack()
@@ -380,10 +380,10 @@ namespace Brain\Monkey\Filters {
      *
      * Brain Monkey version of `doing_filter` will alias here.
      *
-     * @param string $filter
+     * @param string|null $filter
      * @return bool
      */
-    function doing($filter)
+    function doing($filter = null)
     {
         return Container::instance()
                         ->hookRunningStack()
