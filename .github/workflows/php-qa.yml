@@ -87,10 +87,10 @@ jobs:
 
         strategy:
             matrix:
-                php-versions: ['5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.3', '8.4', '8.5', '8.6']
-                dependency-versions: ['lowest', 'highest']
+                php: ['5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.3', '8.4', '8.5', '8.6']
+                dependencies: ['lowest', 'highest']
 
-        continue-on-error: ${{ matrix.php-versions == '8.6' }}
+        continue-on-error: ${{ matrix.php == '8.6' }}
 
         steps:
             - name: Checkout code
@@ -101,16 +101,16 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                php-version: ${{ matrix.php-versions }}
+                php-version: ${{ matrix.php }}
                 ini-values: zend.assertions=1, error_reporting=-1, display_errors=On, display_startup_errors=On
-                coverage: ${{ ( matrix.php-versions == '7.4' && 'xdebug' ) || 'none' }}
+                coverage: ${{ ( matrix.php == '7.4' && 'xdebug' ) || 'none' }}
               env:
                 fail-fast: true
 
             - name: Install dependencies
               uses: "ramsey/composer-install@v3"
               with:
-                dependency-versions: ${{ matrix.dependency-versions }}
+                dependency-versions: ${{ matrix.dependencies }}
                 # For PHP "nightly", we need to install with ignore platform reqs as not all dependencies may allow it yet.
                 composer-options: ${{ matrix.php == '8.6' && '--ignore-platform-req=php+' || '' }}
                 # Bust the cache at least once a month - output format: YYYY-MM.
@@ -118,24 +118,24 @@ jobs:
 
             # Mockery is only compatible with PHP 8.4 as of Mockery 1.6.10, so we need to update what "lowest" means.
             - name: Update Mockery lowest (PHP >= 8.4)
-              if: ${{ matrix.php-versions >= '8.4' && matrix.dependency-versions == 'lowest' }}
+              if: ${{ matrix.php >= '8.4' && matrix.dependencies == 'lowest' }}
               run: composer require mockery/mockery:"1.6.10"
 
             - name: Migrate test configuration (>= 7.3)
-              if: ${{ matrix.php-versions >= 7.3 && matrix.dependency-versions == 'highest' }}
+              if: ${{ matrix.php >= 7.3 && matrix.dependencies == 'highest' }}
               run: ./vendor/bin/phpunit --migrate-configuration
 
             - name: Run unit tests (without code coverage)
-              if: ${{ matrix.php-versions != '7.4' || matrix.dependency-versions != 'highest' || github.event.repository.fork == true }}
+              if: ${{ matrix.php != '7.4' || matrix.dependencies != 'highest' || github.event.repository.fork == true }}
               run: ./vendor/bin/phpunit
 
             - name: Run unit tests with code coverage
-              if: ${{ matrix.php-versions == '7.4' && matrix.dependency-versions == 'highest' && github.event.repository.fork == false }}
+              if: ${{ matrix.php == '7.4' && matrix.dependencies == 'highest' && github.event.repository.fork == false }}
               run: ./vendor/bin/phpunit --coverage-clover=coverage.xml
 
             - name: Update codecov.io
               uses: codecov/codecov-action@v5
-              if: ${{ matrix.php-versions == '7.4' && matrix.dependency-versions == 'highest' && github.event.repository.fork == false }} # upload coverage once is enough
+              if: ${{ matrix.php == '7.4' && matrix.dependencies == 'highest' && github.event.repository.fork == false }} # upload coverage once is enough
               env:
                 CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
               with:
