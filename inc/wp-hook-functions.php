@@ -57,7 +57,7 @@ if ( ! function_exists('do_action_ref_array')) {
 }
 
 if ( ! function_exists('do_action_deprecated')) {
-    function do_action_deprecated($hook_name, array $args, $version, $replacement, $message = null)
+    function do_action_deprecated($hook_name, array $args, $version, $replacement = '', $message = '')
     {
         $container = Monkey\Container::instance();
         $container->hookStorage()->pushToDone(Monkey\Hook\HookStorage::ACTIONS, $hook_name, $args);
@@ -86,7 +86,7 @@ if ( ! function_exists('apply_filters_ref_array')) {
 }
 
 if ( ! function_exists('apply_filters_deprecated')) {
-    function apply_filters_deprecated($hook_name, array $args, $version, $replacement, $message = null)
+    function apply_filters_deprecated($hook_name, array $args, $version, $replacement = '', $message = '')
     {
         $container = Monkey\Container::instance();
         $container->hookStorage()->pushToDone(Monkey\Hook\HookStorage::FILTERS, $hook_name, $args);
