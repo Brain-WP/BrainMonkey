@@ -143,14 +143,14 @@ if ( ! function_exists('remove_filter')) {
 }
 
 if ( ! function_exists('doing_action')) {
-    function doing_action($hook_name)
+    function doing_action($hook_name = null)
     {
         return Monkey\Actions\doing($hook_name);
     }
 }
 
 if ( ! function_exists('doing_filter')) {
-    function doing_filter($hook_name)
+    function doing_filter($hook_name = null)
     {
         return Monkey\Filters\doing($hook_name);
     }
