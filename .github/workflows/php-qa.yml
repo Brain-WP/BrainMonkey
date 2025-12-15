@@ -19,12 +19,12 @@ jobs:
 
         steps:
             - name: Checkout code
-              uses: actions/checkout@v6
+              uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
               with:
                 persist-credentials: false
 
             - name: Setup PHP
-              uses: shivammathur/setup-php@v2
+              uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1 # 2.36.0
               with:
                 php-version: 'latest'
                 coverage: 'none'
@@ -33,7 +33,7 @@ jobs:
                 fail-fast: true
 
             - name: Install dependencies
-              uses: "ramsey/composer-install@v3"
+              uses: "ramsey/composer-install@3cf229dc2919194e9e36783941438d17239e8520" # 3.1.1
               with:
                 # Bust the cache at least once a month - output format: YYYY-MM.
                 custom-cache-suffix: $(date -u "+%Y-%m")
@@ -59,12 +59,12 @@ jobs:
 
         steps:
             - name: Checkout code
-              uses: actions/checkout@v6
+              uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
               with:
                 persist-credentials: false
 
             - name: Setup PHP
-              uses: shivammathur/setup-php@v2
+              uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1 # 2.36.0
               with:
                 php-version: ${{ matrix.php }}
                 ini-values: zend.assertions=1, error_reporting=-1, display_errors=On, display_startup_errors=On
@@ -94,12 +94,12 @@ jobs:
 
         steps:
             - name: Checkout code
-              uses: actions/checkout@v6
+              uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
               with:
                 persist-credentials: false
 
             - name: Setup PHP
-              uses: shivammathur/setup-php@v2
+              uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1 # 2.36.0
               with:
                 php-version: ${{ matrix.php }}
                 ini-values: zend.assertions=1, error_reporting=-1, display_errors=On, display_startup_errors=On
@@ -108,7 +108,7 @@ jobs:
                 fail-fast: true
 
             - name: Install dependencies
-              uses: "ramsey/composer-install@v3"
+              uses: "ramsey/composer-install@3cf229dc2919194e9e36783941438d17239e8520" # 3.1.1
               with:
                 dependency-versions: ${{ matrix.dependencies }}
                 # For PHP "nightly", we need to install with ignore platform reqs as not all dependencies may allow it yet.
@@ -134,7 +134,7 @@ jobs:
               run: ./vendor/bin/phpunit --coverage-clover=coverage.xml
 
             - name: Update codecov.io
-              uses: codecov/codecov-action@v5
+              uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
               if: ${{ matrix.php == '7.4' && matrix.dependencies == 'highest' && github.event.repository.fork == false }} # upload coverage once is enough
               env:
                 CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
