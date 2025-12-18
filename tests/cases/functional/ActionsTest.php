@@ -69,6 +69,10 @@ class ActionsTest extends FunctionalTestCase
         static::assertNotFalse(Monkey\Actions\has('init', function (\Foo\Bar ...$bar) {}));
         static::assertNotFalse(Monkey\Actions\has('init', 'function (Foo\Bar ...$bar)'));
         static::assertNotFalse(Monkey\Actions\has('init', 'function (Foo\\Bar ...$bar)'));
+
+        static::assertTrue(Monkey\Actions\has('init', 'function (Foo\\Bar ...$bar)', 1));
+        static::assertFalse(Monkey\Actions\has('init', 'function (Foo\\Bar ...$bar)', 2));
+        static::assertFalse(Monkey\Actions\has('init', 'function (Foo\\Bar ...$bar)', 99));
     }
 
     public function testRemove()

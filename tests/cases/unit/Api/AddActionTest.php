@@ -70,6 +70,33 @@ class AddActionTest extends UnitTestCase
         static::assertTrue(has_action('testMeA', null));
     }
 
+    public function testAddAndHasWithoutCallbackWithPriority()
+    {
+        static::assertFalse(has_action('testMeB'));
+        add_action('testMeB', 'strtolower', 10);
+
+        // Priority will be ignored if the $callback param is not provided.
+        // This mirrors the behaviour of WP Core.
+        static::assertTrue(has_action('testMeB', false, 10));
+        static::assertTrue(has_action('testMeB', false, 20));
+    }
+
+    public function testAddAndHasWithCallbackAndPriority()
+    {
+        static::assertFalse(has_action('testMeC'));
+        add_action('testMeC', 'callbackA', 7);
+        add_action('testMeC', 'callbackB', 12);
+
+        static::assertTrue(has_action('testMeC', 'callbackA', 7));
+        static::assertTrue(has_action('testMeC', 'callbackB', 12));
+
+        static::assertFalse(has_action('testMeC', 'callbackB', 7));
+        static::assertFalse(has_action('testMeC', 'callbackA', 12));
+
+        static::assertFalse(has_action('testMeC', 'callbackB', 10));
+        static::assertFalse(has_action('testMeC', 'callbackA', 10));
+    }
+
     public function testExpectAdded()
     {
         Actions\expectAdded('init')

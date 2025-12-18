@@ -67,6 +67,33 @@ class AddFiltersTest extends UnitTestCase
         static::assertTrue(has_filter('testMeA', null));
     }
 
+    public function testAddAndHasWithoutCallbackWithPriority()
+    {
+        static::assertFalse(has_filter('testMeB'));
+        add_filter('testMeB', 'strtolower', 10);
+
+        // Priority will be ignored if the $callback param is not provided.
+        // This mirrors the behaviour of WP Core.
+        static::assertTrue(has_filter('testMeB', false, 10));
+        static::assertTrue(has_filter('testMeB', false, 20));
+    }
+
+    public function testAddAndHasWithCallbackAndPriority()
+    {
+        static::assertFalse(has_filter('testMeC'));
+        add_filter('testMeC', 'strtolower', 7);
+        add_filter('testMeC', 'trim', 12);
+
+        static::assertTrue(has_filter('testMeC', 'strtolower', 7));
+        static::assertTrue(has_filter('testMeC', 'trim', 12));
+
+        static::assertFalse(has_filter('testMeC', 'trim', 7));
+        static::assertFalse(has_filter('testMeC', 'strtolower', 12));
+
+        static::assertFalse(has_filter('testMeC', 'trim', 10));
+        static::assertFalse(has_filter('testMeC', 'strtolower', 10));
+    }
+
     public function testExpectAdded()
     {
         Filters\expectAdded('the_title')->times(3)->with(

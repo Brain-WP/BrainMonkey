@@ -50,6 +50,21 @@ class FiltersTest extends FunctionalTestCase
         static::assertSame('HELLO WORLD', $title);
     }
 
+    public function testHas()
+    {
+        add_filter(
+            'the_title',
+            [$this, __FUNCTION__],
+            4
+        );
+
+        static::assertNotFalse(Monkey\Filters\has('the_title', [$this, __FUNCTION__]));
+
+        static::assertTrue(Monkey\Filters\has('the_title', [$this, __FUNCTION__], 4));
+        static::assertFalse(Monkey\Filters\has('the_title', [$this, __FUNCTION__], 0));
+        static::assertFalse(Monkey\Filters\has('the_title', [$this, __FUNCTION__], 99));
+    }
+
     public function testRemove()
     {
         Monkey\Filters\expectRemoved('my_hook')
