@@ -96,16 +96,16 @@ if ( ! function_exists('apply_filters_deprecated')) {
 }
 
 if ( ! function_exists('has_action')) {
-    function has_action($hook_name, $callback = null)
+    function has_action($hook_name, $callback = false, $priority = false)
     {
-        return Monkey\Actions\has($hook_name, $callback);
+        return Monkey\Actions\has($hook_name, $callback, $priority);
     }
 }
 
 if ( ! function_exists('has_filter')) {
-    function has_filter($hook_name, $callback = null)
+    function has_filter($hook_name, $callback = false, $priority = false)
     {
-        return Monkey\Filters\has($hook_name, $callback);
+        return Monkey\Filters\has($hook_name, $callback, $priority);
     }
 }
 

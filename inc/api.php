@@ -235,22 +235,30 @@ namespace Brain\Monkey\Actions {
      *
      * Brain Monkey version of `has_action` will alias here.
      *
-     * @param string        $action
-     * @param callable|null $callback
+     * @param string              $action
+     * @param callable|false|null $callback Callable or false.
+     *                                      Null behaves like `false` and is only supported for historical reasons.
+     * @param int|false           $priority
      * @return bool|int If callback is omitted, returns boolean for whether the hook has anything registered.
      *                  When checking a specific callback, the priority of that hook is returned,
      *                  or false if the callback is not attached.
+     *                  If `$callback` and `$priority` are both provided, a boolean is returned
+     *                  for whether the specific function is registered at that priority (as per WP 6.9).
      */
-    function has($action, $callback = null)
+    function has($action, $callback = false, $priority = false)
     {
         $type = Hook\HookStorage::ACTIONS;
         $hookStorage = Container::instance()->hookStorage();
 
-        if ($callback === null) {
+        if ($callback === false || $callback === null) {
             return $hookStorage->isHookAdded($type, $action);
         }
 
-        return $hookStorage->hookPriority($type, $action, $callback);
+        if ($priority === false) {
+            return $hookStorage->hookPriority($type, $action, $callback);
+        }
+
+        return ($priority === $hookStorage->hookPriority($type, $action, $callback));
     }
 
     /**
@@ -342,22 +350,30 @@ namespace Brain\Monkey\Filters {
      *
      * Brain Monkey version of `has_filter` will alias here.
      *
-     * @param string        $filter
-     * @param callable|null $callback
+     * @param string              $filter
+     * @param callable|false|null $callback Callable or false.
+     *                                      Null behaves like `false` and is only supported for historical reasons.
+     * @param int|false           $priority
      * @return bool|int If callback is omitted, returns boolean for whether the hook has anything registered.
      *                  When checking a specific callback, the priority of that hook is returned,
      *                  or false if the callback is not attached.
+     *                  If `$callback` and `$priority` are both provided, a boolean is returned
+     *                  for whether the specific function is registered at that priority (as per WP 6.9).
      */
-    function has($filter, $callback = null)
+    function has($filter, $callback = false, $priority = false)
     {
         $type = Hook\HookStorage::FILTERS;
         $hookStorage = Container::instance()->hookStorage();
 
-        if ($callback === null) {
+        if ($callback === false || $callback === null) {
             return $hookStorage->isHookAdded($type, $filter);
         }
 
-        return $hookStorage->hookPriority($type, $filter, $callback);
+        if ($priority === false) {
+            return $hookStorage->hookPriority($type, $filter, $callback);
+        }
+
+        return ($priority === $hookStorage->hookPriority($type, $filter, $callback));
     }
 
     /**
