@@ -16,10 +16,3 @@ if (file_exists($autoload)) {
     echo 'Autoload file not found. Please run `composer install`.';
     die(1);
 }
-
-// PHPUnit cross version compatibility.
-if (class_exists('PHPUnit_Framework_Error') === true
-    && class_exists('PHPUnit\Framework\Error\Error') === false
-) {
-    class_alias('PHPUnit_Framework_Error', 'PHPUnit\Framework\Error\Error');
-}

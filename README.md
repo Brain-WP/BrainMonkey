@@ -14,7 +14,7 @@ It provides **two set of helpers**:
 
 ## Requirements
 
-* PHP 5.6+
+* PHP 7.2+
 * [Composer](https://getcomposer.org/) to install
 
 Via Composer following packages are required:
@@ -24,7 +24,7 @@ Via Composer following packages are required:
 
 When installed for development, following packages are also required:
 
-* [phpunit/phpunit](https://packagist.org/packages/phpunit/phpunit) version 5.7 or higher \(BSD-3-Clause\)
+* [phpunit/phpunit](https://packagist.org/packages/phpunit/phpunit) version 8.5 or higher \(BSD-3-Clause\)
 
 ## License
 

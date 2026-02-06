@@ -29,7 +29,7 @@ class ExpectationArgsRequiredTest extends UnitTestCase
             new ExpectationTarget($type, 'foo')
         )->getMessage();
 
-        static::assertStringContains($message_part, $message);
+        static::assertStringContainsString($message_part, $message);
     }
 
     public function expectationTargets()

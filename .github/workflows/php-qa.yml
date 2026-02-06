@@ -51,7 +51,7 @@ jobs:
 
         strategy:
             matrix:
-                php: ['5.6', '7.0', '7.4', '8.0', '8.5', 'nightly']
+                php: ['7.2', '7.4', '8.0', '8.5', 'nightly']
 
         name: "Lint: PHP ${{ matrix.php }}"
 
@@ -87,7 +87,7 @@ jobs:
 
         strategy:
             matrix:
-                php: ['5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.3', '8.4', '8.5', '8.6']
+                php: ['7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.3', '8.4', '8.5', '8.6']
                 dependencies: ['lowest', 'highest']
 
         continue-on-error: ${{ matrix.php == '8.6' }}
@@ -126,16 +126,16 @@ jobs:
               run: ./vendor/bin/phpunit --migrate-configuration
 
             - name: Run unit tests (without code coverage)
-              if: ${{ matrix.php != '7.4' || matrix.dependencies != 'highest' || github.event.repository.fork == true }}
+              if: ${{ matrix.php != '8.1' || matrix.dependencies != 'highest' || github.event.repository.fork == true }}
               run: ./vendor/bin/phpunit
 
             - name: Run unit tests with code coverage
-              if: ${{ matrix.php == '7.4' && matrix.dependencies == 'highest' && github.event.repository.fork == false }}
+              if: ${{ matrix.php == '8.1' && matrix.dependencies == 'highest' && github.event.repository.fork == false }}
               run: ./vendor/bin/phpunit --coverage-clover=coverage.xml
 
             - name: Update codecov.io
               uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
-              if: ${{ matrix.php == '7.4' && matrix.dependencies == 'highest' && github.event.repository.fork == false }} # upload coverage once is enough
+              if: ${{ matrix.php == '8.1' && matrix.dependencies == 'highest' && github.event.repository.fork == false }} # upload coverage once is enough
               env:
                 CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
               with:

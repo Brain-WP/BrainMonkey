@@ -48,5 +48,5 @@ All the rest is joy.
 
 ### PHP versions compatibility
 
-Currently, Brain Monkey supports PHP 5.6+.
+Currently, Brain Monkey supports PHP 7.2+.
 
