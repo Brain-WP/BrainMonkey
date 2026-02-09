@@ -151,7 +151,7 @@ class FunctionsTest extends UnitTestCase
     {
         $this->expectException(MissingFunctionExpectations::class);
         Functions\when('since_i_am_not_defined_i_will_throw_exception');
-        $this->expectExceptionMsgRegex('/since_i_am_not_defined_i_will_throw_exception.+not defined/');
+        $this->expectExceptionMessageMatches('/since_i_am_not_defined_i_will_throw_exception.+not defined/');
         /** @noinspection PhpUndefinedFunctionInspection */
         since_i_am_not_defined_i_will_throw_exception();
     }
@@ -170,7 +170,7 @@ class FunctionsTest extends UnitTestCase
     public function testSurvivedFunctionStillThrowsException()
     {
         $this->expectException(MissingFunctionExpectations::class);
-        $this->expectExceptionMsgRegex('/since_i_am_not_defined_i_will_throw_exception.+not defined/');
+        $this->expectExceptionMessageMatches('/since_i_am_not_defined_i_will_throw_exception.+not defined/');
         /** @noinspection PhpUndefinedFunctionInspection */
         since_i_am_not_defined_i_will_throw_exception();
     }
@@ -191,7 +191,7 @@ class FunctionsTest extends UnitTestCase
     public function testSurvivedFunctionStillThrowsExceptionAfterBeingMocked()
     {
         $this->expectException(MissingFunctionExpectations::class);
-        $this->expectExceptionMsgRegex('/since_i_am_not_defined_i_will_throw_exception.+not defined/');
+        $this->expectExceptionMessageMatches('/since_i_am_not_defined_i_will_throw_exception.+not defined/');
         /** @noinspection PhpUndefinedFunctionInspection */
         since_i_am_not_defined_i_will_throw_exception();
     }

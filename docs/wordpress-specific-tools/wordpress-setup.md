@@ -22,11 +22,11 @@ These two functions are:
 PHPUnit users will probably want to add these methods to a custom test case class:
 
 ```php
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Brain\Monkey;
 
-class MyTestCase extends PHPUnit_Framework_TestCase {
+class MyTestCase extends TestCase {
 
     // Adds Mockery expectations to the PHPUnit assertions count.
     use MockeryPHPUnitIntegration;
@@ -43,7 +43,7 @@ class MyTestCase extends PHPUnit_Framework_TestCase {
 }
 ```
 
-and then extend various test classes from it instead of directly extend `PHPUnit_Framework_TestCase`.
+and then extend various test classes from it instead of directly extending `PHPUnit\Framework\TestCase`.
 
 That's all. You are ready to use all Brain Monkey features.
 

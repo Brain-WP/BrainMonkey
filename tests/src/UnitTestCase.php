@@ -11,7 +11,6 @@
 namespace Brain\Monkey\Tests;
 
 use Brain\Monkey;
-use PHPUnit\Framework\Error\Error as PHPUnit_Error;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -50,60 +49,6 @@ class UnitTestCase extends TestCase
     }
 
     /**
-     * PHPUnit cross-version support.
-     *
-     * @param string $needle
-     * @param string $haystack
-     * @param string $message
-     * @return void
-     */
-    public static function assertStringContains($needle, $haystack, $message = '') {
-
-        if (method_exists(TestCase::class, 'assertStringContainsString')) {
-            // PHPUnit 7.5+.
-            TestCase::assertStringContainsString($needle, $haystack, $message);
-
-            return;
-        }
-
-        // PHPUnit < 7.5.
-        static::assertContains($needle, $haystack, $message);
-    }
-
-    /**
-     * PHPUnit cross-version support.
-     */
-    protected function expectErrorException()
-    {
-        if (method_exists($this, 'expectError')) {
-            // PHPUnit 8.4+.
-            $this->expectError();
-            return;
-        }
-
-        // PHPUnit < 8.4.
-        $this->expectException(PHPUnit_Error::class);
-    }
-
-    /**
-     * PHPUnit cross-version support.
-     *
-     * @param string $msgRegex
-     * @return void
-     */
-    protected function expectExceptionMsgRegex($msgRegex)
-    {
-        if (method_exists($this, 'expectExceptionMessageMatches')) {
-            // PHPUnit 8.4+.
-            $this->expectExceptionMessageMatches($msgRegex);
-            return;
-        }
-
-        // PHPUnit < 8.4.
-        $this->expectExceptionMessageRegExp($msgRegex);
-    }
-
-    /**
      * We can't use PHPUnit expectException() because we need to wait for `Monkey\tearDown` and that
      * does not work for `expectException()`.
      *
@@ -123,18 +68,9 @@ class UnitTestCase extends TestCase
                 $this->expect_mockery_exception
             );
 
-            if (class_exists('PHPUnit\\Framework\\ExpectationFailedException')) {
-                // PHPUnit 6.0+.
-                throw new \PHPUnit\Framework\ExpectationFailedException($message);
-            } else {
-                // PHPUnit 5.x.
-                throw new \PHPUnit_Framework_ExpectationFailedException($message);
-            }
+            throw new \PHPUnit\Framework\ExpectationFailedException($message);
+
         } catch (\Throwable $e) {
-            if (get_class($e) !== $this->expect_mockery_exception) {
-                throw $e;
-            }
-        } catch (\Exception $e) {
             if (get_class($e) !== $this->expect_mockery_exception) {
                 throw $e;
             }
@@ -152,13 +88,7 @@ class UnitTestCase extends TestCase
                 $class
             );
 
-            if (class_exists('PHPUnit\\Framework\\Exception')) {
-                // PHPUnit 6.0+.
-                throw new \PHPUnit\Framework\Exception($message);
-            } else {
-                // PHPUnit 5.x.
-                throw new \PHPUnit_Framework_Exception($message);
-            }
+            throw new \PHPUnit\Framework\Exception($message);
         }
 
         $this->expect_mockery_exception = $class;
