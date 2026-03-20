@@ -24,7 +24,7 @@ jobs:
                 persist-credentials: false
 
             - name: Setup PHP
-              uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1 # 2.36.0
+              uses: shivammathur/setup-php@accd6127cb78bee3e8082180cb391013d204ef9f # 2.37.0
               with:
                 php-version: 'latest'
                 coverage: 'none'
@@ -64,7 +64,7 @@ jobs:
                 persist-credentials: false
 
             - name: Setup PHP
-              uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1 # 2.36.0
+              uses: shivammathur/setup-php@accd6127cb78bee3e8082180cb391013d204ef9f # 2.37.0
               with:
                 php-version: ${{ matrix.php }}
                 ini-values: zend.assertions=1, error_reporting=-1, display_errors=On, display_startup_errors=On
@@ -99,7 +99,7 @@ jobs:
                 persist-credentials: false
 
             - name: Setup PHP
-              uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1 # 2.36.0
+              uses: shivammathur/setup-php@accd6127cb78bee3e8082180cb391013d204ef9f # 2.37.0
               with:
                 php-version: ${{ matrix.php }}
                 ini-values: zend.assertions=1, error_reporting=-1, display_errors=On, display_startup_errors=On
@@ -134,7 +134,7 @@ jobs:
               run: ./vendor/bin/phpunit --coverage-clover=coverage.xml
 
             - name: Update codecov.io
-              uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
+              uses: codecov/codecov-action@1af58845a975a7985b0beb0cbe6fbbb71a41dbad # v5.5.3
               if: ${{ matrix.php == '8.1' && matrix.dependencies == 'highest' && github.event.repository.fork == false }} # upload coverage once is enough
               env:
                 CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
