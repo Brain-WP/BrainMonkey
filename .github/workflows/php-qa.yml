@@ -134,7 +134,7 @@ jobs:
               run: ./vendor/bin/phpunit --coverage-clover=coverage.xml
 
             - name: Update codecov.io
-              uses: codecov/codecov-action@1af58845a975a7985b0beb0cbe6fbbb71a41dbad # v5.5.3
+              uses: codecov/codecov-action@e79a6962e0d4c0c17b229090214935d2e33f8354 # v6.0.1
               if: ${{ matrix.php == '8.1' && matrix.dependencies == 'highest' && github.event.repository.fork == false }} # upload coverage once is enough
               env:
                 CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
