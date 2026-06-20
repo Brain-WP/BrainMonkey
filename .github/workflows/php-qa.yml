@@ -24,7 +24,7 @@ jobs:
                 persist-credentials: false
 
             - name: Setup PHP
-              uses: shivammathur/setup-php@accd6127cb78bee3e8082180cb391013d204ef9f # 2.37.0
+              uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
               with:
                 php-version: 'latest'
                 coverage: 'none'
@@ -64,7 +64,7 @@ jobs:
                 persist-credentials: false
 
             - name: Setup PHP
-              uses: shivammathur/setup-php@accd6127cb78bee3e8082180cb391013d204ef9f # 2.37.0
+              uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
               with:
                 php-version: ${{ matrix.php }}
                 ini-values: zend.assertions=1, error_reporting=-1, display_errors=On, display_startup_errors=On
@@ -99,7 +99,7 @@ jobs:
                 persist-credentials: false
 
             - name: Setup PHP
-              uses: shivammathur/setup-php@accd6127cb78bee3e8082180cb391013d204ef9f # 2.37.0
+              uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
               with:
                 php-version: ${{ matrix.php }}
                 ini-values: zend.assertions=1, error_reporting=-1, display_errors=On, display_startup_errors=On
