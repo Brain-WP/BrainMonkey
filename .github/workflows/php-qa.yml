@@ -11,11 +11,16 @@ concurrency:
     group: ${{ github.workflow }}-${{ github.ref }}
     cancel-in-progress: true
 
+# Permissions should be configured at the job level.
+permissions: {}
+
 jobs:
     phpcompatibility:
-        runs-on: ubuntu-latest
+        permissions:
+            contents: read # To clone the repo.
 
         name: "PHPCompatibility"
+        runs-on: ubuntu-latest
 
         steps:
             - name: Checkout code
@@ -47,15 +52,17 @@ jobs:
               run: cs2pr ./phpcs-report.xml
 
     lint:
-        runs-on: ubuntu-latest
+        permissions:
+            contents: read # To clone the repo.
 
         strategy:
             matrix:
                 php: ['7.2', '7.4', '8.0', '8.5', 'nightly']
 
-        name: "Lint: PHP ${{ matrix.php }}"
-
         continue-on-error: ${{ matrix.php == 'nightly' }}
+
+        name: "Lint: PHP ${{ matrix.php }}"
+        runs-on: ubuntu-latest
 
         steps:
             - name: Checkout code
@@ -82,6 +89,9 @@ jobs:
               run: parallel-lint ./src/ ./inc/ ./tests/ -e php --show-deprecated --checkstyle | cs2pr
 
     test:
+        permissions:
+            contents: read # To clone the repo.
+
         needs: lint
         runs-on: ubuntu-latest
 
