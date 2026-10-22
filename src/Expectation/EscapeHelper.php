@@ -45,7 +45,7 @@ class EscapeHelper
      */
     public static function escUrlRaw($url)
     {
-        if ( $url === '' ) {
+        if ( trim($url) === '' ) {
             return $url;
         }
 
