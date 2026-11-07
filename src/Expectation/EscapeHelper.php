@@ -45,6 +45,10 @@ class EscapeHelper
      */
     public static function escUrlRaw($url)
     {
+        if (trim($url) === '') {
+            return '';
+        }
+
         if ( ! parse_url($url, PHP_URL_SCHEME)) {
             $url = "http://{$url}";
         }
@@ -58,6 +62,10 @@ class EscapeHelper
      */
     public static function escUrl($url)
     {
+        if (trim($url) === '') {
+            return '';
+        }
+
         return str_replace(['&amp;', "'"], ['&#038;', '&#039;'], static::escUrlRaw($url));
     }
 
