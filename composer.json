@@ -1,6 +1,7 @@
 {
     "name": "brain/monkey",
     "description": "Mocking utility for PHP functions and WordPress plugin API",
+    "license": "MIT",
     "keywords": [
         "testing",
         "test",
@@ -25,16 +26,17 @@
         "issues": "https://github.com/Brain-WP/BrainMonkey/issues",
         "source": "https://github.com/Brain-WP/BrainMonkey"
     },
-    "license": "MIT",
     "require": {
         "php": ">=7.2.0",
-        "mockery/mockery": "~1.3.6 || ~1.4.4 || ~1.5.1 || ^1.6.10",
-        "antecedent/patchwork": "^2.2.3"
+        "antecedent/patchwork": "^2.2.3",
+        "mockery/mockery": "~1.3.6 || ~1.4.4 || ~1.5.1 || ^1.6.10"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.5.52 || ^9.6.34",
-        "phpcompatibility/php-compatibility": "^10.0.0@alpha"
+        "phpcompatibility/php-compatibility": "^10.0.0@alpha",
+        "phpunit/phpunit": "^8.5.52 || ^9.6.34"
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "Brain\\Monkey\\": "src/"
@@ -44,31 +46,29 @@
         ]
     },
     "autoload-dev": {
-        "files": [
-            "vendor/antecedent/patchwork/Patchwork.php"
-        ],
         "psr-4": {
             "Brain\\Monkey\\Tests\\": "tests/src/",
-            "Brain\\Monkey\\Tests\\Unit\\": "tests/cases/unit/",
-            "Brain\\Monkey\\Tests\\Functional\\": "tests/cases/functional/"
-        }
+            "Brain\\Monkey\\Tests\\Functional\\": "tests/cases/functional/",
+            "Brain\\Monkey\\Tests\\Unit\\": "tests/cases/unit/"
+        },
+        "files": [
+            "vendor/antecedent/patchwork/Patchwork.php"
+        ]
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "config": {
-        "optimize-autoloader": true,
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true
         },
-        "lock": false
+        "lock": false,
+        "optimize-autoloader": true
     },
     "extra": {
         "branch-alias": {
-            "dev-version/1": "1.x-dev",
-            "dev-master": "2.x-dev"
+            "dev-master": "2.x-dev",
+            "dev-version/1": "1.x-dev"
         }
     },
-    "scripts" : {
+    "scripts": {
         "phpcompat": [
             "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs -ps . --standard=PHPCompatibility --ignore=*/vendor/* --parallel=10 --extensions=php --basepath=./ --runtime-set testVersion 7.2-"
         ]
