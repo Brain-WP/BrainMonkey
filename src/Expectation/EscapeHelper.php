@@ -45,7 +45,7 @@ class EscapeHelper
      */
     public static function escUrlRaw($url)
     {
-        if (trim($url) === '') {
+        if (trim($url, " \f\n\r\t\v\x00") === '') {
             return '';
         }
 
@@ -62,7 +62,7 @@ class EscapeHelper
      */
     public static function escUrl($url)
     {
-        if (trim($url) === '') {
+        if (trim($url, " \f\n\r\t\v\x00") === '') {
             return '';
         }
 

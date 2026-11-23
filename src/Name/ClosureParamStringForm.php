@@ -43,7 +43,7 @@ class ClosureParamStringForm
      */
     public static function fromString($param)
     {
-        $param = trim($param);
+        $param = trim($param, " \f\n\r\t\v\x00");
 
         $variadic = substr_count($param, '...') === 1;
         $variadic and $param = str_replace('.', '', $param);

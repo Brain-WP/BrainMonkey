@@ -109,7 +109,7 @@ final class CallbackStringForm
      */
     private function parseString($callback)
     {
-        $callback = trim($callback);
+        $callback = trim($callback, " \f\n\r\t\v\x00");
 
         if (
             (strpos($callback, 'function') === 0 || strpos($callback, 'static') === 0)
