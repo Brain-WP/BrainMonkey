@@ -115,7 +115,7 @@ jobs:
               with:
                 php-version: ${{ matrix.php }}
                 ini-values: zend.assertions=1, error_reporting=-1, display_errors=On, display_startup_errors=On
-                coverage: ${{ ( matrix.php == '7.4' && 'xdebug' ) || 'none' }}
+                coverage: ${{ ( matrix.php == '8.1' && 'xdebug' ) || 'none' }}
               env:
                 fail-fast: true
 
