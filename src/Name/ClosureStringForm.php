@@ -37,13 +37,13 @@ final class ClosureStringForm
     {
         if (
             ! is_string($closure_string)
-            || ! preg_match(self::CLOSURE_PATTERN, trim($closure_string), $matches)
+            || ! preg_match(self::CLOSURE_PATTERN, trim($closure_string, " \f\n\r\t\v\x00"), $matches)
         ) {
             throw InvalidCallable::forCallable($closure_string);
         }
 
-        $raw_params = trim($matches[2]);
-        $static = trim($matches[1]);
+        $raw_params = trim($matches[2], " \f\n\r\t\v\x00");
+        $static = trim($matches[1], " \f\n\r\t\v\x00");
 
         $normalized = $static ? 'static function (' : 'function (';
 
